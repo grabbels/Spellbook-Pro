@@ -1,0 +1,103 @@
+<script>
+	import Button from './button.svelte';
+	import Section from './section.svelte';
+	import { activeSpells } from './stores-persist';
+	import { spellListEmpty } from './stores';
+	import { topMenuOpenClose } from './globalfunctions.svelte';
+	let fileinput;
+
+	function empty() {
+		let text = 'Are you sure you want to remove all your saved spells?';
+		if (confirm(text) == true) {
+			$activeSpells.length = 0;
+		}
+	}
+	function download() {
+		var activeSpellsSave = JSON.stringify($activeSpells);
+		// var favoriteSpellsSave = localStorage.favoriteSpells.split(',');
+		// favoriteSpellsSave.splice(0, 0, 'favorites');
+		// var favoriteSpellsSave = favoriteSpellsSave.toString();
+		// var saveFileString = activeSpellsSave + ',' + favoriteSpellsSave;
+		var saveFileString = activeSpellsSave;
+		let a = document.createElement('a');
+		var name = prompt('Filename:');
+		if (name !== null) {
+			if (typeof a.download !== 'undefined') a.download = name + '.json';
+			a.href = URL.createObjectURL(
+				new Blob([saveFileString], {
+					type: 'application/octet-stream'
+				})
+			);
+			a.dispatchEvent(new MouseEvent('click'));
+		}
+	}
+
+	const onFileSelected = (e) => {
+		let file = e.target.files[0];
+		let reader = new FileReader();
+		reader.readAsText(file);
+		reader.onload = (e) => {
+			$activeSpells = [];
+			$activeSpells = JSON.parse(e.target.result);
+		};
+	};
+</script>
+
+<Section name="topmenu">
+	<div class="wrapper">
+		<div>
+			<Button
+				disabled={$spellListEmpty}
+				on:click={download}
+				href=""
+				type="fill"
+				icon="ri-download-line"
+				text="Download"
+			/>
+			<Button
+				on:click={() => {
+					fileinput.click();
+				}}
+				href=""
+				type="fill"
+				icon="ri-upload-line"
+				text="Import"
+			/>
+			<input
+				type="file"
+				id="input-file"
+				style="display: none"
+				accept=".json"
+				on:change={(e) => onFileSelected(e)}
+				bind:this={fileinput}
+			/>
+			<Button
+				disabled={$spellListEmpty}
+				href=""
+				type="fill"
+				icon="ri-file-2-line"
+				text="Export PDF"
+			/>
+			<Button
+				disabled={$spellListEmpty}
+				on:click={empty}
+				href=""
+				type="outline alt"
+				icon="ri-delete-bin-line"
+				text="Clear all"
+			/>
+		</div>
+		<div>
+			<Button on:click={topMenuOpenClose} type="outline alt" icon="ri-close-line" text="close" />
+		</div>
+	</div>
+</Section>
+
+<style lang="scss">
+	.wrapper {
+		padding: 2rem 0 1.3rem;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	}
+</style>
