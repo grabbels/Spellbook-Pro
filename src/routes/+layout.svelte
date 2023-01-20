@@ -1,13 +1,18 @@
 <script>
 	import { Body } from 'svelte-body';
 	import { fly, fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { supabaseClient } from '$lib/db';
+	import { invalidate } from '$app/navigation';
 	import Header from '../components/header.svelte';
 	import AddSpells from '../components/addspells.svelte';
 	import TopMenu from '../components/topmenu.svelte';
 	import { sidemenuopen, topmenuopen, notification, pagetitle } from '../components/stores';
+	import { loggedIn, userNickname } from '../components/stores-persist';
 	import bg from '../img/menu-bg.png';
 	import bgalt from '../img/menu-bg-alt.png';
 	import '@fontsource/kanit';
+	let timeOut = 3000;
 	export const closeMenu = () => {
 		if ($sidemenuopen === true || $topmenuopen === true) {
 			sidemenuopen.set(false);
@@ -15,13 +20,36 @@
 		}
 	};
 	$: if ($notification) {
+		$notification.split('#')[1].includes('info') ? (timeOut = 10000) : 3000;
 		setTimeout(() => {
 			$notification = '';
-		}, 3000);
+		}, timeOut);
 	}
-	// function toggleScroll() {
-	// 	window.document.body.classList.toggle('noscroll');
-	// }
+	onMount(() => {
+		const {
+			data: { subscription }
+		} = supabaseClient.auth.onAuthStateChange(() => {
+			invalidate('supabase:auth');
+		});
+
+		return () => {
+			subscription.unsubscribe();
+		};
+	});
+
+	async function checkIfLoggedIn() {
+		if ($loggedIn === null) {
+			const {
+				data: { user }
+			} = await supabaseClient.auth.getUser();
+			if (user) {
+				$loggedIn = true;
+				$userNickname = user.user_metadata.nickname;
+				console.log(user.user_metadata.nickname)
+			}
+		}
+	}
+	checkIfLoggedIn();
 </script>
 
 <Body class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : ''} />
@@ -58,8 +86,21 @@
 
 {#if $notification}
 	<div transition:fly={{ y: 10, duration: 300 }} class:show={$notification} class="notification">
-		<div class="{$notification.split('#')[1].includes('error') ? 'error' : ''} notification_inner">
-			<p><i class="ri-error-warning-fill" /> {$notification.split('#')[0]}</p>
+		<div
+			class="{$notification.split('#')[1].includes('error')
+				? 'error'
+				: $notification.split('#')[1].includes('alert')
+				? 'alert'
+				: $notification.split('#')[1].includes('info')
+				? 'info'
+				: ''} notification_inner"
+		>
+			<p>
+				<i class="ri-error-warning-fill" /><i class="ri-alert-fill" /><i
+					class="ri-information-line"
+				/>
+				{$notification.split('#')[0]}
+			</p>
 		</div>
 	</div>
 {/if}
@@ -133,6 +174,22 @@
 					i.ri-error-warning-fill {
 						display: inline;
 						color: var(--secondary);
+					}
+				}
+			}
+			&.alert {
+				p {
+					i.ri-alert-fill {
+						display: inline;
+						color: var(--yellow);
+					}
+				}
+			}
+			&.info {
+				p {
+					i.ri-information-line {
+						display: inline;
+						color: var(--yellow);
 					}
 				}
 			}

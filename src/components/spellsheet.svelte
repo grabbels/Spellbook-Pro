@@ -1,15 +1,28 @@
 <script>
 	// import Card from './card.svelte';
 	import { activeSpells } from './stores-persist';
-	import { fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import SchoolIcon from './schoolicon.svelte';
 	import Pill from './pill.svelte';
 	import { onMount, afterUpdate } from 'svelte';
 	import { arrayMoveImmutable } from 'array-move';
+	import { moveItem } from './globalfunctions.svelte';
 	let spellsheet;
 	let spellsOrderedInDom;
 	let orderedSpellsNames = [];
+	let placeholders = ['', '', '', '', '', ''];
 	let openSpell = null;
+	let promise;
+	let save;
+	let spellDescription;
+	let savingArray = [
+		'strength sav',
+		'dexterity sav',
+		'consitution sav',
+		'intelligence sav',
+		'wisdom sav',
+		'charisma sav'
+	];
 	const levels = [
 		'cantrips',
 		'level 1',
@@ -36,42 +49,72 @@
 	function openClickedSpell(spell) {
 		openSpell === spell ? (openSpell = null) : (openSpell = spell);
 	}
-	function orderSpells() {
-		spellsOrderedInDom = spellsheet.querySelectorAll('.spell');
-		for (let i = 0; i < spellsOrderedInDom.length; i++) {
-			orderedSpellsNames.push(spellsOrderedInDom[i].getAttribute('data-name'));
+	// const characters ='▆▍▇▆▇▅▆▅▁▇▁▅▆▇▆▆▉▆▇▅▅▇▆▆';
+	const characters = '◼';
+	function generateString(length) {
+		let result = ' ';
+		const charactersLength = characters.length;
+		for (let i = 0; i < length; i++) {
+			result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
-		var sortedSpells = $activeSpells
-			.slice()
-			.sort((a, b) => orderedSpellsNames.indexOf(a.name) - orderedSpellsNames.indexOf(b.name));
-		$activeSpells = sortedSpells;
+
+		return result;
 	}
-	
+
+	function orderSpells() {
+		if (spellsheet) {
+			spellsOrderedInDom = spellsheet.querySelectorAll('.spell');
+			for (let i = 0; i < spellsOrderedInDom.length; i++) {
+				orderedSpellsNames.push(spellsOrderedInDom[i].getAttribute('data-name'));
+			}
+			var sortedSpells = $activeSpells
+				.slice()
+				.sort((a, b) => orderedSpellsNames.indexOf(a.name) - orderedSpellsNames.indexOf(b.name));
+			$activeSpells = sortedSpells;
+		}
+	}
+
 	onMount(() => {
 		orderSpells();
 	});
 
-	
+	function checkInput(input, words) {
+		return words.some((word) => input.toLowerCase().includes(word.toLowerCase()));
+	}
+	// $: orderSpells($activeSpells);
+
 	function removeSpell(spell) {
 		$activeSpells = $activeSpells.filter((a) => a !== spell);
-		console.log($activeSpells);
 	}
 	function moveUpSpell(spell) {
 		for (let i = 0; i < $activeSpells.length; i++) {
 			if ($activeSpells[i] === spell) {
 				if ($activeSpells[i - 1]) {
-					$activeSpells = arrayMoveImmutable($activeSpells, i, i - 1);
+					$activeSpells = moveItem($activeSpells, i - 1, i);
+					console.log(i);
+					promise = Promise.resolve();
+					return;
 				}
 			}
 		}
+		promise.then(() => {
+			orderSpells();
+		});
 	}
 	function moveDownSpell(spell) {
 		for (let i = 0; i < $activeSpells.length; i++) {
 			if ($activeSpells[i] === spell) {
-				$activeSpells = arrayMoveImmutable($activeSpells, i, i + 1);
-				// orderSpells();
+				if ($activeSpells[i + 1]) {
+					$activeSpells = moveItem($activeSpells, i + 1, i);
+					console.log(i);
+					promise = Promise.resolve();
+					return;
+				}
 			}
 		}
+		promise.then(() => {
+			orderSpells();
+		});
 	}
 </script>
 
@@ -80,7 +123,8 @@
 		<div class="grid_wrapper panel">
 			<h2>{levels[level]}</h2>
 			<div class="grid" on:dragover|preventDefault>
-				{#each $activeSpells as spell, index}
+				{#each $activeSpells as spell, index (spell.name)}
+					{@const spellDescription = spell.description.toLowerCase()}
 					{#if spell.level == level}
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<div
@@ -89,7 +133,7 @@
 							on:click|self={() => {
 								openClickedSpell(spell);
 							}}
-							in:fly={{ y: 10, duration: 300, delay: 50 * index }}
+							in:fade={{ duration: 200 }}
 						>
 							<div class="spell_inner">
 								<button on:click={() => (openSpell = null)} class="close"
@@ -101,16 +145,70 @@
 										<span style="margin-left: .3rem">{spell.name}</span>
 									</h3>
 								</div>
-								<div class="block">
-									<Pill text={spell.casting_time} size="large" icon="ri-flashlight-line" />
-									<Pill text={spell.range} size="large" icon="ri-arrow-right-up-line" />
-									<Pill text={spell.duration} size="large" icon="ri-time-line" />
+								<div class="block pills">
+									<Pill
+										label="Casting time"
+										text={spell.casting_time}
+										size="large"
+										icon="ri-flashlight-line"
+									/>
+									<Pill
+										label="Range or target"
+										text={spell.range}
+										size="large"
+										icon="ri-arrow-right-up-line"
+									/>
+									<Pill label="Duration" text={spell.duration} size="large" icon="ri-time-line" />
 								</div>
-								<div class="block">
-									<Pill text="no" size="small" icon="ri-book-2-line" />
-									<Pill text="no" size="small" icon="ri-lifebuoy-line" />
-									<Pill text="no" size="small" icon="ri-sword-line" />
-									<Pill text="no" size="small" icon="ri-open-arm-line" />
+								<div class="block pills">
+									<Pill
+										label="School of magic"
+										text={spell.school}
+										size="small"
+										icon="ri-book-2-line"
+									/>
+
+									{#if spellDescription.includes('make a ranged spell attack')}
+										<Pill
+											label="Spell attack"
+											text="Ranged spell attack"
+											size="small"
+											icon="ri-sword-line"
+										/>
+									{:else if spellDescription.includes('make a melee spell attack')}
+										<Pill
+											label="Spell attack"
+											text="Melee spell attack"
+											size="small"
+											icon="ri-sword-line"
+										/>
+									{:else if spellDescription.includes('make a spell attack')}
+										<Pill
+											label="Spell attack"
+											text="Spell attack"
+											size="small"
+											icon="ri-sword-line"
+										/>
+									{:else if checkInput(spellDescription, savingArray)}
+										<Pill
+											label="Saving throw"
+											text={spellDescription.includes('strength sav')
+												? 'Str save'
+												: spellDescription.includes('dexterity sav')
+												? 'Dex save'
+												: spellDescription.includes('constitution sav')
+												? 'Str save'
+												: spellDescription.includes('intelligence sav')
+												? 'Int save'
+												: spellDescription.includes('wisdom sav')
+												? 'Wis save'
+												: spellDescription.includes('charisma sav')
+												? 'Cha save'
+												: ''}
+											size="small"
+											icon="ri-lifebuoy-line"
+										/>
+									{/if}
 								</div>
 								<div class="block description">
 									<p>{@html spell.description}</p>
@@ -121,13 +219,16 @@
 							</div>
 							<div class="controls">
 								<button class="up" on:click={() => moveUpSpell(spell)}
-									><i class="ri-arrow-up-s-line" /></button
+									><i class="ri-arrow-up-s-line" />
+									<div class="label">Move up</div></button
 								>
 								<button class="down" on:click={() => moveDownSpell(spell)}
-									><i class="ri-arrow-down-s-line" /></button
+									><i class="ri-arrow-down-s-line" />
+									<div class="label">Move down</div></button
 								>
 								<button class="remove" on:click={() => removeSpell(spell)}
-									><i class="ri-close-line" /></button
+									><i class="ri-close-line" />
+									<div class="label">Remove</div></button
 								>
 							</div>
 							<div class="close_veil" on:click={() => (openSpell = null)} />
@@ -137,7 +238,60 @@
 			</div>
 		</div>
 	{:else}
-		<p class="message">You have not added spells yet.</p>
+	
+		<div class="grid_wrapper panel">
+			<h2>Add some spells!</h2>
+			<div class="grid" on:dragover|preventDefault>
+				{#each placeholders as placeholder}
+				<div class="spell placeholder">
+					<div class="spell_inner">
+						<div class="block">
+							<h3>
+								<SchoolIcon school="blank" />
+								<span style="margin-left: .3rem"
+									>{'◼'.repeat(Math.floor(Math.random() * 12) + 6)}</span
+								>
+							</h3>
+						</div>
+						<div class="block pills">
+							<Pill
+								label="Casting time"
+								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
+								size="large"
+								icon="ri-checkbox-blank-circle-fill"
+							/>
+							<Pill
+								label="Range or target"
+								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
+								size="large"
+								icon="ri-checkbox-blank-circle-fill"
+							/>
+							<Pill
+								label="Duration"
+								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
+								size="large"
+								icon="ri-checkbox-blank-circle-fill"
+							/>
+						</div>
+						<div class="block pills">
+							<Pill
+								label="School of magic"
+								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
+								size="small"
+								icon="ri-checkbox-blank-circle-fill"
+							/>
+						</div>
+						<div class="block description">
+							<p style="word-break: break-all;">
+								{'◼'.repeat(Math.floor(Math.random() * 100) + 100)}
+							</p>
+						</div>
+					</div>
+				</div>
+				{/each}
+			</div>
+		</div>
+	
 	{/each}
 </div>
 
@@ -217,7 +371,7 @@
 			position: relative;
 			box-shadow: 0 3px 10px rgba(19, 19, 19, 0.4);
 			border-radius: 6px;
-			background-color: rgb(22, 9, 57);
+			background-color: var(--spellbg);
 			transition: 0.15s;
 			border: 2px solid transparent;
 			button.close {
@@ -247,6 +401,9 @@
 				position: relative;
 				pointer-events: none;
 				user-select: none;
+				&.pills {
+					pointer-events: auto;
+				}
 				&.description {
 					user-select: auto;
 					margin-top: 0.5rem;
@@ -329,13 +486,29 @@
 			button {
 				margin: 0;
 				padding: 0.5rem 0.8rem 0 0;
+				position: relative;
 				i {
 					color: var(--translucent);
 					transform: 0.1s;
 				}
+				.label {
+					display: none;
+					position: absolute;
+					background-color: var(--spellbg);
+					right: 36px;
+					top: 7.5px;
+					color: var(--translucent);
+					width: 100px;
+					text-align: right;
+					padding: 0.2rem 0.6rem;
+					pointer-events: none;
+				}
 				&:hover {
 					i {
 						color: var(--accent);
+					}
+					.label {
+						display: block;
 					}
 				}
 			}
@@ -361,6 +534,35 @@
 			.controls {
 				.up {
 					display: none;
+				}
+			}
+		}
+		&.placeholder {
+			opacity: .2;
+			pointer-events: none!important;
+			.spell_inner {
+				pointer-events: none!important;
+				* {
+					letter-spacing: -4px;
+					opacity: 0.2;
+					pointer-events: none!important;
+				}
+				h3 {
+					opacity: 1;
+					font-size: 2rem;
+					span {
+						opacity: 1;
+						letter-spacing: -2.9px;
+					}
+				}
+				p {
+					line-height: 1.3;
+					font-size: 1.8rem;
+				}
+				.block.description {
+					&:after {
+						display: none;
+					}
 				}
 			}
 		}

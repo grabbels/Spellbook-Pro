@@ -2,7 +2,7 @@
 	import Button from './button.svelte';
 	import Section from './section.svelte';
 	import { activeSpells } from './stores-persist';
-	import { spellListEmpty } from './stores';
+	import { spellListEmpty, notification } from './stores';
 	import { topMenuOpenClose } from './globalfunctions.svelte';
 	let fileinput;
 
@@ -10,6 +10,9 @@
 		let text = 'Are you sure you want to remove all your saved spells?';
 		if (confirm(text) == true) {
 			$activeSpells.length = 0;
+			topMenuOpenClose();
+			$notification = 'Spellbook has been cleared#alert'
+			// $notification = 'Spellbook has been cleared';
 		}
 	}
 	function download() {
@@ -86,6 +89,12 @@
 				icon="ri-delete-bin-line"
 				text="Clear all"
 			/>
+			<!-- <Button
+				href=""
+				type="fill"
+				icon="ri-pantone-line"
+				text="Theme"
+			/> -->
 		</div>
 		<div>
 			<Button on:click={topMenuOpenClose} type="outline alt" icon="ri-close-line" text="close" />

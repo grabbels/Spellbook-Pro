@@ -26,6 +26,9 @@
 		case 'transmutation':
 			iconClass = 'ri-contrast-line';
 			break;
+		case 'blank':
+			iconClass = 'ri-checkbox-blank-circle-fill'
+			break;
 		default:
 			break;
 	}

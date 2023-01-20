@@ -2,7 +2,8 @@
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
-	import { loggedIn, pagetitle } from '../components/stores';
+	import { pagetitle } from '../components/stores';
+	import { loggedIn, userNickname } from '../components/stores-persist';
 	import { topMenuOpenClose } from '../components/globalfunctions.svelte';
 	import { sideMenuOpenClose } from '../components/globalfunctions.svelte';
 </script>
@@ -37,7 +38,7 @@
 			{#if $pagetitle === 'Premade spellbooks' || $pagetitle === 'My account'}
 				<Button text="Spellbook" href="/" type="fill accent" icon="ri-arrow-left-s-line" />
 			{/if}
-			{#if $pagetitle === 'Home' || $pagetitle === 'My account' || $pagetitle === 'Home'}
+			{#if $pagetitle === 'Home' || $pagetitle === 'My account'}
 				<Button href="/browse" type="fill blue" icon="ri-dashboard-fill" text="Premade" />
 			{/if}
 
@@ -48,11 +49,12 @@
 
 		<div class="header_right">
 			<input type="text" placeholder="Quick spell lookup..." />
-			{#if $loggedIn}
+			{#if $loggedIn && $pagetitle !== 'My account'}
 				<Button type="fill" icon="ri-contacts-book-2-line" text="Account" href="/account" />
-			{:else}
-				<Button type="fill blue" icon="ri-user-line" text="Login" href="/account/login" />
+			{:else if $pagetitle == 'My account'}
+				<Button href="/logout" type="fill" icon="ri-logout-circle-r-line" text="Log out" />
 			{/if}
+
 			<!-- <Button type="fill dark-mode" icon="ri-moon-line" text="dark mode" /> -->
 		</div>
 	</header>

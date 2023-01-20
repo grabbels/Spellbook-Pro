@@ -1,15 +1,19 @@
 <script>
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { fly } from 'svelte/transition';
 	import Section from '../../../components/section.svelte';
 	import Button from '../../../components/button.svelte';
-	import { pagetitle } from '../../../components/stores';
+	import { pagetitle, notification } from '../../../components/stores';
 	import { onMount } from 'svelte';
+	import { supabaseClient } from '$lib/db';
 	let showRegister;
 	let showLogin;
 	let registerForm;
 	let newUrl;
+	let registerNickname;
+	let registerEmail;
+	let registerPassword;
+	let registerPasswordConfirm;
 	$pagetitle = 'Login';
 	onMount(() => {
 		if ($page.url.searchParams.get('register')) {
@@ -21,8 +25,7 @@
 			showRegister = '';
 		}
 	});
-
-	function register() {
+	function handleShowRegister() {
 		const newUrl = new URL($page.url);
 		newUrl?.searchParams?.set('register', 'true');
 		goto(newUrl);
@@ -30,13 +33,35 @@
 		showLogin = '';
 		// registerForm.removeAttribute('novalidate')
 	}
-	function login() {
+	function handleShowLogin() {
 		const newUrl = new URL($page.url);
 		newUrl?.searchParams?.delete('register');
 		goto(newUrl);
 		showRegister = '';
 		showLogin = 'show';
 		// registerForm.setAttribute('novalidate', 'novalidate')
+	}
+	async function handleRegister() {
+		console.log('test');
+		if (registerPassword === registerPasswordConfirm) {
+			const { data, error } = await supabaseClient.auth
+				.signUp({
+					email: registerEmail,
+					password: registerPassword,
+					options: {
+						data: {
+							nickname: registerNickname
+						}
+					}
+				}).then(() => {
+					$notification =
+						"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
+					registerForm.reset()
+					handleShowLogin()
+				}).catch(() => console.log(error));
+		} else {
+			$notification = 'The passwords do not match#error';
+		}
 	}
 </script>
 
@@ -46,18 +71,26 @@
 			<div class="panel_inner">
 				<div class="register_form">
 					<h2>Register</h2>
-					<form action="register" bind:this={registerForm}>
-						<input type="text" placeholder="Nickname" required />
-						<input type="email" placeholder="E-Mail" required />
-						<input type="password" placeholder="Password" required />
-						<input type="password" placeholder="Password (again)" required />
+					<form bind:this={registerForm} on:submit={((e) => {e.preventDefault, handleRegister})}>
+						<input bind:value={registerNickname} type="text" placeholder="Nickname" required />
+						<input bind:value={registerEmail} type="email" placeholder="E-Mail" required />
+						<input bind:value={registerPassword} type="password" placeholder="Password" required />
+						<input
+							bind:value={registerPasswordConfirm}
+							type="password"
+							placeholder="Password (again)"
+							required
+						/>
 						<input type="checkbox" name="termsconditions" id="termsconditions" required />
 						<label for="termsconditions"
 							>I agree to the <a href="/termsconditions" target="_blank">terms and conditions</a
 							>.</label
 						><br />
 						<input class="button fill accent" type="submit" value="Register" />
-						<p>Already have an account? <button on:click={login}>Click here</button> to log in.</p>
+						<p>
+							Already have an account? <button on:click={handleShowLogin}>Click here</button> to log
+							in.
+						</p>
 					</form>
 				</div>
 			</div>
@@ -79,7 +112,7 @@
 						<li>Save multiple spellsheets</li>
 						<li>Manage your spellsheets in your account</li>
 					</ul>
-					<Button on:click={register} href="" type="fill" icon="" text="Register" />
+					<Button on:click={handleShowRegister} href="" type="fill" icon="" text="Register" />
 				</div>
 			</div>
 		</div>

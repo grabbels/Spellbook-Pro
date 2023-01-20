@@ -1,5 +1,5 @@
 <script>
-    import { pagetitle, loggedIn } from '../../components/stores.js';
+    import { pagetitle } from '../../components/stores.js';
 	$pagetitle = "Premade spellbooks";
 </script>
 

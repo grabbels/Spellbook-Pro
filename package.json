@@ -39,6 +39,8 @@
 		"@fontsource/kanit": "^4.5.10",
 		"@fontsource/lato": "^4.5.10",
 		"@fontsource/roboto": "^4.5.8",
+		"@supabase/auth-helpers-sveltekit": "^0.8.7",
+		"@sveltejs/adapter-cloudflare": "^1.0.4",
 		"@sveltejs/adapter-static": "^1.0.5",
 		"array-move": "^4.0.0",
 		"remixicon": "^2.5.0",
