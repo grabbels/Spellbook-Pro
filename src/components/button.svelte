@@ -64,6 +64,7 @@
 		cursor: pointer;
 		padding: 0.35rem 1rem;
 		margin-right: 0.2rem;
+		margin-bottom: .4rem;
 		font-size: 1rem;
 		border-radius: 6px;
 		font-weight: 500;

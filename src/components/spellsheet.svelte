@@ -61,6 +61,8 @@
 		return result;
 	}
 
+	
+
 	function orderSpells() {
 		if (spellsheet) {
 			spellsOrderedInDom = spellsheet.querySelectorAll('.spell');
@@ -71,6 +73,7 @@
 				.slice()
 				.sort((a, b) => orderedSpellsNames.indexOf(a.name) - orderedSpellsNames.indexOf(b.name));
 			$activeSpells = sortedSpells;
+			// console.log($activeSpells)
 		}
 	}
 
@@ -129,13 +132,13 @@
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<div
 							data-name={spell.name}
-							class="spell {openSpell === null ? '' : openSpell === spell ? 'open' : 'not-open'}"
+							class="card item {openSpell === null ? '' : openSpell === spell ? 'open' : 'not-open'}"
 							on:click|self={() => {
 								openClickedSpell(spell);
 							}}
 							in:fade={{ duration: 200 }}
 						>
-							<div class="spell_inner">
+							<div class="card_inner">
 								<button on:click={() => (openSpell = null)} class="close"
 									><i class="ri-close-line" /></button
 								>
@@ -243,8 +246,8 @@
 			<h2>Add some spells!</h2>
 			<div class="grid" on:dragover|preventDefault>
 				{#each placeholders as placeholder}
-				<div class="spell placeholder">
-					<div class="spell_inner">
+				<div class="card placeholder">
+					<div class="card_inner">
 						<div class="block">
 							<h3>
 								<SchoolIcon school="blank" />
@@ -327,23 +330,8 @@
 			}
 		}
 	}
-	.spell {
-		position: relative;
-		z-index: 1;
-		cursor: pointer;
-		transition: 0.1s;
-		// background: linear-gradient(0deg, rgba(20,8,50,1) 0%, rgba(33,14,79,1) 100%);
-		.close_veil {
-			z-index: -1;
-			width: 100vw;
-			height: 100vw;
-			position: fixed;
-			left: 0;
-			top: 0;
-			background-color: transparent;
-			pointer-events: none;
-			opacity: 0;
-		}
+	.card {
+
 		i.fold {
 			font-size: 2.5rem;
 			color: var(--moretranslucent);
@@ -358,81 +346,7 @@
 			bottom: -0.2rem;
 			cursor: pointer;
 		}
-
-		.spell_inner {
-			pointer-events: none;
-			display: block;
-			border: 0;
-			padding: 1.3rem 1.9rem;
-			display: flex;
-			flex-wrap: nowrap;
-			flex-direction: column;
-			height: 100%;
-			position: relative;
-			box-shadow: 0 3px 10px rgba(19, 19, 19, 0.4);
-			border-radius: 6px;
-			background-color: var(--spellbg);
-			transition: 0.15s;
-			border: 2px solid transparent;
-			button.close {
-				all: unset;
-				cursor: pointer;
-				position: absolute;
-				top: 18px;
-				right: 26px;
-				display: none;
-				i {
-					font-size: 2rem;
-					color: var(--translucent);
-					transition: 0.1s;
-				}
-				&:hover {
-					i {
-						color: var(--accent);
-					}
-				}
-			}
-			h3 {
-				margin-bottom: 0.1rem;
-			}
-			.block {
-				display: flex;
-				flex-wrap: wrap;
-				position: relative;
-				pointer-events: none;
-				user-select: none;
-				&.pills {
-					pointer-events: auto;
-				}
-				&.description {
-					user-select: auto;
-					margin-top: 0.5rem;
-					overflow-y: hidden;
-					flex-grow: 1;
-					opacity: 0.7;
-					// scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-					// scrollbar-width:thin
-					p {
-						font-size: 0.95rem;
-					}
-					&:after {
-						content: '';
-						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						height: 100px;
-						background: linear-gradient(0deg, rgba(22, 9, 57, 1) 10%, rgba(22, 9, 57, 0) 100%);
-						opacity: 1;
-						transition: 0.2s;
-					}
-				}
-			}
-		}
 		&:hover {
-			.spell_inner {
-				border-color: var(--accent);
-			}
 			i.fold {
 				color: var(--accent);
 			}
@@ -440,12 +354,11 @@
 		&:global(.open) {
 			z-index: 2;
 
-			.spell_inner {
+			.card_inner {
 				pointer-events: all;
 				position: absolute;
 				top: 0;
 				left: 0;
-				box-shadow: 0 11px 40px rgba(19, 19, 19, 0.5);
 				display: table;
 				z-index: 1;
 				padding-bottom: 3rem;
@@ -459,19 +372,13 @@
 					}
 				}
 			}
-			.close_veil {
-				// opacity: .2;
-				pointer-events: all;
-			}
 			button.fold {
 				transform: translateX(-50%) rotate(180deg);
 				i {
 					color: var(--moretranslucent) !important;
 				}
 			}
-			button.close {
-				display: block;
-			}
+
 		}
 		&.not-open {
 			opacity: 0.7;
@@ -540,7 +447,7 @@
 		&.placeholder {
 			opacity: .2;
 			pointer-events: none!important;
-			.spell_inner {
+			.card_inner {
 				pointer-events: none!important;
 				* {
 					letter-spacing: -4px;

@@ -3,6 +3,7 @@
 	import { fly, fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/db';
+	import {page} from '$app/stores'
 	import { invalidate } from '$app/navigation';
 	import Header from '../components/header.svelte';
 	import AddSpells from '../components/addspells.svelte';
@@ -50,6 +51,7 @@
 		}
 	}
 	checkIfLoggedIn();
+	
 </script>
 
 <Body class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : ''} />
@@ -65,7 +67,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 
-<div class="main_wrapper" class:sidemenuopen={$sidemenuopen} class:topmenuopen={$topmenuopen}>
+<div class="main_wrapper {$page.url.pathname.split('/').pop()}" class:sidemenuopen={$sidemenuopen} class:topmenuopen={$topmenuopen}>
 	<main>
 		{#key $pagetitle}
 			{#if $pagetitle != 'Login'}
@@ -121,8 +123,27 @@
 		width: 100%;
 		position: relative;
 		transition: transform 0.3s;
+		background: background 2s;
 		background: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
+		z-index: 1;
 		// overflow-y: auto;
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(238deg, rgb(62, 35, 112) 0%, rgb(34, 18, 59) 100%);
+			z-index: -1;
+			transition: .5s;
+			opacity: 0;
+		}
+		&.browse {
+			&::after {
+				opacity: 1;
+			}
+		}
 		.closemenu {
 			position: fixed;
 			left: 0;

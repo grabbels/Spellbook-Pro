@@ -52,7 +52,7 @@
 			{#if $loggedIn && $pagetitle !== 'My account'}
 				<Button type="fill" icon="ri-contacts-book-2-line" text="Account" href="/account" />
 			{:else if $pagetitle == 'My account'}
-				<Button href="/logout" type="fill" icon="ri-logout-circle-r-line" text="Log out" />
+				<Button on:click type="fill" icon="ri-logout-circle-r-line" text="Log out" />
 			{/if}
 
 			<!-- <Button type="fill dark-mode" icon="ri-moon-line" text="dark mode" /> -->
