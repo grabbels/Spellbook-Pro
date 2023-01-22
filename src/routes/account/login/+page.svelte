@@ -14,6 +14,8 @@
 	let registerEmail;
 	let registerPassword;
 	let registerPasswordConfirm;
+	let loginEmail;
+	let loginPassword;
 	$pagetitle = 'Login';
 	onMount(() => {
 		if ($page.url.searchParams.get('register')) {
@@ -53,14 +55,29 @@
 							nickname: registerNickname
 						}
 					}
-				}).then(() => {
+				})
+				.then(() => {
 					$notification =
 						"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
-					registerForm.reset()
-					handleShowLogin()
-				}).catch(() => console.log(error));
+					registerForm.reset();
+					handleShowLogin();
+				})
+				.catch(() => console.log(error));
 		} else {
 			$notification = 'The passwords do not match#error';
+		}
+	}
+
+	async function handleLogin() {
+		console.log('test')
+		const { data, error } = await supabaseClient.auth.signInWithPassword({
+			email: loginEmail,
+			password: loginPassword
+		});
+		if (data) {
+			console.log(data)
+		} else if (error) {
+			console.log(error)
 		}
 	}
 </script>
@@ -71,7 +88,12 @@
 			<div class="panel_inner">
 				<div class="register_form">
 					<h2>Register</h2>
-					<form bind:this={registerForm} on:submit={((e) => {e.preventDefault, handleRegister})}>
+					<form
+						bind:this={registerForm}
+						on:submit={(e) => {
+							e.preventDefault, handleRegister;
+						}}
+					>
 						<input bind:value={registerNickname} type="text" placeholder="Nickname" required />
 						<input bind:value={registerEmail} type="email" placeholder="E-Mail" required />
 						<input bind:value={registerPassword} type="password" placeholder="Password" required />
@@ -100,10 +122,13 @@
 				<Button text="back" href="/" type="outline" icon="ri-arrow-left-s-line" />
 				<div class="login_form">
 					<h2>Login</h2>
-					<form action="login">
-						<input type="email" placeholder="E-Mail" required />
-						<input type="password" placeholder="Password" required />
-						<input class="button fill accent" type="submit" value="Login" />
+					<form action="login"
+						on:submit={(e) => {
+							e.preventDefault, handleLogin;
+						}}>
+						<input bind:value={loginEmail} type="email" placeholder="E-Mail" required />
+						<input bind:value={loginPassword} type="password" placeholder="Password" required />
+						<input class="button fill accent" type="submit" value="Login"/>
 					</form>
 					<p>No account yet? Create one to:</p>
 					<ul>
