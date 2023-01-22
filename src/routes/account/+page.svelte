@@ -1,15 +1,18 @@
 <script>
 	import { pagetitle, userId } from '../../components/stores';
 	import { fade } from 'svelte/transition';
-	import { userNickname } from '../../components/stores-persist';
+	import { userNickname, loggedIn } from '../../components/stores-persist';
 	import Section from '../../components/section.svelte';
 	import { supabaseClient } from '$lib/db';
 	import Pill from '../../components/pill.svelte';
 	import Button from '../../components/button.svelte';
+	import { redirect } from '@sveltejs/kit';
 	let savedSpellSheets = [];
 	let openCard = null;
 	let spellsheet;
 	$pagetitle = 'My account';
+	if ($loggedIn === false) {
+	}
 	if (!$userId) {
 		getUserId();
 	} else {
@@ -45,9 +48,7 @@
 			console.log(openCard);
 		}
 	}
-	function editDetails() {
-		
-	}
+	function editDetails() {}
 </script>
 
 <Section name="my-account">
@@ -59,8 +60,7 @@
 		<div class="panel spellsheets">
 			<h2>Saved spellbooks</h2>
 			<div class="grid">
-			{#each savedSpellSheets as spellsheet}
-				
+				{#each savedSpellSheets as spellsheet}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="card spellbook {openCard === spellsheet ? 'open' : ''}"
@@ -104,8 +104,7 @@
 						</div>
 						<button class="close_veil" on:click={() => (openCard = null)} />
 					</div>
-				
-			{/each}
+				{/each}
 			</div>
 		</div>
 		<div class="panel details">

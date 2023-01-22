@@ -1,7 +1,7 @@
 <script context="module">
 	import { supabaseClient } from '$lib/db';
 	import { topmenuopen, sidemenuopen, spellListEmpty } from './stores';
-	import { activeSpells } from './stores-persist';
+	import { activeSpells, loggedIn } from './stores-persist';
 	import { get } from 'svelte/store';
 
 	export const moveItem = (array, to, from) => {
@@ -45,6 +45,17 @@
 		}
 	}
 
+	export async function handleLogOut() {
+		console.log('test');
+		const { error } = await supabaseClient.auth.signOut();
+		if (error) {
+			console.log(error);
+		} else {
+			loggedIn.set(false);
+			console.log(loggedIn);
+		}
+	}
+
 	// async function loadPremades() {
 	// 	const { data, error } = await supabaseClient.from('spellbooks').select();
 	// 	if (data) {
@@ -52,9 +63,12 @@
 	// 	}
 	// }
 	export async function loadSpellsheetsByUserId(id) {
-		const { data, error } = await supabaseClient.from('spellbooks').select().eq('list_creatorid', id);
+		const { data, error } = await supabaseClient
+			.from('spellbooks')
+			.select()
+			.eq('list_creatorid', id);
 		if (data) {
-			console.log(data)
+			console.log(data);
 		}
 	}
 </script>

@@ -91,7 +91,7 @@
 					<form
 						bind:this={registerForm}
 						on:submit={(e) => {
-							e.preventDefault, handleRegister;
+							e.preventDefault, handleRegister();
 						}}
 					>
 						<input bind:value={registerNickname} type="text" placeholder="Nickname" required />
@@ -124,7 +124,7 @@
 					<h2>Login</h2>
 					<form action="login"
 						on:submit={(e) => {
-							e.preventDefault, handleLogin;
+							e.preventDefault, handleLogin();
 						}}>
 						<input bind:value={loginEmail} type="email" placeholder="E-Mail" required />
 						<input bind:value={loginPassword} type="password" placeholder="Password" required />

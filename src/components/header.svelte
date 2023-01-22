@@ -4,8 +4,11 @@
 	import Button from '../components/button.svelte';
 	import { pagetitle } from '../components/stores';
 	import { loggedIn, userNickname } from '../components/stores-persist';
-	import { topMenuOpenClose } from '../components/globalfunctions.svelte';
-	import { sideMenuOpenClose } from '../components/globalfunctions.svelte';
+	import {
+		topMenuOpenClose,
+		sideMenuOpenClose,
+		handleLogOut
+	} from '../components/globalfunctions.svelte';
 </script>
 
 <Section name="header">
@@ -43,7 +46,13 @@
 			{/if}
 
 			{#if $pagetitle === 'Home'}
-				<Button href="" on:click={topMenuOpenClose} type="fill" icon="ri-menu-2-line" text="menu" />
+				<Button
+					href=""
+					on:click={() => topMenuOpenClose}
+					type="fill"
+					icon="ri-menu-2-line"
+					text="menu"
+				/>
 			{/if}
 		</div>
 
@@ -52,7 +61,7 @@
 			{#if $loggedIn && $pagetitle !== 'My account'}
 				<Button type="fill" icon="ri-contacts-book-2-line" text="Account" href="/account" />
 			{:else if $pagetitle == 'My account'}
-				<Button on:click type="fill" icon="ri-logout-circle-r-line" text="Log out" />
+				<Button on:click={handleLogOut} type="fill" icon="ri-logout-circle-r-line" text="Log out" />
 			{/if}
 
 			<!-- <Button type="fill dark-mode" icon="ri-moon-line" text="dark mode" /> -->
