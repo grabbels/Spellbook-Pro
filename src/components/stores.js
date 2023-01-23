@@ -6,3 +6,4 @@ export const sidemenuopen = writable(false);
 export const topmenuopen = writable(false);
 export const spellListEmpty = writable(false);
 export const userId = writable('')
+export const session = writable('')

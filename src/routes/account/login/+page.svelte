@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Section from '../../../components/section.svelte';
 	import Button from '../../../components/button.svelte';
-	import { pagetitle, notification } from '../../../components/stores';
+	import { pagetitle, notification, session } from '../../../components/stores';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/db';
 	let showRegister;
@@ -16,6 +16,8 @@
 	let registerPasswordConfirm;
 	let loginEmail;
 	let loginPassword;
+	let loadingLogin;
+	let loadingRegister;
 	$pagetitle = 'Login';
 	onMount(() => {
 		if ($page.url.searchParams.get('register')) {
@@ -45,9 +47,9 @@
 	}
 	async function handleRegister() {
 		console.log('test');
-		if (registerPassword === registerPasswordConfirm) {
-			const { data, error } = await supabaseClient.auth
-				.signUp({
+		if (registerPassword.length > 5) {
+			if (registerPassword === registerPasswordConfirm) {
+				const { data, error } = await supabaseClient.auth.signUp({
 					email: registerEmail,
 					password: registerPassword,
 					options: {
@@ -55,29 +57,42 @@
 							nickname: registerNickname
 						}
 					}
-				})
-				.then(() => {
-					$notification =
-						"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
-					registerForm.reset();
-					handleShowLogin();
-				})
-				.catch(() => console.log(error));
+				});
+				if (error) {
+					console.log(error);
+				} else if (data) {
+					console.log(data);
+					if (data.session === null) {
+						$notification =
+							"An account using your email address already exists. <a href='/account/passwordreset'>Forgot password?</a>#error";
+					} else {
+						$notification =
+							"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
+						registerForm.reset();
+						handleShowLogin();
+					}
+				}
+			} else {
+				$notification = 'The passwords do not match#error';
+			}
 		} else {
-			$notification = 'The passwords do not match#error';
+			$notification = 'Password should be at least 6 characters long#error';
 		}
 	}
 
 	async function handleLogin() {
-		console.log('test')
+		loadingLogin = true;
 		const { data, error } = await supabaseClient.auth.signInWithPassword({
 			email: loginEmail,
 			password: loginPassword
 		});
 		if (data) {
-			console.log(data)
+			console.log(data);
+			$session = data.session;
+			goto('/account');
 		} else if (error) {
-			console.log(error)
+			console.log(error);
+			loadingLogin = false;
 		}
 	}
 </script>
@@ -96,7 +111,13 @@
 					>
 						<input bind:value={registerNickname} type="text" placeholder="Nickname" required />
 						<input bind:value={registerEmail} type="email" placeholder="E-Mail" required />
-						<input bind:value={registerPassword} type="password" placeholder="Password" required />
+						<input
+							bind:value={registerPassword}
+							type="password"
+							autocomplete="new-password"
+							placeholder="Password"
+							required
+						/>
 						<input
 							bind:value={registerPasswordConfirm}
 							type="password"
@@ -108,7 +129,10 @@
 							>I agree to the <a href="/termsconditions" target="_blank">terms and conditions</a
 							>.</label
 						><br />
-						<input class="button fill accent" type="submit" value="Register" />
+						<button class="{loadingRegister ? 'loading' : ''} button fill accent" type="submit"
+							>Register
+							<div><i class="ri-loader-5-line" /></div></button
+						>
 						<p>
 							Already have an account? <button on:click={handleShowLogin}>Click here</button> to log
 							in.
@@ -122,13 +146,18 @@
 				<Button text="back" href="/" type="outline" icon="ri-arrow-left-s-line" />
 				<div class="login_form">
 					<h2>Login</h2>
-					<form action="login"
+					<form
+						action="login"
 						on:submit={(e) => {
 							e.preventDefault, handleLogin();
-						}}>
+						}}
+					>
 						<input bind:value={loginEmail} type="email" placeholder="E-Mail" required />
 						<input bind:value={loginPassword} type="password" placeholder="Password" required />
-						<input class="button fill accent" type="submit" value="Login"/>
+						<button class="{loadingLogin ? 'loading' : ''} button fill accent" type="submit"
+							>Login
+							<div><i class="ri-loader-5-line" /></div></button
+						>
 					</form>
 					<p>No account yet? Create one to:</p>
 					<ul>
@@ -210,10 +239,6 @@
 		}
 	}
 	form {
-		input.button {
-			max-width: 100px;
-			height: 46.4px;
-		}
 		input#termsconditions {
 			display: inline-block;
 			margin-right: 0.3rem;
@@ -222,6 +247,38 @@
 		label {
 			color: var(--white);
 			display: inline-block;
+		}
+		button[type='submit'] {
+			div {
+				position: absolute;
+				display: none;
+				animation-name: rotate;
+				animation-iteration-count: infinite;
+				animation-timing-function: linear;
+				animation-duration: 0.6s;
+				top: -3px;
+				width: 100%;
+				text-align: center;
+				left: 0;
+				i {
+					font-size: 2rem;
+					color: var(--bg);
+				}
+				@keyframes rotate {
+					0% {
+						transform: rotate(0deg);
+					}
+					100% {
+						transform: rotate(360deg);
+					}
+				}
+			}
+			&.loading {
+				color: var(--accent);
+				div {
+					display: block;
+				}
+			}
 		}
 	}
 	p {

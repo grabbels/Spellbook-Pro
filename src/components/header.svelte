@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
-	import { pagetitle } from '../components/stores';
+	import { pagetitle, session } from '../components/stores';
 	import { loggedIn, userNickname } from '../components/stores-persist';
 	import {
 		topMenuOpenClose,
@@ -58,10 +58,12 @@
 
 		<div class="header_right">
 			<input type="text" placeholder="Quick spell lookup..." />
-			{#if $loggedIn && $pagetitle !== 'My account'}
+			{#if $session && $pagetitle !== 'My account'}
 				<Button type="fill" icon="ri-contacts-book-2-line" text="Account" href="/account" />
-			{:else if $pagetitle == 'My account'}
+			{:else if $pagetitle == 'My account' && $session}
 				<Button on:click={handleLogOut} type="fill" icon="ri-logout-circle-r-line" text="Log out" />
+			{:else if !$session}
+				<Button type="fill" href="/account/login" icon="ri-login-circle-line" text="Log in" />
 			{/if}
 
 			<!-- <Button type="fill dark-mode" icon="ri-moon-line" text="dark mode" /> -->

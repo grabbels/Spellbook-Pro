@@ -1,8 +1,9 @@
 <script>
-	import { pagetitle, userId } from '../../components/stores';
+	import { pagetitle, session } from '../../components/stores';
 	import { fade } from 'svelte/transition';
 	import { userNickname, loggedIn } from '../../components/stores-persist';
 	import Section from '../../components/section.svelte';
+	import { retrieveSession } from '../../components/globalfunctions.svelte';
 	import { supabaseClient } from '$lib/db';
 	import Pill from '../../components/pill.svelte';
 	import Button from '../../components/button.svelte';
@@ -10,30 +11,24 @@
 	let savedSpellSheets = [];
 	let openCard = null;
 	let spellsheet;
-	$pagetitle = 'My account';
-	if ($loggedIn === false) {
-	}
-	if (!$userId) {
-		getUserId();
+	let userId;
+	if ($session) {
+		userId = $session.user.id;
+		loadSpellsheetsByUserId(userId)
 	} else {
-		loadSpellsheetsByUserId();
+		let promiseSession = retrieveSession();
+		promiseSession.then((value) => {
+			if (value) {
+				let userId = value.user.id;
+				console.log(userId);
+				loadSpellsheetsByUserId(userId);
+			}
+		});
 	}
-	console.log($userId);
-	async function getUserId() {
-		const {
-			data: { user }
-		} = await supabaseClient.auth.getUser();
-		if (user) {
-			userId.set(user.id);
-			loadSpellsheetsByUserId();
-			// console.log($userId)
-		}
-	}
-	async function loadSpellsheetsByUserId() {
-		const { data, error } = await supabaseClient
-			.from('spellbooks')
-			.select()
-			.eq('creatorid', $userId);
+
+	$pagetitle = 'My account';
+	async function loadSpellsheetsByUserId(id) {
+		const { data, error } = await supabaseClient.from('spellbooks').select().eq('creatorid', id);
 		if (data) {
 			// console.log(data)
 			savedSpellSheets = data;

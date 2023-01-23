@@ -8,7 +8,14 @@
 	import Header from '../components/header.svelte';
 	import AddSpells from '../components/addspells.svelte';
 	import TopMenu from '../components/topmenu.svelte';
-	import { sidemenuopen, topmenuopen, notification, pagetitle } from '../components/stores';
+	import {
+		sidemenuopen,
+		topmenuopen,
+		notification,
+		pagetitle,
+		session
+	} from '../components/stores';
+	import { retrieveSession } from '../components/globalfunctions.svelte';
 	import { loggedIn, userNickname } from '../components/stores-persist';
 	import bg from '../img/menu-bg.png';
 	import bgalt from '../img/menu-bg-alt.png';
@@ -21,7 +28,7 @@
 		}
 	};
 	$: if ($notification) {
-		$notification.split('#')[1].includes('info') ? (timeOut = 10000) : 3000;
+		$notification.split('#')[1].includes('info') ? (timeOut = 10000) : 10000;
 		setTimeout(() => {
 			$notification = '';
 		}, timeOut);
@@ -56,7 +63,15 @@
 
 		// }
 	}
-	checkIfLoggedIn();
+	if (!$session) {
+		let promiseSession = retrieveSession();
+		promiseSession.then((value) => {
+			$session = value;
+			// console.log($session);
+		});
+	} else {
+		console.log($session);
+	}
 </script>
 
 <Body class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : ''} />
@@ -110,7 +125,7 @@
 				<i class="ri-error-warning-fill" /><i class="ri-alert-fill" /><i
 					class="ri-information-line"
 				/>
-				{$notification.split('#')[0]}
+				{@html $notification.split('#')[0]}
 			</p>
 		</div>
 	</div>
@@ -190,8 +205,16 @@
 			background-color: var(--white);
 			border-radius: 50vh;
 			filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
+
 			p {
 				color: var(--black);
+				:global(a) {
+					color: var(--bg);
+					transition: 0.1s;
+					&:hover {
+						color: var(--accent);
+					}
+				}
 				i {
 					display: none;
 					font-size: 1.5rem;
@@ -219,7 +242,7 @@
 				p {
 					i.ri-information-line {
 						display: inline;
-						color: var(--yellow);
+						color: var(--lightblue);
 					}
 				}
 			}

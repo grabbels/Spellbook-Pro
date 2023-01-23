@@ -1,8 +1,9 @@
 <script context="module">
 	import { supabaseClient } from '$lib/db';
-	import { topmenuopen, sidemenuopen, spellListEmpty } from './stores';
+	import { topmenuopen, sidemenuopen, spellListEmpty, session, notification } from './stores';
 	import { activeSpells, loggedIn } from './stores-persist';
 	import { get } from 'svelte/store';
+	import { goto } from '$app/navigation';
 
 	export const moveItem = (array, to, from) => {
 		const item = array[from];
@@ -20,6 +21,7 @@
 	});
 
 	export const topMenuOpenClose = () => {
+		console.log('test')
 		if (get(topmenuopen) === false) {
 			topmenuopen.set(true);
 		} else {
@@ -46,14 +48,19 @@
 	}
 
 	export async function handleLogOut() {
-		console.log('test');
 		const { error } = await supabaseClient.auth.signOut();
 		if (error) {
 			console.log(error);
 		} else {
-			loggedIn.set(false);
-			console.log(loggedIn);
+			session.set(false)
+			goto('/')
+			notification.set("You've been logged out.#info")
 		}
+	}
+
+	export async function retrieveSession() {
+		const { data: { session } } = await supabaseClient.auth.getSession();
+			return session
 	}
 
 	// async function loadPremades() {
