@@ -278,10 +278,10 @@
 		grid-gap: 1rem;
 		align-items: flex-start;
 		transition: 0.2s;
-		&.bookmarks {
-			grid-template-columns: 60px 1fr;
-			grid-gap: 1rem;
-		}
+		// &.bookmarks {
+		// 	grid-template-columns: 60px 1fr;
+		// 	grid-gap: 1rem;
+		// }
 	}
 	.grid_wrapper {
 		&:last-child {

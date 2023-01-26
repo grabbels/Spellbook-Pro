@@ -5,9 +5,12 @@ const config = {
 	preprocess: sveltePreprocess(),
 	kit: {
 		adapter: adapter()
+		// vite: {
+		// 	define: {
+		// 		'process.env': process.env
+		// 	}
+		// }
 	}
 };
-
-
 
 export default config;
