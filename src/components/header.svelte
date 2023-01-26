@@ -18,7 +18,7 @@
 				{#key $pagetitle}
 					<h1 in:fade={{ duration: 200 }}>
 						Inky's Spellbook <span style="margin-left: .2rem;font-size: 1.2rem; opacity: .3;"
-							>D&D 5E</span
+							>Beta / D&D 5E</span
 						>
 					</h1>
 				{/key}
