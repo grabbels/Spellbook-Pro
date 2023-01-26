@@ -46,30 +46,39 @@
 		// registerForm.setAttribute('novalidate', 'novalidate')
 	}
 	async function handleRegister() {
+		$notification = '';
 		console.log('test');
 		if (registerPassword.length > 5) {
 			if (registerPassword === registerPasswordConfirm) {
-				const { data, error } = await supabaseClient.auth.signUp({
-					email: registerEmail,
-					password: registerPassword,
-					options: {
-						data: {
-							nickname: registerNickname
-						}
-					}
-				});
-				if (error) {
-					console.log(error);
+				const { data, error } = await supabaseClient
+					.from('nicknames')
+					.insert([{ user_nickname: registerNickname }]);
+				if (error.code == 23505) {
+					// console.log(error.code)
+					$notification = 'The nickname is already in use, try another one!#error';
 				} else if (data) {
-					console.log(data);
-					if (data.session === null) {
-						$notification =
-							"An account using your email address already exists. <a href='/account/passwordreset'>Forgot password?</a>#error";
-					} else {
-						$notification =
-							"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
-						registerForm.reset();
-						handleShowLogin();
+					const { data, error } = await supabaseClient.auth.signUp({
+						email: registerEmail,
+						password: registerPassword,
+						options: {
+							data: {
+								nickname: registerNickname
+							}
+						}
+					});
+					if (error) {
+						console.log(error)
+					} else if (data) {
+						console.log(data);
+						if (data.session === null) {
+							$notification =
+								"An account using your email address already exists. <a href='/account/passwordreset'>Forgot password?</a>#error";
+						} else {
+							$notification =
+								"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
+							registerForm.reset();
+							handleShowLogin();
+						}
 					}
 				}
 			} else {

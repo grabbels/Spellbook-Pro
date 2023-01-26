@@ -4,9 +4,13 @@
 	import { fade } from 'svelte/transition';
 	import SchoolIcon from './schoolicon.svelte';
 	import Pill from './pill.svelte';
-	import { onMount, afterUpdate } from 'svelte';
-	import { arrayMoveImmutable } from 'array-move';
-	import { moveItem } from './globalfunctions.svelte';
+	import { onMount } from 'svelte';
+	import { moveItem, removeFilters } from './globalfunctions.svelte';
+	import Close from './close.svelte';
+	import { filters, activeLevels, modalCall, lookupSpell } from './stores';
+	import Button from './button.svelte';
+	import PlaceholderCard from './placeholdercard.svelte';
+	import Bookmarks from './bookmarks.svelte';
 	let spellsheet;
 	let spellsOrderedInDom;
 	let orderedSpellsNames = [];
@@ -35,21 +39,20 @@
 		'level 8',
 		'level 9'
 	];
-	let activeLevels = [];
 	$: $activeSpells, setActiveLevels();
+	$: console.log($activeSpells);
 	function setActiveLevels() {
-		activeLevels = [];
+		$activeLevels = [];
 		for (let spell of $activeSpells) {
-			if (!activeLevels.includes(parseInt(spell.level))) {
-				activeLevels.push(parseInt(spell.level));
+			if (spell.display === true && !$activeLevels.includes(parseInt(spell.level))) {
+				$activeLevels.push(parseInt(spell.level));
 			}
 		}
-		activeLevels.sort();
+		$activeLevels.sort();
 	}
 	function openClickedSpell(spell) {
 		openSpell === spell ? (openSpell = null) : (openSpell = spell);
 	}
-	// const characters ='▆▍▇▆▇▅▆▅▁▇▁▅▆▇▆▆▉▆▇▅▅▇▆▆';
 	const characters = '◼';
 	function generateString(length) {
 		let result = ' ';
@@ -60,8 +63,6 @@
 
 		return result;
 	}
-
-	
 
 	function orderSpells() {
 		if (spellsheet) {
@@ -94,7 +95,6 @@
 			if ($activeSpells[i] === spell) {
 				if ($activeSpells[i - 1]) {
 					$activeSpells = moveItem($activeSpells, i - 1, i);
-					console.log(i);
 					promise = Promise.resolve();
 					return;
 				}
@@ -109,7 +109,6 @@
 			if ($activeSpells[i] === spell) {
 				if ($activeSpells[i + 1]) {
 					$activeSpells = moveItem($activeSpells, i + 1, i);
-					console.log(i);
 					promise = Promise.resolve();
 					return;
 				}
@@ -121,190 +120,178 @@
 	}
 </script>
 
-<div bind:this={spellsheet}>
-	{#each activeLevels as level}
-		<div class="grid_wrapper panel">
-			<h2>{levels[level]}</h2>
-			<div class="grid" on:dragover|preventDefault>
-				{#each $activeSpells as spell, index (spell.name)}
-					{@const spellDescription = spell.description.toLowerCase()}
-					{#if spell.level == level}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div
-							data-name={spell.name}
-							class="card item {openSpell === null ? '' : openSpell === spell ? 'open' : 'not-open'}"
-							on:click|self={() => {
-								openClickedSpell(spell);
-							}}
-							in:fade={{ duration: 200 }}
-						>
-							<div class="card_inner">
-								<button on:click={() => (openSpell = null)} class="close"
-									><i class="ri-close-line" /></button
-								>
-								<div class="block">
-									<h3>
-										<SchoolIcon school={spell.school} />
-										<span style="margin-left: .3rem">{spell.name}</span>
-									</h3>
-								</div>
-								<div class="block pills">
-									<Pill
-										label="Casting time"
-										text={spell.casting_time}
-										size="large"
-										icon="ri-flashlight-line"
-									/>
-									<Pill
-										label="Range or target"
-										text={spell.range}
-										size="large"
-										icon="ri-arrow-right-up-line"
-									/>
-									<Pill label="Duration" text={spell.duration} size="large" icon="ri-time-line" />
-								</div>
-								<div class="block pills">
-									<Pill
-										label="School of magic"
-										text={spell.school}
-										size="small"
-										icon="ri-book-2-line"
-									/>
+<div class="spellsheet_wrapper" bind:this={spellsheet}>
+	<Bookmarks />
+	<div>
+			{#each $activeLevels as level}
+				<div class="grid_wrapper panel" id={level}>
+					<h2>{levels[level]}</h2>
+					<div class="grid" on:dragover|preventDefault>
+						{#each $activeSpells as spell}
+							{#if spell.display === true}
+								{@const spellDescription = spell.description.toLowerCase()}
+								{#if spell.level == level}
+									<!-- svelte-ignore a11y-click-events-have-key-events -->
+									<div
+										data-name={spell.name}
+										class="card item {openSpell === null
+											? ''
+											: openSpell === spell
+											? 'open'
+											: 'not-open'}"
+										on:click|self={() => {
+											// openClickedSpell(spell);
+											$modalCall = 'spell';
+											$lookupSpell = spell;
+										}}
+										in:fade={{ duration: 200 }}
+										role="button"
+										data-castingtime={spell.casting_time}
+										data-range={spell.range}
+									>
+										<div class="card_inner">
+											{#if openSpell === spell}
+												<Close on:click={() => (openSpell = null)} />
+											{/if}
+											<div class="block">
+												<h3>
+													<SchoolIcon school={spell.school} />
+													<span style="margin-left: .3rem">{spell.name}</span>
+												</h3>
+											</div>
+											<div class="block pills">
+												<Pill
+													label="Casting time"
+													text={spell.casting_time}
+													size="large"
+													icon="ri-flashlight-line"
+												/>
+												<Pill
+													label="Range or target"
+													text={spell.range}
+													size="large"
+													icon="ri-arrow-right-up-line"
+												/>
+												<Pill
+													label="Duration"
+													text={spell.duration}
+													size="large"
+													icon="ri-time-line"
+												/>
+											</div>
+											<div class="block pills">
+												<Pill
+													label="School of magic"
+													text={spell.school}
+													size="small"
+													icon="ri-book-2-line"
+												/>
 
-									{#if spellDescription.includes('make a ranged spell attack')}
-										<Pill
-											label="Spell attack"
-											text="Ranged spell attack"
-											size="small"
-											icon="ri-sword-line"
-										/>
-									{:else if spellDescription.includes('make a melee spell attack')}
-										<Pill
-											label="Spell attack"
-											text="Melee spell attack"
-											size="small"
-											icon="ri-sword-line"
-										/>
-									{:else if spellDescription.includes('make a spell attack')}
-										<Pill
-											label="Spell attack"
-											text="Spell attack"
-											size="small"
-											icon="ri-sword-line"
-										/>
-									{:else if checkInput(spellDescription, savingArray)}
-										<Pill
-											label="Saving throw"
-											text={spellDescription.includes('strength sav')
-												? 'Str save'
-												: spellDescription.includes('dexterity sav')
-												? 'Dex save'
-												: spellDescription.includes('constitution sav')
-												? 'Str save'
-												: spellDescription.includes('intelligence sav')
-												? 'Int save'
-												: spellDescription.includes('wisdom sav')
-												? 'Wis save'
-												: spellDescription.includes('charisma sav')
-												? 'Cha save'
-												: ''}
-											size="small"
-											icon="ri-lifebuoy-line"
-										/>
-									{/if}
-								</div>
-								<div class="block description">
-									<p>{@html spell.description}</p>
-								</div>
-								<button class="fold" on:click={() => (openSpell = null)}
-									><i class="ri-arrow-down-s-line fold" /></button
-								>
-							</div>
-							<div class="controls">
-								<button class="up" on:click={() => moveUpSpell(spell)}
-									><i class="ri-arrow-up-s-line" />
-									<div class="label">Move up</div></button
-								>
-								<button class="down" on:click={() => moveDownSpell(spell)}
-									><i class="ri-arrow-down-s-line" />
-									<div class="label">Move down</div></button
-								>
-								<button class="remove" on:click={() => removeSpell(spell)}
-									><i class="ri-close-line" />
-									<div class="label">Remove</div></button
-								>
-							</div>
-							<div class="close_veil" on:click={() => (openSpell = null)} />
-						</div>
-					{/if}
-				{/each}
-			</div>
-		</div>
-	{:else}
-	
-		<div class="grid_wrapper panel">
-			<h2>Add some spells!</h2>
-			<div class="grid" on:dragover|preventDefault>
-				{#each placeholders as placeholder}
-				<div class="card placeholder">
-					<div class="card_inner">
-						<div class="block">
-							<h3>
-								<SchoolIcon school="blank" />
-								<span style="margin-left: .3rem"
-									>{'◼'.repeat(Math.floor(Math.random() * 12) + 6)}</span
-								>
-							</h3>
-						</div>
-						<div class="block pills">
-							<Pill
-								label="Casting time"
-								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
-								size="large"
-								icon="ri-checkbox-blank-circle-fill"
-							/>
-							<Pill
-								label="Range or target"
-								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
-								size="large"
-								icon="ri-checkbox-blank-circle-fill"
-							/>
-							<Pill
-								label="Duration"
-								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
-								size="large"
-								icon="ri-checkbox-blank-circle-fill"
-							/>
-						</div>
-						<div class="block pills">
-							<Pill
-								label="School of magic"
-								text={'◼'.repeat(Math.floor(Math.random() * 8) + 6)}
-								size="small"
-								icon="ri-checkbox-blank-circle-fill"
-							/>
-						</div>
-						<div class="block description">
-							<p style="word-break: break-all;">
-								{'◼'.repeat(Math.floor(Math.random() * 100) + 100)}
-							</p>
-						</div>
+												{#if spellDescription.includes('make a ranged spell attack')}
+													<Pill
+														label="Spell attack"
+														text="Ranged spell attack"
+														size="small"
+														icon="ri-sword-line"
+													/>
+												{:else if spellDescription.includes('make a melee spell attack')}
+													<Pill
+														label="Spell attack"
+														text="Melee spell attack"
+														size="small"
+														icon="ri-sword-line"
+													/>
+												{:else if spellDescription.includes('make a spell attack')}
+													<Pill
+														label="Spell attack"
+														text="Spell attack"
+														size="small"
+														icon="ri-sword-line"
+													/>
+												{:else if spell.save}
+													<Pill
+														label="Saving throw"
+														text={spell.save}
+														size="small"
+														icon="ri-lifebuoy-line"
+													/>
+												{/if}
+											</div>
+											<div class="block description">
+												<p>{@html spell.description}</p>
+											</div>
+											<button class="fold" on:click={() => (openSpell = null)}
+												><i class="ri-arrow-down-s-line fold" /></button
+											>
+										</div>
+										<div class="controls">
+											<button class="up" on:click={() => moveUpSpell(spell)}
+												><i class="ri-arrow-up-s-line" />
+												<div class="label">Move up</div></button
+											>
+											<button class="down" on:click={() => moveDownSpell(spell)}
+												><i class="ri-arrow-down-s-line" />
+												<div class="label">Move down</div></button
+											>
+											<button class="remove" on:click={() => removeSpell(spell)}
+												><i class="ri-close-line" />
+												<div class="label">Remove</div></button
+											>
+										</div>
+										<div class="close_veil" on:click={() => (openSpell = null)} />
+									</div>
+								{/if}
+							{/if}
+						{/each}
 					</div>
 				</div>
-				{/each}
-			</div>
-		</div>
-	
-	{/each}
+			{:else}
+				{#if $filters === true}
+					<div class="grid_wrapper panel">
+						<h2
+							style="opacity: 1; margin-top: 1rem; text-align: center; margin-left: 0; text-transform:none"
+						>
+							no results
+						</h2>
+						<div style="width: 100%; text-align: center">
+							<Button on:click={() => removeFilters()} text="Remove filters" type="outline alt" />
+						</div>
+					</div>
+				{:else}
+					<div class="grid_wrapper panel">
+						<h2>Add some spells!</h2>
+						<div class="grid" on:dragover|preventDefault>
+							{#each placeholders as placeholder}
+								<PlaceholderCard />
+							{/each}
+						</div>
+					</div>
+				{/if}
+			{/each}
+	</div>
 </div>
 
 <style lang="scss">
+	.spellsheet_wrapper {
+		display: grid;
+		grid-template-columns: 60px 1fr;
+		grid-gap: 1rem;
+		align-items: flex-start;
+		transition: 0.2s;
+		&.bookmarks {
+			grid-template-columns: 60px 1fr;
+			grid-gap: 1rem;
+		}
+	}
 	.grid_wrapper {
+		&:last-child {
+			margin-bottom: 8rem;
+		}
 		.grid {
 			width: 100%;
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr 1fr;
-			grid-auto-rows: 350px;
+			grid-auto-rows: 325px;
 			grid-gap: 1rem;
 			position: relative;
 			@media only screen and (max-width: 1500px) {
@@ -331,7 +318,14 @@
 		}
 	}
 	.card {
-
+		.card_inner {
+			transform-origin: bottom;
+			.block.description {
+				p {
+					font-size: 0.95rem;
+				}
+			}
+		}
 		i.fold {
 			font-size: 2.5rem;
 			color: var(--moretranslucent);
@@ -378,7 +372,6 @@
 					color: var(--moretranslucent) !important;
 				}
 			}
-
 		}
 		&.not-open {
 			opacity: 0.7;
@@ -403,7 +396,7 @@
 					position: absolute;
 					background-color: var(--spellbg);
 					right: 36px;
-					top: 7.5px;
+					top: 11.5px;
 					color: var(--translucent);
 					width: 100px;
 					text-align: right;
@@ -441,35 +434,6 @@
 			.controls {
 				.up {
 					display: none;
-				}
-			}
-		}
-		&.placeholder {
-			opacity: .2;
-			pointer-events: none!important;
-			.card_inner {
-				pointer-events: none!important;
-				* {
-					letter-spacing: -4px;
-					opacity: 0.2;
-					pointer-events: none!important;
-				}
-				h3 {
-					opacity: 1;
-					font-size: 2rem;
-					span {
-						opacity: 1;
-						letter-spacing: -2.9px;
-					}
-				}
-				p {
-					line-height: 1.3;
-					font-size: 1.8rem;
-				}
-				.block.description {
-					&:after {
-						display: none;
-					}
 				}
 			}
 		}

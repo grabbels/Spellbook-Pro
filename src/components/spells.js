@@ -17,7 +17,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['sorcerer', 'wizard', 'cantrip'],
-		type: 'Conjuration cantrip'
+		type: 'Conjuration cantrip',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -61,7 +62,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'druid', 'ranger', 'level1'],
-		type: '1st-level enchantment'
+		type: '1st-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -84,7 +86,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'cleric', 'level1'],
-		type: '1st-level enchantment'
+		type: '1st-level enchantment',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -139,7 +142,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'As you hold your hands with thumbs touching and fingers spread, a thin sheet of flames shoots forth from your outstretched fingertips. Each creature in a 15-foot cone must make a Dexterity saving throw. A creature takes 3d6 fire damage on a failed save, or half as much damage on a successful one.</p><p>The fire ignites any flammable objects in the area that aren\u2019t being worn or carried.',
+			'As you hold your hands with thumbs touching and fingers spread, a thin sheet of flames shoots forth from your outstretched fingertips. Each creature in a 15-foot cone must make a Dexterity saving throw. A creature takes 3d6 fire damage on a failed save, or half as much damage on a successful one.</p><p>The fire ignites any flammable objects in the area that aren’t being worn or carried.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d6 for each slot level above 1st.',
@@ -149,7 +152,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -171,7 +175,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'druid', 'sorcerer', 'warlock', 'wizard', 'level1'],
-		type: '1st-level enchantment'
+		type: '1st-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -249,7 +254,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You speak a one-word command to a creature you can see within range. The target must succeed on a Wisdom saving throw or follow the command on its next turn. The spell has no effect if the target is undead, if it doesn\u2019t understand your language, or if your command is directly harmful to it.</p><p>Some typical commands and their effects follow. You might issue a command other than one described here. If you do so, the DM determines how the target behaves. If the target can\u2019t follow your command, the spell ends.</p><p>Approach: The target moves toward you by the shortest and most direct route, Ending its turn if it moves within 5 feet of you.\nDrop: The target drops whatever it is holding and then ends its turn.\nFlee: The target spends its turn moving away from you by the fastest available means.\nGrovel: The target falls prone and then ends its turn.\nHalt: The target doesn't move and takes no Actions. A flying creature stays aloft, provided that it is able to do so. If it must move to stay aloft, it flies the minimum distance needed to remain in the air.",
+			"You speak a one-word command to a creature you can see within range. The target must succeed on a Wisdom saving throw or follow the command on its next turn. The spell has no effect if the target is undead, if it doesn’t understand your language, or if your command is directly harmful to it.</p><p>Some typical commands and their effects follow. You might issue a command other than one described here. If you do so, the DM determines how the target behaves. If the target can’t follow your command, the spell ends.</p><p>Approach: The target moves toward you by the shortest and most direct route, Ending its turn if it moves within 5 feet of you.\nDrop: The target drops whatever it is holding and then ends its turn.\nFlee: The target spends its turn moving away from you by the fastest available means.\nGrovel: The target falls prone and then ends its turn.\nHalt: The target doesn't move and takes no Actions. A flying creature stays aloft, provided that it is able to do so. If it must move to stay aloft, it flies the minimum distance needed to remain in the air.",
 		duration: '1 round',
 		higher_levels:
 			'When you cast this spell using a spell slot of 2nd level or higher, you can affect one additional creature for each slot level above 1st. The creatures must be within 30 feet of each other when you target them.',
@@ -259,7 +264,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['cleric', 'paladin', 'level1'],
-		type: '1st-level enchantment'
+		type: '1st-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -279,7 +285,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['paladin', 'level1'],
-		type: '1st-level enchantment'
+		type: '1st-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -292,7 +299,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'For the duration, you understand the literal meaning of any spoken language that you hear. You also understand any written language that you see, but you must be touching the surface on which the words are written. It takes about 1 minute to read one page of text.</p><p>This spell doesn\u2019t decode secret messages in a text or a glyph, such as an arcane sigil, that isn\u2019t part of a written language.',
+			'For the duration, you understand the literal meaning of any spoken language that you hear. You also understand any written language that you see, but you must be touching the surface on which the words are written. It takes about 1 minute to read one page of text.</p><p>This spell doesn’t decode secret messages in a text or a glyph, such as an arcane sigil, that isn’t part of a written language.',
 		duration: '1 hour',
 		level: '1',
 		name: 'Comprehend Languages',
@@ -360,7 +367,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create up to four torch-sized lights within range, making them appear as torches, lanterns, or glowing orbs that hover in the air for the duration. You can also combine the four lights into one glowing vaguely humanoid form of Medium size. Whichever form you choose, each light sheds dim light in a 10-foot radius. As a bonus action on your turn, you can move the lights up to 60 feet to a new spot within range. A light must be within 20 feet of another light created by this spell, and a light winks out if it exceeds the spell\u2019s range.',
+			'You create up to four torch-sized lights within range, making them appear as torches, lanterns, or glowing orbs that hover in the air for the duration. You can also combine the four lights into one glowing vaguely humanoid form of Medium size. Whichever form you choose, each light sheds dim light in a 10-foot radius. As a bonus action on your turn, you can move the lights up to 60 feet to a new spot within range. A light must be within 20 feet of another light created by this spell, and a light winks out if it exceeds the spell’s range.',
 		duration: 'Concentration, up to 1 minute',
 		level: '0',
 		name: 'Dancing Lights',
@@ -491,7 +498,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'level1'],
-		type: '1st-level enchantment'
+		type: '1st-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -553,7 +561,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['ranger', 'level1'],
-		type: '1st-level conjuration'
+		type: '1st-level conjuration',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -573,7 +582,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'level1'],
-		type: '1st-level conjuration'
+		type: '1st-level conjuration',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -593,7 +603,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'druid', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -679,7 +690,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'cantrip'],
-		type: 'Evocation cantrip'
+		type: 'Evocation cantrip',
+		save: 'str'
 	},
 	{
 		casting_time: '1 reaction, which you take when you or a creature within 60 feet of you falls',
@@ -755,7 +767,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried. This spell\u2019s damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).",
+			"You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried. This spell’s damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).",
 		duration: 'Instant',
 		level: '0',
 		name: 'Fire Bolt',
@@ -848,7 +860,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['wizard', 'level1'],
-		type: '1st-level conjuration'
+		type: '1st-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -912,7 +925,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['ranger', 'level1'],
-		type: '1st-level conjuration'
+		type: '1st-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -957,7 +971,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['warlock', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -1130,7 +1145,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'cleric', 'sorcerer', 'wizard', 'cantrip'],
-		type: 'Evocation cantrip'
+		type: 'Evocation cantrip',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -1166,7 +1182,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a willing creature who isn\u2019t wearing armor, and a protective magical force surrounds it until the spell ends. The target\u2019s base AC becomes 13 + its Dexterity modifier. The spell ends if the target dons armor or if you dismiss the spell as an action.',
+			'You touch a willing creature who isn’t wearing armor, and a protective magical force surrounds it until the spell ends. The target’s base AC becomes 13 + its Dexterity modifier. The spell ends if the target dons armor or if you dismiss the spell as an action.',
 		duration: '8 hours',
 		level: '1',
 		name: 'Mage Armor',
@@ -1186,7 +1202,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A spectral, floating hand appears at a point you choose within range. The hand lasts for the duration or until you dismiss it as an action. The hand vanishes if it is ever more than 30 feet away from you or if you cast this spell again.</p><p>You can use your action to control the hand. You can use the hand to manipulate an object, open an unlocked door or container, stow or retrieve an item from an open container, or pour the contents out of a vial. You can move the hand up to 30 feet each time you use it.</p><p>The hand can\u2019t attack, activate magic items, or carry more than 10 pounds.',
+			'A spectral, floating hand appears at a point you choose within range. The hand lasts for the duration or until you dismiss it as an action. The hand vanishes if it is ever more than 30 feet away from you or if you cast this spell again.</p><p>You can use your action to control the hand. You can use the hand to manipulate an object, open an unlocked door or container, stow or retrieve an item from an open container, or pour the contents out of a vial. You can move the hand up to 30 feet each time you use it.</p><p>The hand can’t attack, activate magic items, or carry more than 10 pounds.',
 		duration: '1 minute',
 		level: '0',
 		name: 'Mage Hand',
@@ -1229,7 +1245,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'This spell repairs a single break or tear in an object you touch, such as a broken key, a torn cloak, or a leaking wineskin. As long as the break or tear is no longer than 1 foot in any dimension, you mend it, leaving no trace of the former damage.</p><p>This spell can physically repair a magic item or construct, but the spell can\u2019t restore magic to such an object.',
+			'This spell repairs a single break or tear in an object you touch, such as a broken key, a torn cloak, or a leaking wineskin. As long as the break or tear is no longer than 1 foot in any dimension, you mend it, leaving no trace of the former damage.</p><p>This spell can physically repair a magic item or construct, but the spell can’t restore magic to such an object.',
 		duration: 'Instant',
 		level: '0',
 		name: 'Mending',
@@ -1271,7 +1287,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'You create a sound or an image of an object within range that lasts for the duration. The illusion also ends if you dismiss it as an action or cast this spell again.</p><p>If you create a sound, its volume can range from a whisper to a scream. It can be your voice, someone else\u2019s voice, a lion\u2019s roar, a beating of drums, or any other sound you choose. The sound continues unabated throughout the duration, or you can make discrete sounds at different times before the spell ends.</p><p>If you create an image of an object\u2014such as a chair, muddy footprints, or a small chest\u2014it must be no larger than a 5-foot cube. The image can\u2019t create sound, light, smell, or any other sensory effect. Physical interaction with the image reveals it to be an illusion, because things can pass through it.</p><p>If a creature uses its action to examine the sound or image, the creature can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the illusion becomes faint to the creature.',
+			'You create a sound or an image of an object within range that lasts for the duration. The illusion also ends if you dismiss it as an action or cast this spell again.</p><p>If you create a sound, its volume can range from a whisper to a scream. It can be your voice, someone else’s voice, a lion’s roar, a beating of drums, or any other sound you choose. The sound continues unabated throughout the duration, or you can make discrete sounds at different times before the spell ends.</p><p>If you create an image of an object—such as a chair, muddy footprints, or a small chest—it must be no larger than a 5-foot cube. The image can’t create sound, light, smell, or any other sensory effect. Physical interaction with the image reveals it to be an illusion, because things can pass through it.</p><p>If a creature uses its action to examine the sound or image, the creature can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the illusion becomes faint to the creature.',
 		duration: '1 minute',
 		level: '0',
 		name: 'Minor Illusion',
@@ -1299,7 +1315,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'cantrip'],
-		type: 'Conjuration cantrip'
+		type: 'Conjuration cantrip',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -1392,7 +1409,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A frigid beam of blue-white light streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, it takes 1d8 cold damage, and its speed is reduced by 10 feet until the start of your next turn.</p><p>The spell\u2019s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
+			'A frigid beam of blue-white light streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, it takes 1d8 cold damage, and its speed is reduced by 10 feet until the start of your next turn.</p><p>The spell’s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
 		duration: 'Instant',
 		level: '0',
 		name: 'Ray of Frost',
@@ -1422,7 +1439,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['sorcerer', 'wizard', 'level1'],
-		type: '1st-level necromancy'
+		type: '1st-level necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -1475,7 +1493,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Flame-like radiance descends on a creature that you can see within range. The target must succeed on a Dexterity saving throw or take 1d8 radiant damage. The target gains no benefit from cover for this saving throw.</p><p>The spell\u2019s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
+			'Flame-like radiance descends on a creature that you can see within range. The target must succeed on a Dexterity saving throw or take 1d8 radiant damage. The target gains no benefit from cover for this saving throw.</p><p>The spell’s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
 		duration: 'Instant',
 		level: '0',
 		name: 'Sacred Flame',
@@ -1483,7 +1501,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'cantrip'],
-		type: 'Evocation cantrip'
+		type: 'Evocation cantrip',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -1496,7 +1515,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You ward a creature within range against attack. Until the spell ends, any creature who targets the warded creature with an attack or a harmful spell must first make a Wisdom saving throw. On a failed save, the creature must choose a new target or lose the attack or spell. This spell doesn\u2019t protect the warded creature from area effects, such as the explosion of a fireball.</p><p>If the warded creature makes an attack or casts a spell that affects an enemy creature, this spell ends.',
+			'You ward a creature within range against attack. Until the spell ends, any creature who targets the warded creature with an attack or a harmful spell must first make a Wisdom saving throw. On a failed save, the creature must choose a new target or lose the attack or spell. This spell doesn’t protect the warded creature from area effects, such as the explosion of a fireball.</p><p>If the warded creature makes an attack or casts a spell that affects an enemy creature, this spell ends.',
 		duration: '1 minute',
 		level: '1',
 		name: 'Sanctuary',
@@ -1504,7 +1523,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'level1'],
-		type: '1st-level abjuration'
+		type: '1st-level abjuration',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -1547,7 +1567,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['paladin', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time:
@@ -1601,7 +1622,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Lightning springs from your hand to deliver a shock to a creature you try to touch. Make a melee spell attack against the target. You have advantage on the attack roll if the target is wearing armor made of metal. On a hit, the target takes 1d8 lightning damage, and it can\u2019t take reactions until the start of its next turn.</p><p>The spell\u2019s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
+			'Lightning springs from your hand to deliver a shock to a creature you try to touch. Make a melee spell attack against the target. You have advantage on the attack roll if the target is wearing armor made of metal. On a hit, the target takes 1d8 lightning damage, and it can’t take reactions until the start of its next turn.</p><p>The spell’s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
 		duration: 'Instant',
 		level: '0',
 		name: 'Shocking Grasp',
@@ -1622,7 +1643,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create the image of an object, a creature, or some other visible phenomenon that is no larger than a 15-foot cube. The image appears at a spot within range and lasts for the duration. The image is purely visual; it isn\u2019t accompanied by sound, smell, or other sensory effects.</p><p>You can use your action to cause the image to move to any spot within range. As the image changes location, you can alter its appearance so that its movements appear natural for the image. For example, if you create an image of a creature and move it, you can alter the image so that it appears to be walking.</p><p>Physical interaction with the image reveals it to be an illusion, because things can pass through it. A creature that uses its action to examine the image can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the creature can see through the image.',
+			'You create the image of an object, a creature, or some other visible phenomenon that is no larger than a 15-foot cube. The image appears at a spot within range and lasts for the duration. The image is purely visual; it isn’t accompanied by sound, smell, or other sensory effects.</p><p>You can use your action to cause the image to move to any spot within range. As the image changes location, you can alter its appearance so that its movements appear natural for the image. For example, if you create an image of a creature and move it, you can alter the image so that it appears to be walking.</p><p>Physical interaction with the image reveals it to be an illusion, because things can pass through it. A creature that uses its action to examine the image can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the creature can see through the image.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '1',
 		name: 'Silent Image',
@@ -1643,7 +1664,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'This spell sends creatures into a magical slumber. Roll 5d8; the total is how many hit points of creatures this spell can affect. Creatures within 20 feet of a point you choose within range are affected in ascending order of their current hit points (ignoring unconscious creatures).</p><p>Starting with the creature that has the lowest current hit points, each creature affected by this spell falls unconscious until the spell ends, the sleeper takes damage, or someone uses an action to shake or slap the sleeper awake. Subtract each creature\u2019s hit points from the total before moving on to the creature with the next lowest hit points. A creature\u2019s hit points must be equal to or less than the remaining total for that creature to be affected.</p><p>Undead and creatures immune to being charmed aren\u2019t affected by this spell.',
+			'This spell sends creatures into a magical slumber. Roll 5d8; the total is how many hit points of creatures this spell can affect. Creatures within 20 feet of a point you choose within range are affected in ascending order of their current hit points (ignoring unconscious creatures).</p><p>Starting with the creature that has the lowest current hit points, each creature affected by this spell falls unconscious until the spell ends, the sleeper takes damage, or someone uses an action to shake or slap the sleeper awake. Subtract each creature’s hit points from the total before moving on to the creature with the next lowest hit points. A creature’s hit points must be equal to or less than the remaining total for that creature to be affected.</p><p>Undead and creatures immune to being charmed aren’t affected by this spell.',
 		duration: '1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 2nd level or higher, roll an additional 2d8 for each slot level above 1st.',
@@ -1754,7 +1775,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['paladin', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -1766,7 +1788,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A wave of thunderous force sweeps out from you. Each creature in a 15-foot cube originating from you must make a Constitution saving throw. On a failed save, a creature takes 2d8 thunder damage and is pushed 10 feet away from you. On a successful save, the creature takes half as much damage and isn\u2019t pushed. In addition, unsecured objects that are completely within the area of effect are automatically pushed 10 feet away from you by the spell\u2019s effect, and the spell emits a thunderous boom audible out to 300 feet.',
+			'A wave of thunderous force sweeps out from you. Each creature in a 15-foot cube originating from you must make a Constitution saving throw. On a failed save, a creature takes 2d8 thunder damage and is pushed 10 feet away from you. On a successful save, the creature takes half as much damage and isn’t pushed. In addition, unsecured objects that are completely within the area of effect are automatically pushed 10 feet away from you by the spell’s effect, and the spell emits a thunderous boom audible out to 300 feet.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.',
@@ -1776,7 +1798,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'druid', 'sorcerer', 'wizard', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -1837,7 +1860,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'cantrip'],
-		type: 'Enchantment cantrip'
+		type: 'Enchantment cantrip',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -1880,7 +1904,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['paladin', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -1893,10 +1918,10 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Your spell bolsters your allies with toughness and resolve. Choose up to three creatures within range. Each target\u2019s hit point maximum and current hit points increase by 5 for the duration.',
+			'Your spell bolsters your allies with toughness and resolve. Choose up to three creatures within range. Each target’s hit point maximum and current hit points increase by 5 for the duration.',
 		duration: '8 hours',
 		higher_levels:
-			'When you cast this spell using a spell slot of 3rd level or higher, a target\u2019s hit points increase by an additional 5 for each slot level above 2nd.',
+			'When you cast this spell using a spell slot of 3rd level or higher, a target’s hit points increase by an additional 5 for each slot level above 2nd.',
 		level: '2',
 		name: 'Aid',
 		range: '30 feet',
@@ -1916,7 +1941,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'By means of this spell, you use an animal to deliver a message. Choose a Tiny beast you can see within range, such as a squirrel, a blue jay, or a bat. You specify a location, which you must have visited, and a recipient who matches a general description, such as \u201ca man or woman dressed in the uniform of the town guard\u201d or \u201ca red-haired dwarf wearing a pointed hat.\u201d You also speak a message of up to twenty-five words. The target beast travels for the duration of the spell toward the specified location, covering about 50 miles per 24 hours for a flying messenger, or 25 miles for other animals.</p><p>When the messenger arrives, it delivers your message to the creature that you described, replicating the sound of your voice. The messenger speaks only to a creature matching the description you gave. If the messenger doesn\u2019t reach its destination before the spell ends, the message is lost, and the beast makes its way back to where you cast this spell.',
+			'By means of this spell, you use an animal to deliver a message. Choose a Tiny beast you can see within range, such as a squirrel, a blue jay, or a bat. You specify a location, which you must have visited, and a recipient who matches a general description, such as “a man or woman dressed in the uniform of the town guard” or “a red-haired dwarf wearing a pointed hat.” You also speak a message of up to twenty-five words. The target beast travels for the duration of the spell toward the specified location, covering about 50 miles per 24 hours for a flying messenger, or 25 miles for other animals.</p><p>When the messenger arrives, it delivers your message to the creature that you described, replicating the sound of your voice. The messenger speaks only to a creature matching the description you gave. If the messenger doesn’t reach its destination before the spell ends, the message is lost, and the beast makes its way back to where you cast this spell.',
 		duration: '24 hours',
 		higher_levels:
 			'If you cast this spell using a spell slot of 3rd level or higher, the duration of the spell increases by 48 hours for each slot level above 2nd.',
@@ -1948,7 +1973,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['bard', 'cleric', 'sorcerer', 'wizard', 'level2'],
-		type: '2nd-level Necromancy'
+		type: '2nd-level Necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 minute',
@@ -1961,7 +1987,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'By casting gem-inlaid sticks, rolling dragon bones, laying out ornate cards, or employing some other divining tool, you receive an omen from an otherworldly entity about the results of a specific course of action that you plan to take within the next 30 minutes. The DM chooses from the following possible omens:</p><p>* *Weal*, for good results</p><p>* *Woe*, for bad results</p><p>* *Weal and woe*, for both good and bad results</p><p>* *Nothing*, for results that aren\u2019t especially good or bad</p><p>The spell doesn\u2019t take into account any possible circumstances that might change the outcome, such as the casting of additional spells or the loss or gain of a companion.</p><p>If you cast the spell two or more times before completing your next long rest, there is a cumulative 25 percent chance for each casting after the first that you get a random reading. The DM makes this roll in secret.',
+			'By casting gem-inlaid sticks, rolling dragon bones, laying out ornate cards, or employing some other divining tool, you receive an omen from an otherworldly entity about the results of a specific course of action that you plan to take within the next 30 minutes. The DM chooses from the following possible omens:</p><p>* *Weal*, for good results</p><p>* *Woe*, for bad results</p><p>* *Weal and woe*, for both good and bad results</p><p>* *Nothing*, for results that aren’t especially good or bad</p><p>The spell doesn’t take into account any possible circumstances that might change the outcome, such as the casting of additional spells or the loss or gain of a companion.</p><p>If you cast the spell two or more times before completing your next long rest, there is a cumulative 25 percent chance for each casting after the first that you get a random reading. The DM makes this roll in secret.',
 		duration: 'Instant',
 		level: '2',
 		name: 'Augury',
@@ -1989,7 +2015,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'cleric', 'level2'],
-		type: '2nd-level Enchantment'
+		type: '2nd-level Enchantment',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -2012,7 +2039,8 @@ export let spells = [
 		ritual: true,
 		school: 'enchantment',
 		tags: ['bard', 'cleric', 'druid', 'sorcerer', 'warlock', 'wizard', 'level2'],
-		type: '2nd-level enchantment (ritual)'
+		type: '2nd-level enchantment (ritual)',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -2086,7 +2114,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create a floating, spectral weapon within range that lasts for the duration or until you cast this spell again. When you cast the spell, you can make a melee spell attack against a creature within 5 feet of the weapon. On a hit, the target takes force damage equal to 1d8 + your spellcasting ability modifier.</p><p>As a bonus action on your turn, you can move the weapon up to 20 feet and repeat the attack against a creature within 5 feet of it. The weapon can take whatever form you choose. Clerics of deities who are associated with a particular weapon (as St. Cuthbert is known for his mace and Thor for his hammer) make this spell\u2019s effect resemble that weapon.',
+			'You create a floating, spectral weapon within range that lasts for the duration or until you cast this spell again. When you cast the spell, you can make a melee spell attack against a creature within 5 feet of the weapon. On a hit, the target takes force damage equal to 1d8 + your spellcasting ability modifier.</p><p>As a bonus action on your turn, you can move the weapon up to 20 feet and repeat the attack against a creature within 5 feet of it. The weapon can take whatever form you choose. Clerics of deities who are associated with a particular weapon (as St. Cuthbert is known for his mace and Thor for his hammer) make this spell’s effect resemble that weapon.',
 		duration: '1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for every two slot levels above 2nd.',
@@ -2132,7 +2160,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'This spell creates an undead servant. Choose a pile of bones or a corpse of a Medium or Small humanoid within range. Your spell imbues the target with a foul mimicry of life, raising it as an undead creature. The target becomes a skeleton if you chose bones or a zombie if you chose a corpse (the DM has the creature\u2019s game statistics).</p><p>On each of your turns, you can use a bonus action to mentally command any creature you made with this spell if the creature is within 60 feet of you (if you control multiple creatures, you can command any or all of them at the same time, issuing the same command to each one). You decide what action the creature will take and where it will move during its next turn, or you can issue a general command, such as to guard a particular chamber or corridor. If you issue no commands, the creature only defends itself against hostile creatures. Once given an order, the creature continues to follow it until its task is complete.</p><p>The creature is under your control for 24 hours, after which it stops obeying any command you\u2019ve given it. To maintain control of the creature for another 24 hours, you must cast this spell on the creature again before the current 24-hour period ends. This use of the spell reasserts your control over up to four creatures you have animated with this spell, rather than animating a new one.',
+			'This spell creates an undead servant. Choose a pile of bones or a corpse of a Medium or Small humanoid within range. Your spell imbues the target with a foul mimicry of life, raising it as an undead creature. The target becomes a skeleton if you chose bones or a zombie if you chose a corpse (the DM has the creature’s game statistics).</p><p>On each of your turns, you can use a bonus action to mentally command any creature you made with this spell if the creature is within 60 feet of you (if you control multiple creatures, you can command any or all of them at the same time, issuing the same command to each one). You decide what action the creature will take and where it will move during its next turn, or you can issue a general command, such as to guard a particular chamber or corridor. If you issue no commands, the creature only defends itself against hostile creatures. Once given an order, the creature continues to follow it until its task is complete.</p><p>The creature is under your control for 24 hours, after which it stops obeying any command you’ve given it. To maintain control of the creature for another 24 hours, you must cast this spell on the creature again before the current 24-hour period ends. This use of the spell reasserts your control over up to four creatures you have animated with this spell, rather than animating a new one.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 4th level or higher, you animate or reassert control over two additional undead creatures for each slot level above 3rd. Each of the creatures must come from a different corpse or pile of bones.',
@@ -2246,7 +2274,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'paladin', 'sorcerer', 'warlock', 'wizard', 'level4'],
-		type: '4th-level abjuration'
+		type: '4th-level abjuration',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -2266,7 +2295,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'level3'],
-		type: '3rd-level abjuration'
+		type: '3rd-level abjuration',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -2288,7 +2318,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'level4'],
-		type: '4th-level necromancy'
+		type: '4th-level necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -2300,17 +2331,18 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'* Choose one ability score. While cursed, the target has disadvantage on ability checks and saving throws made with that ability score.</p><p>* While cursed, the target has disadvantage on attack rolls against you.</p><p>* While cursed, the target must make a Wisdom saving throw at the start of each of its turns. If it fails, it wastes its action that turn doing nothing.</p><p>* While the target is cursed, your attacks and spells deal an extra 1d8 necrotic damage to the target.</p><p>A [remove curse] spell ends this effect. At the DM\u2019s option, you may choose an alternative curse effect, but it should be no more powerful than those described above. The DM has final say on such a curse\u2019s effect.',
+			'* Choose one ability score. While cursed, the target has disadvantage on ability checks and saving throws made with that ability score.</p><p>* While cursed, the target has disadvantage on attack rolls against you.</p><p>* While cursed, the target must make a Wisdom saving throw at the start of each of its turns. If it fails, it wastes its action that turn doing nothing.</p><p>* While the target is cursed, your attacks and spells deal an extra 1d8 necrotic damage to the target.</p><p>A [remove curse] spell ends this effect. At the DM’s option, you may choose an alternative curse effect, but it should be no more powerful than those described above. The DM has final say on such a curse’s effect.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
-			'If you cast this spell using a spell slot of 4th level or higher, the duration is concentration, up to 10 minutes. If you use a spell slot of 5th level or higher, the duration is 8 hours. If you use a spell slot of 7th level or higher, the duration is 24 hours. If you use a 9th level spell slot, the spell lasts until it is dispelled. Using a spell slot of 5th level or higher grants a duration that doesn\u2019t require concentration.',
+			'If you cast this spell using a spell slot of 4th level or higher, the duration is concentration, up to 10 minutes. If you use a spell slot of 5th level or higher, the duration is 8 hours. If you use a spell slot of 7th level or higher, the duration is 24 hours. If you use a 9th level spell slot, the spell lasts until it is dispelled. Using a spell slot of 5th level or higher grants a duration that doesn’t require concentration.',
 		level: '3',
 		name: 'Bestow Curse',
 		range: 'Touch',
 		ritual: false,
 		school: 'necromancy',
 		tags: ['bard', 'cleric', 'wizard', 'level3'],
-		type: '3rd-level necromancy'
+		type: '3rd-level necromancy',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -2322,7 +2354,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'The next time you hit a creature with a melee weapon attack during this spell\u2019s duration, your weapon flares with bright light, and the attack deals an extra 3d8 radiant damage to the target. Additionally, the target must succeed on a Constitution saving throw or be blinded until the spell ends.</p><p>A creature blinded by this spell makes another Constitution saving throw at the end of each of its turns. On a successful save, it is no longer blinded.',
+			'The next time you hit a creature with a melee weapon attack during this spell’s duration, your weapon flares with bright light, and the attack deals an extra 3d8 radiant damage to the target. Additionally, the target must succeed on a Constitution saving throw or be blinded until the spell ends.</p><p>A creature blinded by this spell makes another Constitution saving throw at the end of each of its turns. On a successful save, it is no longer blinded.',
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Blinding Smite',
@@ -2330,7 +2362,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['paladin', 'level3'],
-		type: '3rd-level evocation'
+		type: '3rd-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -2342,7 +2375,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Roll a d20 at the end of each of your turns for the duration of the spell. On a roll of 11 or higher, you vanish from your current plane of existence and appear in the Ethereal Plane (the spell fails and the casting is wasted if you were already on that plane). At the start of your next turn, and when the spell ends if you are on the Ethereal Plane, you return to an unoccupied space of your choice that you can see within 10 feet of the space you vanished from. If no unoccupied space is available within that range, you appear in the nearest unoccupied space (chosen at random if more than one space is equally near). You can dismiss this spell as an action.</p><p>While on the Ethereal Plane, you can see and hear the plane you originated from, which is cast in shades of gray, and you can\u2019t see anything there more than 60 feet away. You can only affect and be affected by other creatures on the Ethereal Plane. Creatures that aren\u2019t there can\u2019t perceive you or interact with you, unless they have the ability to do so.',
+			'Roll a d20 at the end of each of your turns for the duration of the spell. On a roll of 11 or higher, you vanish from your current plane of existence and appear in the Ethereal Plane (the spell fails and the casting is wasted if you were already on that plane). At the start of your next turn, and when the spell ends if you are on the Ethereal Plane, you return to an unoccupied space of your choice that you can see within 10 feet of the space you vanished from. If no unoccupied space is available within that range, you appear in the nearest unoccupied space (chosen at random if more than one space is equally near). You can dismiss this spell as an action.</p><p>While on the Ethereal Plane, you can see and hear the plane you originated from, which is cast in shades of gray, and you can’t see anything there more than 60 feet away. You can only affect and be affected by other creatures on the Ethereal Plane. Creatures that aren’t there can’t perceive you or interact with you, unless they have the ability to do so.',
 		duration: '1 minute',
 		level: '3',
 		name: 'Blink',
@@ -2362,7 +2395,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A storm cloud appears in the shape of a cylinder that is 10 feet tall with a 60-foot radius, centered on a point you can see 100 feet directly above you. The spell fails if you can\u2019t see a point in the air where the storm cloud could appear (for example, if you are in a room that can\u2019t accommodate the cloud).</p><p>When you cast the spell, choose a point you can see within range. A bolt of lightning flashes down from the cloud to that point. Each creature within 5 feet of that point must make a Dexterity saving throw. A creature takes 3d10 lightning damage on a failed save, or half as much damage on a successful one. On each of your turns until the spell ends, you can use your action to call down lightning in this way again, targeting the same point or a different one.</p><p>If you are outdoors in stormy conditions when you cast this spell, the spell gives you control over the existing storm instead of creating a new one. Under such conditions, the spell\u2019s damage increases by 1d10.',
+			'A storm cloud appears in the shape of a cylinder that is 10 feet tall with a 60-foot radius, centered on a point you can see 100 feet directly above you. The spell fails if you can’t see a point in the air where the storm cloud could appear (for example, if you are in a room that can’t accommodate the cloud).</p><p>When you cast the spell, choose a point you can see within range. A bolt of lightning flashes down from the cloud to that point. Each creature within 5 feet of that point must make a Dexterity saving throw. A creature takes 3d10 lightning damage on a failed save, or half as much damage on a successful one. On each of your turns until the spell ends, you can use your action to call down lightning in this way again, targeting the same point or a different one.</p><p>If you are outdoors in stormy conditions when you cast this spell, the spell gives you control over the existing storm instead of creating a new one. Under such conditions, the spell’s damage increases by 1d10.',
 		duration: 'Concentration, up to 10 minutes',
 		higher_levels:
 			'When you cast this spell using a spell slot of 4th or higher level, the damage increases by 1d10 for each slot level above 3rd.',
@@ -2372,7 +2405,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'level3'],
-		type: '3rd-level conjuration'
+		type: '3rd-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '10 minutes',
@@ -2387,7 +2421,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create an invisible sensor within range in a location familiar to you (a place you have visited or seen before) or in an obvious location that is unfamiliar to you (such as behind a door, around a corner, or in a grove of trees). The sensor remains in place for the duration, and it can\u2019t be attacked or otherwise interacted with.</p><p>When you cast the spell, you choose seeing or hearing. You can use the chosen sense through the sensor as if you were in its space. As your action, you can switch between seeing and hearing.</p><p>A creature that can see the sensor (such as a creature benefiting from [see invisibility] or truesight) sees a luminous, intangible orb about the size of your fist.',
+			'You create an invisible sensor within range in a location familiar to you (a place you have visited or seen before) or in an obvious location that is unfamiliar to you (such as behind a door, around a corner, or in a grove of trees). The sensor remains in place for the duration, and it can’t be attacked or otherwise interacted with.</p><p>When you cast the spell, you choose seeing or hearing. You can use the chosen sense through the sensor as if you were in its space. As your action, you can switch between seeing and hearing.</p><p>A creature that can see the sensor (such as a creature benefiting from [see invisibility] or truesight) sees a luminous, intangible orb about the size of your fist.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '3',
 		name: 'Clairvoyance',
@@ -2408,7 +2442,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You fill the air with spinning daggers in a cube 5 feet on each side, centered on a point you choose within range. A creature takes 4d4 slashing damage when it enters the spell\u2019s area for the first time on a turn or starts its turn there.',
+			'You fill the air with spinning daggers in a cube 5 feet on each side, centered on a point you choose within range. A creature takes 4d4 slashing damage when it enters the spell’s area for the first time on a turn or starts its turn there.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 2d4 for each slot level above 2nd.',
@@ -2438,7 +2472,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'level4'],
-		type: '4th-level enchantment'
+		type: '4th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -2481,7 +2516,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['ranger', 'level3'],
-		type: '3rd-level conjuration'
+		type: '3rd-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time:
@@ -2494,7 +2530,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'You attempt to interrupt a creature in the process of casting a spell. If the creature is casting a spell of 3rd level or lower, its spell fails and has no effect. If it is casting a spell of 4th level or higher, make an ability check using your spellcasting ability. The DC equals 10 + the spell\u2019s level. On a success, the creature\u2019s spell fails and has no effect.',
+			'You attempt to interrupt a creature in the process of casting a spell. If the creature is casting a spell of 3rd level or lower, its spell fails and has no effect. If it is casting a spell of 4th level or higher, make an ability check using your spellcasting ability. The DC equals 10 + the spell’s level. On a success, the creature’s spell fails and has no effect.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 4th level or higher, the interrupted spell has no effect if its level is less than or equal to the level of the spell slot you used.',
@@ -2516,7 +2552,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create 45 pounds of food and 30 gallons of water on the ground or in containers within range, enough to sustain up to fifteen humanoids or five steeds for 24 hours. The food is bland but nourishing, and spoils if uneaten after 24 hours. The water is clean and doesn\u2019t go bad.',
+			'You create 45 pounds of food and 30 gallons of water on the ground or in containers within range, enough to sustain up to fifteen humanoids or five steeds for 24 hours. The food is bland but nourishing, and spoils if uneaten after 24 hours. The water is clean and doesn’t go bad.',
 		duration: 'Instant',
 		level: '3',
 		name: 'Create Food and Water',
@@ -2556,7 +2592,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A 60-foot-radius sphere of light spreads out from a point you choose within range. The sphere is bright light and sheds dim light for an additional 60 feet.</p><p>If you chose a point on an object you are holding or one that isn\u2019t being worn or carried, the light shines from the object and moves with it. Completely covering the affected object with an opaque object, such as a bowl or a helm, blocks the light.</p><p>If any of this spell\u2019s area overlaps with an area of darkness created by a spell of 3rd level or lower, the spell that created the darkness is dispelled.',
+			'A 60-foot-radius sphere of light spreads out from a point you choose within range. The sphere is bright light and sheds dim light for an additional 60 feet.</p><p>If you chose a point on an object you are holding or one that isn’t being worn or carried, the light shines from the object and moves with it. Completely covering the affected object with an opaque object, such as a bowl or a helm, blocks the light.</p><p>If any of this spell’s area overlaps with an area of darkness created by a spell of 3rd level or lower, the spell that created the darkness is dispelled.',
 		duration: '1 hour',
 		level: '3',
 		name: 'Daylight',
@@ -2576,10 +2612,10 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Choose one creature, object, or magical effect within range. Any spell of 3rd level or lower on the target ends. For each spell of 4th level or higher on the target, make an ability check using your spellcasting ability. The DC equals 10 + the spell\u2019s level. On a successful check, the spell ends.',
+			'Choose one creature, object, or magical effect within range. Any spell of 3rd level or lower on the target ends. For each spell of 4th level or higher on the target, make an ability check using your spellcasting ability. The DC equals 10 + the spell’s level. On a successful check, the spell ends.',
 		duration: 'Instant',
 		higher_levels:
-			'When you cast this spell using a spell slot of 4th level or higher, you automatically end the effects of a spell on the target if the spell\u2019s level is equal to or less than the level of the spell slot you used.',
+			'When you cast this spell using a spell slot of 4th level or higher, you automatically end the effects of a spell on the target if the spell’s level is equal to or less than the level of the spell slot you used.',
 		level: '3',
 		name: 'Dispel Magic',
 		range: '120 feet',
@@ -2621,7 +2657,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You project a phantasmal image of a creature\u2019s worst fears. Each creature in a 30-foot cone must succeed on a Wisdom saving throw or drop whatever it is holding and become frightened for the duration.</p><p>While frightened by this spell, a creature must take the Dash action and move away from you by the safest available route on each of its turns, unless there is nowhere to move. If the creature ends its turn in a location where it doesn\u2019t have line of sight to you, the creature can make a Wisdom saving throw. On a successful save, the spell ends for that creature.',
+			'You project a phantasmal image of a creature’s worst fears. Each creature in a 30-foot cone must succeed on a Wisdom saving throw or drop whatever it is holding and become frightened for the duration.</p><p>While frightened by this spell, a creature must take the Dash action and move away from you by the safest available route on each of its turns, unless there is nowhere to move. If the creature ends its turn in a location where it doesn’t have line of sight to you, the creature can make a Wisdom saving throw. On a successful save, the spell ends for that creature.',
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Fear',
@@ -2629,7 +2665,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level3'],
-		type: '3rd-level illusion'
+		type: '3rd-level illusion',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -2642,7 +2679,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a willing creature and put it into a cataleptic state that is indistinguishable from death.</p><p>For the spell\u2019s duration, or until you use an action to touch the target and dismiss the spell, the target appears dead to all outward inspection and to spells used to determine the target\u2019s status. The target is blinded and incapacitated, and its speed drops to 0. The target has resistance to all damage except psychic damage. If the target is diseased or poisoned when you cast the spell, or becomes diseased or poisoned while under the spell\u2019s effect, the disease and poison have no effect until the spell ends.',
+			'You touch a willing creature and put it into a cataleptic state that is indistinguishable from death.</p><p>For the spell’s duration, or until you use an action to touch the target and dismiss the spell, the target appears dead to all outward inspection and to spells used to determine the target’s status. The target is blinded and incapacitated, and its speed drops to 0. The target has resistance to all damage except psychic damage. If the target is diseased or poisoned when you cast the spell, or becomes diseased or poisoned while under the spell’s effect, the disease and poison have no effect until the spell ends.',
 		duration: '1 hour',
 		level: '3',
 		name: 'Feign Death',
@@ -2673,7 +2710,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level3'],
-		type: '3rd-level evocation'
+		type: '3rd-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -2709,7 +2747,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You transform a willing creature you touch, along with everything it\u2019s wearing and carrying, into a misty cloud for the duration. The spell ends if the creature drops to 0 hit points. An incorporeal creature isn\u2019t affected.</p><p>While in this form, the target\u2019s only method of movement is a flying speed of 10 feet. The target can enter and occupy the space of another creature. The target has resistance to nonmagical damage, and it has advantage on Strength, Dexterity, and Constitution saving throws. The target can pass through small holes, narrow openings, and even mere cracks, though it treats liquids as though they were solid surfaces. The target can't fall and remains hovering in the air even when stunned or otherwise incapacitated.</p><p>While in the form of a misty cloud, the target can\u2019t talk or manipulate objects, and any objects it w as carrying or holding can\u2019t be dropped, used, or otherwise interacted with. The target can\u2019t attack or cast spells.",
+			"You transform a willing creature you touch, along with everything it’s wearing and carrying, into a misty cloud for the duration. The spell ends if the creature drops to 0 hit points. An incorporeal creature isn’t affected.</p><p>While in this form, the target’s only method of movement is a flying speed of 10 feet. The target can enter and occupy the space of another creature. The target has resistance to nonmagical damage, and it has advantage on Strength, Dexterity, and Constitution saving throws. The target can pass through small holes, narrow openings, and even mere cracks, though it treats liquids as though they were solid surfaces. The target can't fall and remains hovering in the air even when stunned or otherwise incapacitated.</p><p>While in the form of a misty cloud, the target can’t talk or manipulate objects, and any objects it w as carrying or holding can’t be dropped, used, or otherwise interacted with. The target can’t attack or cast spells.",
 		duration: 'Concentration, up to 1 hour',
 		level: '3',
 		name: 'Gaseous Form',
@@ -2717,7 +2755,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'warlock', 'wizard', 'level3'],
-		type: '3rd-level transmutation'
+		type: '3rd-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -2730,7 +2769,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Choose a willing creature that you can see within range. Until the spell ends, the target\u2019s speed is doubled, it gains a +2 bonus to AC, it has advantage on Dexterity saving throws, and it gains an additional action on each of its turns. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action.</p><p>When the spell ends, the target can\u2019t move or take actions until after its next turn, as a wave of lethargy sweeps over it.',
+			'Choose a willing creature that you can see within range. Until the spell ends, the target’s speed is doubled, it gains a +2 bonus to AC, it has advantage on Dexterity saving throws, and it gains an additional action on each of its turns. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action.</p><p>When the spell ends, the target can’t move or take actions until after its next turn, as a wave of lethargy sweeps over it.',
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Haste',
@@ -2738,7 +2777,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'wizard', 'level3'],
-		type: '3rd-level transmutation'
+		type: '3rd-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -2761,7 +2801,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level3'],
-		type: '3rd-level illusion'
+		type: '3rd-level illusion',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -2773,7 +2814,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'The next time you make a ranged w eapon attack during the spell\u2019s duration, the weapon\u2019s ammunition, or the weapon itself if it\u2019s a thrown weapon, transforms into a bolt of lightning. Make the attack roll as normal. The target takes 4d8 lightning damage on a hit, or half as much damage on a miss, instead of the weapon\u2019s normal damage.</p><p>Whether you hit or miss, each creature within 10 feet of the target must make a Dexterity saving throw. Each of these creatures takes 2d8 lightning damage on a failed save, or half as much damage on a successful one.</p><p>The piece of ammunition or weapon then returns to its normal form.',
+			'The next time you make a ranged w eapon attack during the spell’s duration, the weapon’s ammunition, or the weapon itself if it’s a thrown weapon, transforms into a bolt of lightning. Make the attack roll as normal. The target takes 4d8 lightning damage on a hit, or half as much damage on a miss, instead of the weapon’s normal damage.</p><p>Whether you hit or miss, each creature within 10 feet of the target must make a Dexterity saving throw. Each of these creatures takes 2d8 lightning damage on a failed save, or half as much damage on a successful one.</p><p>The piece of ammunition or weapon then returns to its normal form.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 4th level or higher, the damage for both effects of the spell increases by 1d8 for each slot level above 3rd.',
@@ -2783,7 +2824,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['ranger', 'level3'],
-		type: '3rd-level transmutation'
+		type: '3rd-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 minute',
@@ -2808,7 +2850,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'paladin', 'warlock', 'wizard', 'level3'],
-		type: '3rd-level abjuration'
+		type: '3rd-level abjuration',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -2821,7 +2864,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create the image of an object, a creature, or some other visible phenomenon that is no larger than a 20-foot cube. The image appears at a spot that you can see within range and lasts for the duration. It seems completely real, including sounds, smells, and temperature appropriate to the thing depicted. You can\u2019t create sufficient heat or cold to cause damage, a sound loud enough to deal thunder damage or deafen a creature, or a smell that might sicken a creature (like a troglodyte\u2019s stench).</p><p>As long as you are within range o f the illusion, you can use your action to cause the image to move to any other spot within range. As the image changes location, you can alter its appearance so that its movements appear natural for the image. For example, if you create an image o f a creature and move it, you can alter the image so that it appears to be walking. Similarly, you can cause the illusion to make different sounds at different times, even making it carry on a conversation, for example.</p><p>Physical interaction with the image reveals it to be an illusion, because things can pass through it. A creature that uses its action to examine the image can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the creature can see through the image, and its other sensory qualities become faint to the creature.',
+			'You create the image of an object, a creature, or some other visible phenomenon that is no larger than a 20-foot cube. The image appears at a spot that you can see within range and lasts for the duration. It seems completely real, including sounds, smells, and temperature appropriate to the thing depicted. You can’t create sufficient heat or cold to cause damage, a sound loud enough to deal thunder damage or deafen a creature, or a smell that might sicken a creature (like a troglodyte’s stench).</p><p>As long as you are within range o f the illusion, you can use your action to cause the image to move to any other spot within range. As the image changes location, you can alter its appearance so that its movements appear natural for the image. For example, if you create an image o f a creature and move it, you can alter the image so that it appears to be walking. Similarly, you can cause the illusion to make different sounds at different times, even making it carry on a conversation, for example.</p><p>Physical interaction with the image reveals it to be an illusion, because things can pass through it. A creature that uses its action to examine the image can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the creature can see through the image, and its other sensory qualities become faint to the creature.',
 		duration: 'Concentration, up to 10 minutes',
 		higher_levels:
 			'When you cast this spell using a spell slot o f 6th level or higher, the spell lasts until dispelled, without requiring your concentration.',
@@ -2907,7 +2950,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a willing creature. Until the spell ends, the target\u2019s skin has a rough, bark-like appearance, and the target\u2019s AC can\u2019t be less than 16, regardless of what kind of armor it is wearing.',
+			'You touch a willing creature. Until the spell ends, the target’s skin has a rough, bark-like appearance, and the target’s AC can’t be less than 16, regardless of what kind of armor it is wearing.',
 		duration: 'Concentration, up to 1 hour',
 		level: '2',
 		name: 'Barkskin',
@@ -2930,7 +2973,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'For the duration, you hide a target that you touch from divination magic. The target can be a willing creature or a place or an object no larger than 10 feet in any dimension. The target can\u2019t be targeted by any divination magic or perceived through magical scrying sensors.',
+			'For the duration, you hide a target that you touch from divination magic. The target can be a willing creature or a place or an object no larger than 10 feet in any dimension. The target can’t be targeted by any divination magic or perceived through magical scrying sensors.',
 		duration: '8 hours',
 		level: '3',
 		name: 'Nondetection',
@@ -2950,7 +2993,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You step into a stone object or surface large enough tofully contain your body, melding yourself and all the equipment you carry with the stone for the duration. Using your movement, you step into the stone at a point you can touch. Nothing of your presence remains visible or otherwise detectable by nonmagical senses.</p><p>While merged with the stone, you can\u2019t see what occurs outside it, and any Wisdom (Perception) checks you make to hear sounds outside it are made with disadvantage. You remain aware of the passage of time and can cast spells on yourself while merged in the stone. You can use your movement to leave the stone where you entered it, which ends the spell. You otherwise can\u2019t move.</p><p>Minor physical damage to the stone doesn\u2019t harm you, but its partial destruction or a change in its shape (to the extent that you no longer fit w ithin it) expels you and deals 6d6 bludgeoning damage to you. The stone\u2019s complete destruction (or transmutation into a different substance) expels you and deals 50 bludgeoning damage to you. If expelled, you fall prone in an unoccupied space closest to where you first entered.',
+			'You step into a stone object or surface large enough tofully contain your body, melding yourself and all the equipment you carry with the stone for the duration. Using your movement, you step into the stone at a point you can touch. Nothing of your presence remains visible or otherwise detectable by nonmagical senses.</p><p>While merged with the stone, you can’t see what occurs outside it, and any Wisdom (Perception) checks you make to hear sounds outside it are made with disadvantage. You remain aware of the passage of time and can cast spells on yourself while merged in the stone. You can use your movement to leave the stone where you entered it, which ends the spell. You otherwise can’t move.</p><p>Minor physical damage to the stone doesn’t harm you, but its partial destruction or a change in its shape (to the extent that you no longer fit w ithin it) expels you and deals 6d6 bludgeoning damage to you. The stone’s complete destruction (or transmutation into a different substance) expels you and deals 50 bludgeoning damage to you. If expelled, you fall prone in an unoccupied space closest to where you first entered.',
 		duration: '8 hours',
 		level: '3',
 		name: 'Meld into Stone',
@@ -2970,7 +3013,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A Large quasi-real, horselike creature appears on the ground in an unoccupied space of your choice within range. You decide the creature\u2019s appearance, but it is equipped with a saddle, bit, and bridle. Any of the equipment created by the spell vanishes in a puff of smoke if it is carried more than 10 feet away from the steed.</p><p>For the duration, you or a creature you choose can ride the steed. The creature uses the statistics for a riding horse, except it has a speed of 100 feet and can travel 10 miles in an hour, or 13 miles at a fast pace. When the spell ends, the steed gradually fades, giving the rider 1 minute to dismount. The spell ends if you use an action to dismiss it or if the steed takes any damage.',
+			'A Large quasi-real, horselike creature appears on the ground in an unoccupied space of your choice within range. You decide the creature’s appearance, but it is equipped with a saddle, bit, and bridle. Any of the equipment created by the spell vanishes in a puff of smoke if it is carried more than 10 feet away from the steed.</p><p>For the duration, you or a creature you choose can ride the steed. The creature uses the statistics for a riding horse, except it has a speed of 100 feet and can travel 10 miles in an hour, or 13 miles at a fast pace. When the spell ends, the steed gradually fades, giving the rider 1 minute to dismount. The spell ends if you use an action to dismiss it or if the steed takes any damage.',
 		duration: '1 hour',
 		level: '3',
 		name: 'Phantom Steed',
@@ -2990,7 +3033,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'This spell channels vitality into plants within a specific area. There are two possible uses for the spell, granting either immediate or long-term benefits.</p><p>If you cast this spell using 1 action, choose a point within range. All normal plants in a 100-foot radius centered on that point become thick and overgrown. A creature moving through the area must spend 4 feet of movement for every 1 foot it moves.</p><p>You can exclude one or more areas of any size within the spell\u2019s area from being affected.</p><p>If you cast this spell over 8 hours, you enrich the land. All plants in a half-mile radius centered on a point within range become enriched for 1 year. The plants yield twice the normal amount of food when harvested.',
+			'This spell channels vitality into plants within a specific area. There are two possible uses for the spell, granting either immediate or long-term benefits.</p><p>If you cast this spell using 1 action, choose a point within range. All normal plants in a 100-foot radius centered on that point become thick and overgrown. A creature moving through the area must spend 4 feet of movement for every 1 foot it moves.</p><p>You can exclude one or more areas of any size within the spell’s area from being affected.</p><p>If you cast this spell over 8 hours, you enrich the land. All plants in a half-mile radius centered on a point within range become enriched for 1 year. The plants yield twice the normal amount of food when harvested.',
 		duration: 'Instant',
 		level: '3',
 		name: 'Plant Growth',
@@ -3031,7 +3074,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a creature that has died within the last minute. That creature returns to life with 1 hit point. This spell can\u2019t return to life a creature that has died of old age, nor can it restore any missing body parts.',
+			'You touch a creature that has died within the last minute. That creature returns to life with 1 hit point. This spell can’t return to life a creature that has died of old age, nor can it restore any missing body parts.',
 		duration: 'Instant',
 		level: '3',
 		name: 'Revivify',
@@ -3052,7 +3095,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You send a short message of twenty-five words or less to a creature with which you are familiar. The creature hears the message in its mind, recognizes you as the sender if it knows you, and can answer in a like manner immediately. The spell enables creatures with Intelligence scores of at least 1 to understand the meaning of your message.</p><p>You can send the message across any distance and even to other planes of existence, but if the target is on a different plane than you, there is a 5 percent chance that the message doesn\u2019t arrive.',
+			'You send a short message of twenty-five words or less to a creature with which you are familiar. The creature hears the message in its mind, recognizes you as the sender if it knows you, and can answer in a like manner immediately. The spell enables creatures with Intelligence scores of at least 1 to understand the meaning of your message.</p><p>You can send the message across any distance and even to other planes of existence, but if the target is on a different plane than you, there is a 5 percent chance that the message doesn’t arrive.',
 		duration: '1 round',
 		level: '3',
 		name: 'Sending',
@@ -3073,7 +3116,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Until the spell ends, freezing rain and sleet fall in a 20-foot-tall cylinder with a 40-foot radius centered on a point you choose within range. The area is heavily obscured, and exposed flames in the area are doused.</p><p>The ground in the area is covered with slick ice, making it difficult terrain. When a creature enters the spell\u2019s area for the first time on a turn or starts its turn there, it must make a Dexterity saving throw. On a failed save, it falls prone.</p><p>If a creature is concentrating in the spell\u2019s area, the creature must make a successful Constitution saving throw against your spell save DC or lose concentration.',
+			'Until the spell ends, freezing rain and sleet fall in a 20-foot-tall cylinder with a 40-foot radius centered on a point you choose within range. The area is heavily obscured, and exposed flames in the area are doused.</p><p>The ground in the area is covered with slick ice, making it difficult terrain. When a creature enters the spell’s area for the first time on a turn or starts its turn there, it must make a Dexterity saving throw. On a failed save, it falls prone.</p><p>If a creature is concentrating in the spell’s area, the creature must make a successful Constitution saving throw against your spell save DC or lose concentration.',
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Sleet Storm',
@@ -3081,7 +3124,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'sorcerer', 'wizard', 'level3'],
-		type: '3rd-level conjuration'
+		type: '3rd-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -3094,7 +3138,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You alter time around up to six creatures of your choice in a 40-foot cube within range. Each target must succeed on a wisdom saving throwor be affected by this spell for the duration.</p><p>An affected target\u2019s speed is halved, it takes a -2 penalty to AC and Dexterity saving throws, and it can\u2019t use reactions. On its turn, it can use either an action or a bonus action, not both. Regardless of the creature\u2019s abilities or magic items, it can\u2019t make more than one melee or ranged attack during its turn.</p><p>If the creature attempts to cast a spell with a casting time of 1 action, roll a d20. On an 11 or higher, the spell doesn\u2019t take effect until the creature\u2019s next turn, and the creature must use its action on that turn to complete the spell. If it can\u2019t, the spell is wasted.</p><p>A creature affected by this spell makes another Wisdom saving throwat the end of its turn. On a successful save, the effect ends for it.',
+			'You alter time around up to six creatures of your choice in a 40-foot cube within range. Each target must succeed on a wisdom saving throwor be affected by this spell for the duration.</p><p>An affected target’s speed is halved, it takes a -2 penalty to AC and Dexterity saving throws, and it can’t use reactions. On its turn, it can use either an action or a bonus action, not both. Regardless of the creature’s abilities or magic items, it can’t make more than one melee or ranged attack during its turn.</p><p>If the creature attempts to cast a spell with a casting time of 1 action, roll a d20. On an 11 or higher, the spell doesn’t take effect until the creature’s next turn, and the creature must use its action on that turn to complete the spell. If it can’t, the spell is wasted.</p><p>A creature affected by this spell makes another Wisdom saving throwat the end of its turn. On a successful save, the effect ends for it.',
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Slow',
@@ -3102,7 +3146,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'wizard', 'level3'],
-		type: '3rd-level transmutation'
+		type: '3rd-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -3115,7 +3160,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You grant the semblance o f life and intelligence to a corpse of your choice within range, allowing it to answer the questions you pose. The corpse must still have a mouth and can\u2019t be undead. The spell fails if the corpse was the target o f this spell within the last 10 days.</p><p>Until the spell ends, you can ask the corpse up to five questions. The corpse knows only what it knew in life, including the languages it knew. Answers are usually brief, cryptic, or repetitive, and the corpse is under no compulsion to offer a truthful answer if you are hostile to it or it recognizes you as an enemy. This spell doesn\u2019t return the creature\u2019s soul to its body, only its animating spirit. Thus, the corpse can\u2019t learn new information, doesn\u2019t comprehend anything that has happened since it died, and can\u2019t speculate about future events.',
+			'You grant the semblance o f life and intelligence to a corpse of your choice within range, allowing it to answer the questions you pose. The corpse must still have a mouth and can’t be undead. The spell fails if the corpse was the target o f this spell within the last 10 days.</p><p>Until the spell ends, you can ask the corpse up to five questions. The corpse knows only what it knew in life, including the languages it knew. Answers are usually brief, cryptic, or repetitive, and the corpse is under no compulsion to offer a truthful answer if you are hostile to it or it recognizes you as an enemy. This spell doesn’t return the creature’s soul to its body, only its animating spirit. Thus, the corpse can’t learn new information, doesn’t comprehend anything that has happened since it died, and can’t speculate about future events.',
 		duration: '10 minutes',
 		level: '3',
 		name: 'Speak with Dead',
@@ -3135,7 +3180,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You imbue plants within 30 feet of you with limited sentience and animation, giving them the ability to communicate with you and follow your simple commands. You can question plants about events in the spell\u2019s area within the past day, gaining information about creatures that have passed, weather, and other circumstances.</p><p>You can also turn difficult terrain caused by plant growth (such as thickets and undergrowth) into ordinary terrain that lasts for the duration. Or you can turn ordinary terrain where plants are present into difficult terrain that lasts for the duration, causing v ines and branches to hinder pursuers, for example.</p><p>Plants might be able to perform other tasks on your behalf, at the DM\u2019s discretion. The spell doesn\u2019t enable plants to uproot themselves and move about, but they can freely move branches, tendrils, and stalks.</p><p>If a plant creature is in the area, you can communicate with it as if you shared a common language, but you gain no magical ability to influence it.</p><p>This spell can cause the plants created by the entangle spell to release a restrained creature.',
+			'You imbue plants within 30 feet of you with limited sentience and animation, giving them the ability to communicate with you and follow your simple commands. You can question plants about events in the spell’s area within the past day, gaining information about creatures that have passed, weather, and other circumstances.</p><p>You can also turn difficult terrain caused by plant growth (such as thickets and undergrowth) into ordinary terrain that lasts for the duration. Or you can turn ordinary terrain where plants are present into difficult terrain that lasts for the duration, causing v ines and branches to hinder pursuers, for example.</p><p>Plants might be able to perform other tasks on your behalf, at the DM’s discretion. The spell doesn’t enable plants to uproot themselves and move about, but they can freely move branches, tendrils, and stalks.</p><p>If a plant creature is in the area, you can communicate with it as if you shared a common language, but you gain no magical ability to influence it.</p><p>This spell can cause the plants created by the entangle spell to release a restrained creature.',
 		duration: '10 minutes',
 		level: '3',
 		name: 'Speak with Plants',
@@ -3156,7 +3201,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You call forth spirits to protect you. They flit around you to a distance of 15 feet for the duration. If you are good or neutral, their spectral form appears angelic or fey (your choice). If you are evil, they appear fiendish.</p><p>When you cast this spell, you can designate any number of creatures you can see to be unaffected by it. An affected creature\u2019s speed is halved in the area, and when the creature enters the area for the first time on a turn or starts its turn there, it must make a Wisdom saving throw. On a failed save, the creature takes 3d8 radiant damage (if you are good or neutral) or 3d8 necrotic damage (if you are evil). On a successful save, the creature takes half as much damage.',
+			'You call forth spirits to protect you. They flit around you to a distance of 15 feet for the duration. If you are good or neutral, their spectral form appears angelic or fey (your choice). If you are evil, they appear fiendish.</p><p>When you cast this spell, you can designate any number of creatures you can see to be unaffected by it. An affected creature’s speed is halved in the area, and when the creature enters the area for the first time on a turn or starts its turn there, it must make a Wisdom saving throw. On a failed save, the creature takes 3d8 radiant damage (if you are good or neutral) or 3d8 necrotic damage (if you are evil). On a successful save, the creature takes half as much damage.',
 		duration: 'Concentration, up to 10 minutes',
 		higher_levels:
 			'When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d8 for each slot level above 3rd.',
@@ -3166,7 +3211,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['cleric', 'level3'],
-		type: '3rd-level conjuration'
+		type: '3rd-level conjuration',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -3179,7 +3225,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create a 20-foot-radius sphere of yellow, nauseating gas centered on a point within range. The cloud spreads around corners, and its area is heavily obscured. The cloud lingers in the air for the duration.</p><p>Each creature that is completely within the cloud at the start of its turn must make a Constitution saving throw against poison. On a failed save, the creature spends its action that turn retching and reeling. Creatures that don\u2019t need to breathe or are immune to poison automatically succeed on this saving throw.</p><p>A moderate wind (at least 10 miles per hour) disperses the cloud after 4 rounds. A strong wind (at least 20 miles per hour) disperses it after 1 round.',
+			'You create a 20-foot-radius sphere of yellow, nauseating gas centered on a point within range. The cloud spreads around corners, and its area is heavily obscured. The cloud lingers in the air for the duration.</p><p>Each creature that is completely within the cloud at the start of its turn must make a Constitution saving throw against poison. On a failed save, the creature spends its action that turn retching and reeling. Creatures that don’t need to breathe or are immune to poison automatically succeed on this saving throw.</p><p>A moderate wind (at least 10 miles per hour) disperses the cloud after 4 rounds. A strong wind (at least 20 miles per hour) disperses it after 1 round.',
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Stinking Cloud',
@@ -3187,7 +3233,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['bard', 'sorcerer', 'wizard', 'level3'],
-		type: '3rd-level conjuration'
+		type: '3rd-level conjuration',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -3210,7 +3257,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'druid', 'sorcerer', 'wizard', 'level4'],
-		type: '4th-level enchantment'
+		type: '4th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 minute',
@@ -3253,7 +3301,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['cleric', 'druid', 'wizard', 'level4'],
-		type: '4th-level transmutation'
+		type: '4th-level transmutation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -3329,7 +3378,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'You touch a willing beast. For the duration of the spell, you can use your action to see through the beast\u2019s eyes and hear what it hears, and continue to do so until you use your action to return to your normal senses.</p><p>While perceiving through the beast\u2019s senses, you gain the benefits of any special senses possessed by that creature, though you are blinded and deafened to your own surroundings.',
+			'You touch a willing beast. For the duration of the spell, you can use your action to see through the beast’s eyes and hear what it hears, and continue to do so until you use your action to return to your normal senses.</p><p>While perceiving through the beast’s senses, you gain the benefits of any special senses possessed by that creature, though you are blinded and deafened to your own surroundings.',
 		duration: 'Concentration, up to 1 hour',
 		level: '2',
 		name: 'Beast Sense',
@@ -3349,7 +3398,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Your body becomes blurred, shifting and wavering to all who can see you. For the duration, any creature has disadvantage on attack rolls against you. An attacker is immune to this effect if it doesn\u2019t rely on sight, as with blindsight, or can see through illusions, as with truesight.',
+			'Your body becomes blurred, shifting and wavering to all who can see you. For the duration, any creature has disadvantage on attack rolls against you. An attacker is immune to this effect if it doesn’t rely on sight, as with blindsight, or can see through illusions, as with truesight.',
 		duration: 'Concentration, up to 1 minute',
 		level: '2',
 		name: 'Blur',
@@ -3369,7 +3418,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'The next time you hit a creature with a weapon attack before this spell ends, the weapon gleams with astral radiance as you strike. The attack deals an extra 2d6 radiant damage to the target, which becomes visible if it\u2019s invisible, and the target sheds dim light in a 5-foot radius and can\u2019t become invisible until the spell ends.',
+			'The next time you hit a creature with a weapon attack before this spell ends, the weapon gleams with astral radiance as you strike. The attack deals an extra 2d6 radiant damage to the target, which becomes visible if it’s invisible, and the target sheds dim light in a 5-foot radius and can’t become invisible until the spell ends.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 3rd level or higher, the extra damage increases by 1d6 for each slot level above 2nd.',
@@ -3392,7 +3441,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You plant four pieces of nonmagical ammunition\u2014arrows or crossbow bolts\u2014in the ground within range and lay magic upon them to protect an area. Until the spell ends, whenever a creature other than you comes within 30 feet of the ammunition for the first time on a turn or ends its turn there, one piece of ammunition flies up to strike it. The creature must succeed on a Dexterity saving throw or take 1d6 piercing damage. The piece of ammunition is then destroyed. The spell ends when no ammunition remains.</p><p>When you cast this spell, you can designate any creatures you choose, and the spell ignores them.',
+			'You plant four pieces of nonmagical ammunition—arrows or crossbow bolts—in the ground within range and lay magic upon them to protect an area. Until the spell ends, whenever a creature other than you comes within 30 feet of the ammunition for the first time on a turn or ends its turn there, one piece of ammunition flies up to strike it. The creature must succeed on a Dexterity saving throw or take 1d6 piercing damage. The piece of ammunition is then destroyed. The spell ends when no ammunition remains.</p><p>When you cast this spell, you can designate any creatures you choose, and the spell ignores them.',
 		duration: '8 hours',
 		higher_levels:
 			'When you cast this spell using a spell slot of 3rd level or higher, the amount of ammunition that can be affected increases by two for each slot level above 2nd.',
@@ -3402,7 +3451,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['ranger', 'level2'],
-		type: '2nd-Level transmutation'
+		type: '2nd-Level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -3422,7 +3472,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level2'],
-		type: '2nd-Level enchantment'
+		type: '2nd-Level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -3435,7 +3486,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Magical darkness spreads from a point you choose within range to fill a 15-foot-radius sphere for the duration. The darkness spreads around corners. A creature with darkvision can\u2019t see through this darkness, and nonmagical light can\u2019t illuminate it. If the point you choose is on an object you are holding or one that isn\u2019t being worn or carried, the darkness emanates from the object and moves with it. Completely covering the source of the darkness with an opaque object, such as a bowl or a helm, blocks the darkness. If any of this spell\u2019s area overlaps with an area of light created by a spell of 2nd level or lower, the spell that created the light is dispelled.',
+			'Magical darkness spreads from a point you choose within range to fill a 15-foot-radius sphere for the duration. The darkness spreads around corners. A creature with darkvision can’t see through this darkness, and nonmagical light can’t illuminate it. If the point you choose is on an object you are holding or one that isn’t being worn or carried, the darkness emanates from the object and moves with it. Completely covering the source of the darkness with an opaque object, such as a bowl or a helm, blocks the darkness. If any of this spell’s area overlaps with an area of light created by a spell of 2nd level or lower, the spell that created the light is dispelled.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '2',
 		name: 'Darkness',
@@ -3477,7 +3528,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'For the duration, you can read the thoughts of certain creatures. When you cast the spell and as your action on each turn until the spell ends, you can focus your mind on any one creature that you can see within 30 feet of you. If the creature you choose has an Intelligence of 3 or lower or doesn\u2019t speak any language, the creature is unaffected.</p><p>You initially learn the surface thoughts of the creature\u2014what is most on its mind in that moment. As an action, you can either shift your attention to another creature\u2019s thoughts or attempt to probe deeper into the same creature\u2019s mind. If you probe deeper, the target must make a Wisdom saving throw. If it fails, you gain insight into its reasoning (if any), its emotional state, and something that looms large in its mind (such as something it worries over, loves, or hates). If it succeeds, the spell ends. Either way, the target knows that you are probing into its mind, and unless you shift your attention to another creature\u2019s thoughts, the creature can use its action on its turn to make an Intelligence check contested by your Intelligence check; if it succeeds, the spell ends.</p><p>Questions verbally directed at the target creature naturally shape the course of its thoughts, so this spell is particularly effective as part of an interrogation. You can also use this spell to detect the presence of thinking creatures you can\u2019t see. When you cast the spell or as your action during the duration, you can search for thoughts within 30 feet of you. The spell can penetrate barriers, but 2 feet of rock, 2 inches of any metal other than lead, or a thin sheet of lead blocks you. You can\u2019t detect a creature with an Intelligence of 3 or lower or one that doesn\u2019t speak any language.</p><p>Once you detect the presence of a creature in this way, you can read its thoughts for the rest of the duration as described above, even if you can\u2019t see it, but it must still be within range.',
+			'For the duration, you can read the thoughts of certain creatures. When you cast the spell and as your action on each turn until the spell ends, you can focus your mind on any one creature that you can see within 30 feet of you. If the creature you choose has an Intelligence of 3 or lower or doesn’t speak any language, the creature is unaffected.</p><p>You initially learn the surface thoughts of the creature—what is most on its mind in that moment. As an action, you can either shift your attention to another creature’s thoughts or attempt to probe deeper into the same creature’s mind. If you probe deeper, the target must make a Wisdom saving throw. If it fails, you gain insight into its reasoning (if any), its emotional state, and something that looms large in its mind (such as something it worries over, loves, or hates). If it succeeds, the spell ends. Either way, the target knows that you are probing into its mind, and unless you shift your attention to another creature’s thoughts, the creature can use its action on its turn to make an Intelligence check contested by your Intelligence check; if it succeeds, the spell ends.</p><p>Questions verbally directed at the target creature naturally shape the course of its thoughts, so this spell is particularly effective as part of an interrogation. You can also use this spell to detect the presence of thinking creatures you can’t see. When you cast the spell or as your action during the duration, you can search for thoughts within 30 feet of you. The spell can penetrate barriers, but 2 feet of rock, 2 inches of any metal other than lead, or a thin sheet of lead blocks you. You can’t detect a creature with an Intelligence of 3 or lower or one that doesn’t speak any language.</p><p>Once you detect the presence of a creature in this way, you can read its thoughts for the rest of the duration as described above, even if you can’t see it, but it must still be within range.',
 		duration: 'Concentration, up to 1 minute',
 		level: '2',
 		name: 'Detect Thoughts',
@@ -3485,7 +3536,8 @@ export let spells = [
 		ritual: false,
 		school: 'divination',
 		tags: ['bard', 'sorcerer', 'wizard', 'level2'],
-		type: '2nd-Level divination'
+		type: '2nd-Level divination',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -3549,7 +3601,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['druid', 'wizard', 'level8'],
-		type: '8th-level enchantment'
+		type: '8th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 hour',
@@ -3658,7 +3711,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level8'],
-		type: '8th-level enchantment'
+		type: '8th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -3679,7 +3733,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'druid', 'sorcerer', 'level8'],
-		type: '8th-level evocation'
+		type: '8th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -3700,7 +3755,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'druid', 'warlock', 'wizard', 'level8'],
-		type: '8th-level enchantment'
+		type: '8th-level enchantment',
+		save: 'int'
 	},
 	{
 		casting_time: '1 minute',
@@ -3785,7 +3841,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'level8'],
-		type: '8th-level abjuration'
+		type: '8th-level abjuration',
+		save: 'con'
 	},
 	{
 		casting_time: '1 minute',
@@ -3808,7 +3865,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['warlock', 'wizard', 'level9'],
-		type: '9th-level abjuration'
+		type: '9th-level abjuration',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -3828,7 +3886,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['sorcerer', 'wizard', 'level8'],
-		type: '8th-level conjuration'
+		type: '8th-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -3888,7 +3947,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level9'],
-		type: '9th-level evocation'
+		type: '9th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -3968,7 +4028,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level8'],
-		type: '8th-level enchantment'
+		type: '8th-level enchantment',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -3988,7 +4049,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['wizard', 'level9'],
-		type: '9th-level abjuration'
+		type: '9th-level abjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4031,7 +4093,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'level9'],
-		type: '9th-level conjuration'
+		type: '9th-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4073,7 +4136,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level8'],
-		type: '8th-level evocation'
+		type: '8th-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -4114,7 +4178,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['bard', 'warlock', 'wizard', 'level9'],
-		type: '9th-level transmutation'
+		type: '9th-level transmutation',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 minute',
@@ -4134,7 +4199,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'level8'],
-		type: '8th-level conjuration'
+		type: '8th-level conjuration',
+		save: 'str'
 	},
 	{
 		casting_time: '1 hour',
@@ -4177,7 +4243,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['wizard', 'level9'],
-		type: '9th-level illusion'
+		type: '9th-level illusion',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -4242,7 +4309,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level7'],
-		type: '7th-level evocation'
+		type: '7th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4282,7 +4350,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'level7'],
-		type: '7th-level evocation'
+		type: '7th-level evocation',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -4324,7 +4393,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['sorcerer', 'warlock', 'wizard', 'level7'],
-		type: '7th-level necromancy'
+		type: '7th-level necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -4344,7 +4414,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'druid', 'sorcerer', 'level7'],
-		type: '7th-level evocation'
+		type: '7th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4365,7 +4436,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'warlock', 'wizard', 'level7'],
-		type: '7th-level evocation'
+		type: '7th-level evocation',
+		save: 'cha'
 	},
 	{
 		casting_time: '10 minutes',
@@ -4405,7 +4477,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level7'],
-		type: '7th-level evocation'
+		type: '7th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4449,7 +4522,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['cleric', 'druid', 'sorcerer', 'warlock', 'wizard', 'level7'],
-		type: '7th-level conjuration'
+		type: '7th-level conjuration',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 minute',
@@ -4512,7 +4586,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level7'],
-		type: '7th-level transmutation'
+		type: '7th-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4581,7 +4656,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['bard', 'cleric', 'wizard', 'level7'],
-		type: '7th-level abjuration'
+		type: '7th-level abjuration',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -4622,7 +4698,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level2'],
-		type: '2nd-level enchantment'
+		type: '2nd-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -4773,7 +4850,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level6'],
-		type: '6th-level evocation'
+		type: '6th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4793,7 +4871,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'level6'],
-		type: '6th-level evocation'
+		type: '6th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -4816,7 +4895,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level necromancy'
+		type: '6th-level necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -4858,7 +4938,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['sorcerer', 'wizard', 'level5'],
-		type: '5th-level conjuration'
+		type: '5th-level conjuration',
+		save: 'con'
 	},
 	{
 		casting_time: '1 minute',
@@ -4922,7 +5003,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 minute',
@@ -4990,7 +5072,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['ranger', 'level5'],
-		type: '5th-level Conjuration'
+		type: '5th-level Conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 minute',
@@ -5010,7 +5093,8 @@ export let spells = [
 		ritual: true,
 		school: 'divination',
 		tags: ['warlock', 'wizard', 'level5'],
-		type: '5th-level divination (ritual)'
+		type: '5th-level divination (ritual)',
+		save: 'int'
 	},
 	{
 		casting_time: '1 action',
@@ -5030,7 +5114,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['cleric', 'druid', 'level5'],
-		type: '5th-level necromancy'
+		type: '5th-level necromancy',
+		save: 'str'
 	},
 	{
 		casting_time: '10 minutes',
@@ -5142,7 +5227,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['paladin', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -5165,7 +5251,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'wizard', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -5209,7 +5296,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'paladin', 'level5'],
-		type: '5th-level abjuration'
+		type: '5th-level abjuration',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -5231,7 +5319,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['druid', 'sorcerer', 'level4'],
-		type: '4th-level enchantment'
+		type: '4th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -5253,7 +5342,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'wizard', 'level5'],
-		type: '5th-level enchantment'
+		type: '5th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 minute',
@@ -5276,7 +5366,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['bard', 'warlock', 'wizard', 'level5'],
-		type: '5th-level illusion'
+		type: '5th-level illusion',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -5320,7 +5411,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'wizard', 'level2'],
-		type: '2nd-level transmutation'
+		type: '2nd-level transmutation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -5340,7 +5432,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'warlock', 'level2'],
-		type: '2nd-level enchantment'
+		type: '2nd-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '10 minutes',
@@ -5380,7 +5473,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level necromancy'
+		type: '6th-level necromancy',
+		save: 'wis'
 	},
 	{
 		casting_time: '10 minutes',
@@ -5510,7 +5604,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -5533,7 +5628,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'wizard', 'level2'],
-		type: '2nd-level conjuration'
+		type: '2nd-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -5554,7 +5650,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['warlock', 'wizard', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '10 minutes',
@@ -5620,7 +5717,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['cleric', 'wizard', 'paladin', 'druid', 'bard', 'level5'],
-		type: '5th-level enchantment'
+		type: '5th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -5635,7 +5733,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a corpse or other remains. For the duration, the target is protected from decay and can\u2019t become undead.</p><p>The spell also effectively extends the time limit on raising the target from the dead, since days spent under the influence of this spell don\u2019t count against the time limit of spells such as [raise dead].',
+			'You touch a corpse or other remains. For the duration, the target is protected from decay and can’t become undead.</p><p>The spell also effectively extends the time limit on raising the target from the dead, since days spent under the influence of this spell don’t count against the time limit of spells such as [raise dead].',
 		duration: '10 days',
 		level: '2',
 		name: 'Gentle Repose',
@@ -5676,7 +5774,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'An immobile, faintly shimmering barrier springs into existence in a 10-foot radius around you and remains for the duration.</p><p>Any spell of 5th level or lower cast from outside the barrier can\u2019t affect creatures or objects within it, even if the spell is cast using a higher level spell slot. Such a spell can target creatures and objects within the barrier, but the spell has no effect on them. Similarly, the area within the barrier is excluded from the areas affected by such spells.',
+			'An immobile, faintly shimmering barrier springs into existence in a 10-foot radius around you and remains for the duration.</p><p>Any spell of 5th level or lower cast from outside the barrier can’t affect creatures or objects within it, even if the spell is cast using a higher level spell slot. Such a spell can target creatures and objects within the barrier, but the spell has no effect on them. Similarly, the area within the barrier is excluded from the areas affected by such spells.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 7th level or higher, the barrier blocks spells of one level higher for each slot level above 6th.',
@@ -5711,7 +5809,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['cleric', 'wizard', 'bard', 'level3'],
-		type: '3rd-level abjuration'
+		type: '3rd-level abjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -5731,7 +5830,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['ranger', 'druid', 'level4'],
-		type: '4th-level conjuration'
+		type: '4th-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -5743,7 +5843,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You or a creature you touch becomes invisible until the spell ends. Anything the target is wearing or carrying is invisible as long as it is on the target\u2019s person.',
+			'You or a creature you touch becomes invisible until the spell ends. Anything the target is wearing or carrying is invisible as long as it is on the target’s person.',
 		duration: 'Concentration, up to 1 minute',
 		level: '4',
 		name: 'Greater Invisibility',
@@ -5792,7 +5892,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['cleric', 'level4'],
-		type: '4th-level conjuration'
+		type: '4th-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '10 minutes',
@@ -5836,7 +5937,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'druid', 'level2'],
-		type: '2nd-level evocation'
+		type: '2nd-level evocation',
+		save: 'str'
 	},
 	{
 		casting_time: '10 minutes',
@@ -5849,7 +5951,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You make natural terrain in a 150-foot cube in range look, sound, and smell like some other sort of natural terrain. Thus, open fields or a road can be made to resemble a swamp, hill, crevasse, or some other difficult or impassable terrain. A pond can be made to seem like a grassy meadow, a precipice like a gentle slope, or a rock-strewn gully like a wide and smooth road. Manufactured structures, equipment, and creatures within the area aren\u2019t changed in appearance.</p><p>The tactile characteristics of the terrain are unchanged, so creatures entering the area are likely to see through the illusion. If the difference isn\u2019t obvious by touch, a creature carefully examining the illusion can attempt an Intelligence (Investigation) check against your spell save DC to disbelieve it. A creature who discerns the illusion for what it is, sees it as a vague image superimposed on the terrain.',
+			'You make natural terrain in a 150-foot cube in range look, sound, and smell like some other sort of natural terrain. Thus, open fields or a road can be made to resemble a swamp, hill, crevasse, or some other difficult or impassable terrain. A pond can be made to seem like a grassy meadow, a precipice like a gentle slope, or a rock-strewn gully like a wide and smooth road. Manufactured structures, equipment, and creatures within the area aren’t changed in appearance.</p><p>The tactile characteristics of the terrain are unchanged, so creatures entering the area are likely to see through the illusion. If the difference isn’t obvious by touch, a creature carefully examining the illusion can attempt an Intelligence (Investigation) check against your spell save DC to disbelieve it. A creature who discerns the illusion for what it is, sees it as a vague image superimposed on the terrain.',
 		duration: '24 hours',
 		level: '4',
 		name: 'Hallucinatory Terrain',
@@ -5880,7 +5982,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['cleric', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -5892,7 +5995,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You unleash a virulent disease on a creature that you can see within range. The target must make a Constitution saving throw. On a failed save, it takes 14d6 necrotic damage, or half as much damage on a successful save. The damage can\u2019t reduce the target\u2019s hit points below 1. If the target fails the saving throw, its hit point maximum is reduced for 1 hour by an amount equal to the necrotic damage it took. Any effect that removes a disease allows a creature\u2019s hit point maximum to return to normal before that time passes.',
+			'You unleash a virulent disease on a creature that you can see within range. The target must make a Constitution saving throw. On a failed save, it takes 14d6 necrotic damage, or half as much damage on a successful save. The damage can’t reduce the target’s hit points below 1. If the target fails the saving throw, its hit point maximum is reduced for 1 hour by an amount equal to the necrotic damage it took. Any effect that removes a disease allows a creature’s hit point maximum to return to normal before that time passes.',
 		duration: 'Instant',
 		level: '6',
 		name: 'Harm',
@@ -5900,7 +6003,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['cleric', 'level6'],
-		type: '6th-level necromancy'
+		type: '6th-level necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -5913,7 +6017,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Choose a manufactured metal object, such as a metal weapon or a suit of heavy or medium metal armor, that you can see within range. You cause the object to glow red-hot. Any creature in physical contact with the object takes 2d8 fire damage when you cast the spell. Until the spell ends, you can use a bonus action on each of your subsequent turns to cause this damage again.</p><p>If a creature is holding or wearing the object and takes the damage from it, the creature must succeed on a Constitution saving throw or drop the object if it can. If it doesn\u2019t drop the object, it has disadvantage on attack rolls and ability checks until the start of your next turn.',
+			'Choose a manufactured metal object, such as a metal weapon or a suit of heavy or medium metal armor, that you can see within range. You cause the object to glow red-hot. Any creature in physical contact with the object takes 2d8 fire damage when you cast the spell. Until the spell ends, you can use a bonus action on each of your subsequent turns to cause this damage again.</p><p>If a creature is holding or wearing the object and takes the damage from it, the creature must succeed on a Constitution saving throw or drop the object if it can. If it doesn’t drop the object, it has disadvantage on attack rolls and ability checks until the start of your next turn.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot level above 2nd.',
@@ -5923,7 +6027,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'bard', 'level2'],
-		type: '2nd-level transmutation'
+		type: '2nd-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -5958,7 +6063,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You bring forth a great feast, including magnificent food and drink. The feast takes 1 hour to consume and disappears at the end of that time, and the beneficial effects don\u2019t set in until this hour is over. Up to twelve other creatures can partake of the feast.</p><p>A creature that partakes of the feast gains several benefits. The creature is cured of all diseases and poison, becomes immune to poison and being frightened, and makes all Wisdom saving throws with advantage. Its hit point maximum also increases by 2d10, and it gains the same number of hit points. These benefits last for 24 hours',
+			'You bring forth a great feast, including magnificent food and drink. The feast takes 1 hour to consume and disappears at the end of that time, and the beneficial effects don’t set in until this hour is over. Up to twelve other creatures can partake of the feast.</p><p>A creature that partakes of the feast gains several benefits. The creature is cured of all diseases and poison, becomes immune to poison and being frightened, and makes all Wisdom saving throws with advantage. Its hit point maximum also increases by 2d10, and it gains the same number of hit points. These benefits last for 24 hours',
 		duration: 'Instant',
 		level: '6',
 		name: "Heroes' Feast",
@@ -5966,7 +6071,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['cleric', 'druid', 'level6'],
-		type: '6th-level conjuration'
+		type: '6th-level conjuration',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -5989,7 +6095,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level5'],
-		type: '5th-level enchantment'
+		type: '5th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6002,7 +6109,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A hail of rock-hard ice pounds to the ground in a 20-foot-radius, 40-foot-high cylinder centered on a point within range. Each creature in the cylinder must make a Dexterity saving throw. A creature takes 2d8 bludgeoning damage and 4d6 cold damage on a failed save, or half as much damage on a successful one.</p><p>Hailstones turn the storm\u2019s area of effect into difficult terrain until the end of your next turn.',
+			'A hail of rock-hard ice pounds to the ground in a 20-foot-radius, 40-foot-high cylinder centered on a point within range. Each creature in the cylinder must make a Dexterity saving throw. A creature takes 2d8 bludgeoning damage and 4d6 cold damage on a failed save, or half as much damage on a successful one.</p><p>Hailstones turn the storm’s area of effect into difficult terrain until the end of your next turn.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 5th level or higher, the bludgeoning damage increases by 1d8 for each slot level above 4th.',
@@ -6012,7 +6119,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level4'],
-		type: '4th-level evocation'
+		type: '4th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -6035,7 +6143,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['cleric', 'druid', 'sorcerer', 'level5'],
-		type: '5th-level conjuration'
+		type: '5th-level conjuration',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -6101,7 +6210,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'wizard', 'level2'],
-		type: '2nd-level transmutation'
+		type: '2nd-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -6145,7 +6255,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level3'],
-		type: '3rd-level evocation'
+		type: '3rd-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -6158,7 +6269,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"Describe or name a creature that is familiar to you. You sense the direction to the creature's location, as long as that creature is within 1,000 feet of you. If the creature is moving, you know the direction of its movement.</p><p>The spell can locate a specific creature known to you, or the nearest creature of a specific kind (such as a human or a unicorn), so long as you have seen such a creature up close\u2014-within 30 feet-\u2014at least once. If the creature you described or named is in a different form, such as being under the effects of a [polymorph] spell, this spell doesn\u2019t locate the creature.</p><p>This spell can't locate a creature if running water at least 10 feet wide blocks a direct path between you and the creature.",
+			"Describe or name a creature that is familiar to you. You sense the direction to the creature's location, as long as that creature is within 1,000 feet of you. If the creature is moving, you know the direction of its movement.</p><p>The spell can locate a specific creature known to you, or the nearest creature of a specific kind (such as a human or a unicorn), so long as you have seen such a creature up close—-within 30 feet-—at least once. If the creature you described or named is in a different form, such as being under the effects of a [polymorph] spell, this spell doesn’t locate the creature.</p><p>This spell can't locate a creature if running water at least 10 feet wide blocks a direct path between you and the creature.",
 		duration: 'Concentration, up to 1 hour',
 		level: '4',
 		name: 'Locate Creature',
@@ -6179,7 +6290,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"Describe or name an object that is familiar to you. You sense the direction to the object's location, as long as that object is within 1,000 feet of you. If the object is in motion, you know the direction of its movement.</p><p>The spell can locate a specific object known to you, as long as you have seen it up close-\u2014within 30 feet-\u2014at least once. Alternatively, the spell can locate the nearest object of a particular kind, such as a certain kind of apparel, jewelry, furniture, tool, or weapon.</p><p>This spell can't locate an object if any thickness of lead, even a thin sheet, blocks a direct path between you and the object.",
+			"Describe or name an object that is familiar to you. You sense the direction to the object's location, as long as that object is within 1,000 feet of you. If the object is in motion, you know the direction of its movement.</p><p>The spell can locate a specific object known to you, as long as you have seen it up close-—within 30 feet-—at least once. Alternatively, the spell can locate the nearest object of a particular kind, such as a certain kind of apparel, jewelry, furniture, tool, or weapon.</p><p>This spell can't locate an object if any thickness of lead, even a thin sheet, blocks a direct path between you and the object.",
 		duration: 'Concentration, up to 10 minutes',
 		level: '2',
 		name: 'Locate Object',
@@ -6210,7 +6321,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['wizard', 'level6'],
-		type: '6th-level necromancy'
+		type: '6th-level necromancy',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -6290,7 +6402,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You suggest a course of activity (limited to a sentence or two) and magically influence up to twelve creatures of your choice that you can see within range and that can hear and understand you. Creatures that can't be charmed are immune to this effect. The suggestion must be worded in such a manner as to make the course of action sound reasonable. Asking the creature to stab itself, throw itself onto a spear, immolate itself, or do some other obviously harmful act automatically negates the effect of the spell.</p><p>Each target must make a Wisdom saving throw. On a failed save, it pursues the course of action you described to the best of its ability. The suggested course of action can continue for the entire duration. If the suggested activity can be completed in a shorter time, the spell ends when the subject finishes what it was asked to do.</p><p>You can also specify conditions that will trigger a special activity during the duration. For example, you might suggest that a group of soldiers give all their money to the first beggar they meet. If the condition isn't met before the spell ends, the activity isn\u2019t performed.</p><p>If you or any of your companions damage a creature affected by this spell, the spell ends for that creature.",
+			"You suggest a course of activity (limited to a sentence or two) and magically influence up to twelve creatures of your choice that you can see within range and that can hear and understand you. Creatures that can't be charmed are immune to this effect. The suggestion must be worded in such a manner as to make the course of action sound reasonable. Asking the creature to stab itself, throw itself onto a spear, immolate itself, or do some other obviously harmful act automatically negates the effect of the spell.</p><p>Each target must make a Wisdom saving throw. On a failed save, it pursues the course of action you described to the best of its ability. The suggested course of action can continue for the entire duration. If the suggested activity can be completed in a shorter time, the spell ends when the subject finishes what it was asked to do.</p><p>You can also specify conditions that will trigger a special activity during the duration. For example, you might suggest that a group of soldiers give all their money to the first beggar they meet. If the condition isn't met before the spell ends, the activity isn’t performed.</p><p>If you or any of your companions damage a creature affected by this spell, the spell ends for that creature.",
 		duration: '24 hours',
 		higher_levels:
 			'When you cast this spell using a 7th-level spell slot, the duration is 10 days. When you use an 8th-level spell slot, the duration is 30 days. When you use a 9th-level spell slot, the duration is a year and a day.',
@@ -6300,7 +6412,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level enchantment'
+		type: '6th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6372,17 +6485,18 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You attempt to reshape another creature's memories. One creature that you can see must make a Wisdom saving throw. If you are fighting the creature, it has advantage on the saving throw. On a failed save, the target becomes charmed by you for the duration. The charmed target is incapacitated and unaware of its surroundings, though it can still hear you. If it takes any damage or is targeted by another spell, this spell ends, and none of the target's memories are modified.</p><p>While this charm lasts, you can affect the target's memory of an event that it experienced within the last 24 hours and that lasted no more than 10 minutes. You can permanently eliminate all memory of the event, allow the target to recall the event with perfect clarity and exacting detail, change its memory of the details of the event, or create a memory of some other event.</p><p>You must speak to the target to describe how its memories are affected, and it must be able to understand your language for the modified memories to take root. Its mind fills in any gaps in the details of your description. If the spell ends before you have finished describing the modified memories, the creature's memory isn\u2019t altered. Otherwise, the modified memories take hold when the spell ends.</p><p>A modified memory doesn\u2019t necessarily affect how a creature behaves, particularly if the memory contradicts the creature's natural inclinations, alignment, or beliefs. An illogical modified memory, such as implanting a memory of how much the creature enjoyed dousing itself in acid, is dismissed, perhaps as a bad dream. The DM might deem a modified memory too nonsensical to affect a creature in a significant manner.</p><p>A [remove curse] or [greater restoration] spell cast on the target restores the creature's true memory.",
+			"You attempt to reshape another creature's memories. One creature that you can see must make a Wisdom saving throw. If you are fighting the creature, it has advantage on the saving throw. On a failed save, the target becomes charmed by you for the duration. The charmed target is incapacitated and unaware of its surroundings, though it can still hear you. If it takes any damage or is targeted by another spell, this spell ends, and none of the target's memories are modified.</p><p>While this charm lasts, you can affect the target's memory of an event that it experienced within the last 24 hours and that lasted no more than 10 minutes. You can permanently eliminate all memory of the event, allow the target to recall the event with perfect clarity and exacting detail, change its memory of the details of the event, or create a memory of some other event.</p><p>You must speak to the target to describe how its memories are affected, and it must be able to understand your language for the modified memories to take root. Its mind fills in any gaps in the details of your description. If the spell ends before you have finished describing the modified memories, the creature's memory isn’t altered. Otherwise, the modified memories take hold when the spell ends.</p><p>A modified memory doesn’t necessarily affect how a creature behaves, particularly if the memory contradicts the creature's natural inclinations, alignment, or beliefs. An illogical modified memory, such as implanting a memory of how much the creature enjoyed dousing itself in acid, is dismissed, perhaps as a bad dream. The DM might deem a modified memory too nonsensical to affect a creature in a significant manner.</p><p>A [remove curse] or [greater restoration] spell cast on the target restores the creature's true memory.",
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
-			'If you cast this spell using a spell slot of 6th level or higher, you can alter the target\u2019s memories of an event that took place up to 7 days ago (6th level), 30 days ago (7th level), 1 year ago (8th level), or any time in the creature\u2019s past (9th level).',
+			'If you cast this spell using a spell slot of 6th level or higher, you can alter the target’s memories of an event that took place up to 7 days ago (6th level), 30 days ago (7th level), 1 year ago (8th level), or any time in the creature’s past (9th level).',
 		level: '5',
 		name: 'Modify Memory',
 		range: '30 feet',
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'wizard', 'level5'],
-		type: '5th-level enchantment'
+		type: '5th-level enchantment',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6405,7 +6519,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'level2'],
-		type: '2nd-level evocation'
+		type: '2nd-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -6420,7 +6535,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"Choose an area of terrain no larger than 40 feet on a side within range. You can reshape dirt, sand, or clay in the area in any manner you choose for the duration. You can raise or lower the area's elevation, create or fill in a trench, erect or flatten a wall, or form a pillar. The extent of any such changes can't exceed half the area's largest dimension. So, if you affect a 40-foot square, you can create a pillar up to 20 feet high, raise or lower the square's elevation by up to 20 feet, dig a trench up to 20 feet deep, and so on. It takes 10 minutes for these changes to complete.</p><p>At the end of every 10 minutes you spend concentrating on the spell, you can choose a new area of terrain to affect.</p><p>Because the terrain\u2019s transformation occurs slowly, creatures in the area can't usually be trapped or injured by the ground's movement. This spell can't manipulate natural stone or stone construction. Rocks and structures shift to accommodate the new terrain. If the way you shape the terrain would make a structure unstable, it might collapse.</p><p>Similarly, this spell doesn't directly affect plant growth. The moved earth carries any plants along with it.",
+			"Choose an area of terrain no larger than 40 feet on a side within range. You can reshape dirt, sand, or clay in the area in any manner you choose for the duration. You can raise or lower the area's elevation, create or fill in a trench, erect or flatten a wall, or form a pillar. The extent of any such changes can't exceed half the area's largest dimension. So, if you affect a 40-foot square, you can create a pillar up to 20 feet high, raise or lower the square's elevation by up to 20 feet, dig a trench up to 20 feet deep, and so on. It takes 10 minutes for these changes to complete.</p><p>At the end of every 10 minutes you spend concentrating on the spell, you can choose a new area of terrain to affect.</p><p>Because the terrain’s transformation occurs slowly, creatures in the area can't usually be trapped or injured by the ground's movement. This spell can't manipulate natural stone or stone construction. Rocks and structures shift to accommodate the new terrain. If the way you shape the terrain would make a structure unstable, it might collapse.</p><p>Similarly, this spell doesn't directly affect plant growth. The moved earth carries any plants along with it.",
 		duration: 'Concentration, up to 2 hours',
 		level: '6',
 		name: 'Move Earth',
@@ -6441,7 +6556,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A veil of shadows and silence radiates from you, masking you and your companions from detection. For the duration, each creature you choose within 30 feet of you (including you) has a +10 bonus to Dexterity (Stealth) checks and can\u2019t be tracked except by magical means. A creature that receives this bonus leaves behind no tracks or other traces of its passage.',
+			'A veil of shadows and silence radiates from you, masking you and your companions from detection. For the duration, each creature you choose within 30 feet of you (including you) has a +10 bonus to Dexterity (Stealth) checks and can’t be tracked except by magical means. A creature that receives this bonus leaves behind no tracks or other traces of its passage.',
 		duration: 'Concentration, up to 1 hour',
 		level: '2',
 		name: 'Pass without Trace',
@@ -6492,7 +6607,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['wizard', 'level4'],
-		type: '4th-level illusion'
+		type: '4th-level illusion',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6513,7 +6629,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['bard', 'sorcerer', 'wizard', 'level2'],
-		type: '2nd-level illusion'
+		type: '2nd-level illusion',
+		save: 'int'
 	},
 	{
 		casting_time: '10 minutes',
@@ -6556,7 +6673,8 @@ export let spells = [
 		ritual: false,
 		school: 'abjuration',
 		tags: ['bard', 'cleric', 'druid', 'wizard', 'level5'],
-		type: '5th-level abjuration'
+		type: '5th-level abjuration',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -6569,7 +6687,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a Wisdom saving throw to avoid the effect. A shapechanger automatically succeeds on this saving throw.</p><p>The transformation lasts for the duration, or until the target drops to 0 hit points or dies. The new form can be any beast whose challenge rating is equal to or less than the target's (or the target's level, if it doesn\u2019t have a challenge rating). The target's game statistics, including mental ability scores, are replaced by the statistics of the chosen beast. It retains its alignment and personality.</p><p>The target assumes the hit points of its new form. When it reverts to its normal form, the creature returns to the number of hit points it had before it transformed. If it reverts as a result of dropping to 0 hit points, any excess damage carries over to its normal form.</p><p>As long as the excess damage doesn't reduce the creature's normal form to 0 hit points, it isn't knocked unconscious.</p><p>The creature is limited in the actions it can perform by the nature of its new form, and it can't speak, cast spells, or take any other action that requires hands or speech.</p><p>The target's gear melds into the new form. The creature can't activate, use, wield, or otherwise benefit from any of its equipment.",
+			"This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a Wisdom saving throw to avoid the effect. A shapechanger automatically succeeds on this saving throw.</p><p>The transformation lasts for the duration, or until the target drops to 0 hit points or dies. The new form can be any beast whose challenge rating is equal to or less than the target's (or the target's level, if it doesn’t have a challenge rating). The target's game statistics, including mental ability scores, are replaced by the statistics of the chosen beast. It retains its alignment and personality.</p><p>The target assumes the hit points of its new form. When it reverts to its normal form, the creature returns to the number of hit points it had before it transformed. If it reverts as a result of dropping to 0 hit points, any excess damage carries over to its normal form.</p><p>As long as the excess damage doesn't reduce the creature's normal form to 0 hit points, it isn't knocked unconscious.</p><p>The creature is limited in the actions it can perform by the nature of its new form, and it can't speak, cast spells, or take any other action that requires hands or speech.</p><p>The target's gear melds into the new form. The creature can't activate, use, wield, or otherwise benefit from any of its equipment.",
 		duration: 'Concentration, up to 1 hour',
 		level: '4',
 		name: 'Polymorph',
@@ -6577,7 +6695,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['bard', 'druid', 'sorcerer', 'wizard', 'level4'],
-		type: '4th-level transmutation'
+		type: '4th-level transmutation',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6611,7 +6730,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You return a dead creature you touch to life, provided that it has been dead no longer than 10 days. If the creature's soul is both willing and at liberty to rejoin the body, the creature returns to life with 1 hit point.</p><p>This spell also neutralizes any poisons and cures nonmagical diseases that affected the creature at the time it died. This spell doesn't, however, remove magical diseases, curses, or similar effects; if these aren't first removed prior to casting the spell, they take effect when the creature returns to life. The spell can\u2019t return an undead creature to life.</p><p>This spell closes all mortal wounds, but it doesn't restore missing body parts. If the creature is lacking body parts or organs integral for its survival\u2014its head, for instance\u2014the spell automatically fails.</p><p>Coming back from the dead is an ordeal. The target takes a \u22124 penalty to all attack rolls, saving throws, and ability checks. Every time the target finishes a long rest, the penalty is reduced by 1 until it disappears.",
+			"You return a dead creature you touch to life, provided that it has been dead no longer than 10 days. If the creature's soul is both willing and at liberty to rejoin the body, the creature returns to life with 1 hit point.</p><p>This spell also neutralizes any poisons and cures nonmagical diseases that affected the creature at the time it died. This spell doesn't, however, remove magical diseases, curses, or similar effects; if these aren't first removed prior to casting the spell, they take effect when the creature returns to life. The spell can’t return an undead creature to life.</p><p>This spell closes all mortal wounds, but it doesn't restore missing body parts. If the creature is lacking body parts or organs integral for its survival—its head, for instance—the spell automatically fails.</p><p>Coming back from the dead is an ordeal. The target takes a −4 penalty to all attack rolls, saving throws, and ability checks. Every time the target finishes a long rest, the penalty is reduced by 1 until it disappears.",
 		duration: 'Instant',
 		level: '5',
 		name: 'Raise Dead',
@@ -6659,7 +6778,8 @@ export let spells = [
 		ritual: false,
 		school: 'necromancy',
 		tags: ['warlock', 'wizard', 'level2'],
-		type: '2nd-level necromancy'
+		type: '2nd-level necromancy',
+		save: 'con'
 	},
 	{
 		casting_time: '1 hour',
@@ -6740,7 +6860,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"You can see and hear a particular creature you choose that is on the same plane of existence as you. The target must make a Wisdom saving throw, which is modified by how well you know the target and the sort of physical connection you have to it. If a target knows you're casting this spell, it can fail the saving throw voluntarily if it wants to be observed.</p><p>|Knowledge|Save Modifier|\n|---|---|\n|Secondhand (you have heard of the target)| +5|\n|Firsthand (you have met the target)| 0|\n|Familiar (you know the target well)| -5|\n|Connection|Save Modifier|\n|Likeness or picture| -2|\n|Possession or garment| -4|\n|Body part, lock of hair, bit of nail, or the like| -10|</p><p>On a successful save, the target isn't affected, and you can't use this spell against it again for 24 hours. On a failed save, the spell creates an invisible sensor within 10 feet of the target. You can see and hear through the sensor as if you were there. The sensor moves with the target, remaining within 10 feet of it for the duration. A creature that can see invisible objects sees the sensor as a luminous orb about the size of your fist.</p><p>Instead of targeting a creature, you can choose a location you have seen before as the target of this spell. When you do, the sensor appears at that location and doesn\u2019t move.",
+			"You can see and hear a particular creature you choose that is on the same plane of existence as you. The target must make a Wisdom saving throw, which is modified by how well you know the target and the sort of physical connection you have to it. If a target knows you're casting this spell, it can fail the saving throw voluntarily if it wants to be observed.</p><p>|Knowledge|Save Modifier|\n|---|---|\n|Secondhand (you have heard of the target)| +5|\n|Firsthand (you have met the target)| 0|\n|Familiar (you know the target well)| -5|\n|Connection|Save Modifier|\n|Likeness or picture| -2|\n|Possession or garment| -4|\n|Body part, lock of hair, bit of nail, or the like| -10|</p><p>On a successful save, the target isn't affected, and you can't use this spell against it again for 24 hours. On a failed save, the spell creates an invisible sensor within 10 feet of the target. You can see and hear through the sensor as if you were there. The sensor moves with the target, remaining within 10 feet of it for the duration. A creature that can see invisible objects sees the sensor as a luminous orb about the size of your fist.</p><p>Instead of targeting a creature, you can choose a location you have seen before as the target of this spell. When you do, the sensor appears at that location and doesn’t move.",
 		duration: 'Concentration, up to 10 minutes',
 		level: '5',
 		name: 'Scrying',
@@ -6748,7 +6868,8 @@ export let spells = [
 		ritual: false,
 		school: 'divination',
 		tags: ['bard', 'cleric', 'druid', 'warlock', 'wizard', 'level5'],
-		type: '5th-level divination'
+		type: '5th-level divination',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6768,7 +6889,8 @@ export let spells = [
 		ritual: false,
 		school: 'illusion',
 		tags: ['bard', 'sorcerer', 'wizard', 'level5'],
-		type: '5th-level illusion'
+		type: '5th-level illusion',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -6812,7 +6934,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'sorcerer', 'warlock', 'wizard', 'level2'],
-		type: '2nd-level evocation'
+		type: '2nd-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -6874,7 +6997,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['paladin', 'level4'],
-		type: '4th-level evocation'
+		type: '4th-level evocation',
+		save: 'wis'
 	},
 	{
 		casting_time: '1 action',
@@ -6889,7 +7013,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a stone object of Medium size or smaller or a section of stone no more than 5 feet in any dimension and form it into any shape that suits your purpose. So, for example, you could shape a large rock into a weapon, idol, or coffer, or make a small passage through a wall, as long as the wall is less than 5 feet thick. You could also shape a stone door or its frame to seal the door shut. The object you create can have up to two hinges and a latch, but finer mechanical detail isn\u2019t possible.',
+			'You touch a stone object of Medium size or smaller or a section of stone no more than 5 feet in any dimension and form it into any shape that suits your purpose. So, for example, you could shape a large rock into a weapon, idol, or coffer, or make a small passage through a wall, as long as the wall is less than 5 feet thick. You could also shape a stone door or its frame to seal the door shut. The object you create can have up to two hinges and a latch, but finer mechanical detail isn’t possible.',
 		duration: 'Instant',
 		level: '4',
 		name: 'Stone Shape',
@@ -6918,7 +7042,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level6'],
-		type: '6th-level evocation'
+		type: '6th-level evocation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -6995,7 +7120,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'As you cast the spell, you draw a 10-foot-diameter circle on the ground inscribed with sigils that link your location to a permanent teleportation circle of your choice, whose sigil sequence you know and that is on the same plane of existence as you. A shimmering portal opens within the circle you drew and remains open until the end of your next turn. Any creature that enters the portal instantly appears within 5 feet of the destination circle or in the nearest unoccupied space if that space is occupied.</p><p>Many major temples, guilds, and other important places have permanent teleportation circles inscribed somewhere within their confines. Each such circle includes a unique sigil sequence\u2014-a string of magical runes arranged in a particular pattern. When you first gain the ability to cast this spell, you learn the sigil sequences for two destinations on the Material Plane, determined by the DM. You can learn additional sigil sequences during your adventures. You can commit a new sigil sequence to memory after studying it for 1 minute.</p><p>You can create a permanent teleportation circle by casting this spell in the same location every day for one year. You need not use the circle to teleport when you cast the spell in this way.',
+			'As you cast the spell, you draw a 10-foot-diameter circle on the ground inscribed with sigils that link your location to a permanent teleportation circle of your choice, whose sigil sequence you know and that is on the same plane of existence as you. A shimmering portal opens within the circle you drew and remains open until the end of your next turn. Any creature that enters the portal instantly appears within 5 feet of the destination circle or in the nearest unoccupied space if that space is occupied.</p><p>Many major temples, guilds, and other important places have permanent teleportation circles inscribed somewhere within their confines. Each such circle includes a unique sigil sequence—-a string of magical runes arranged in a particular pattern. When you first gain the ability to cast this spell, you learn the sigil sequences for two destinations on the Material Plane, determined by the DM. You can learn additional sigil sequences during your adventures. You can commit a new sigil sequence to memory after studying it for 1 minute.</p><p>You can create a permanent teleportation circle by casting this spell in the same location every day for one year. You need not use the circle to teleport when you cast the spell in this way.',
 		duration: '1 round',
 		level: '5',
 		name: 'Teleportation Circle',
@@ -7111,7 +7236,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level4'],
-		type: '4th-level evocation'
+		type: '4th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7124,7 +7250,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create a wall of ice on a solid surface within range. You can form it into a hemispherical dome or a sphere with a radius of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-square panels. Each panel must be contiguous with another panel. In any form, the wall is 1 foot thick and lasts for the duration.</p><p>If the wall cuts through a creature\u2019s space when it appears, the creature within its area is pushed to one side of the wall and must make a Dexterity saving throw. On a failed save, the creature takes 10d6 cold damage, or half as much damage on a successful save.</p><p>The wall is an object that can be damaged and thus breached. It has AC 12 and 30 hit points per 10-foot section, and it is vulnerable to fire damage. Reducing a 10-foot section of wall to 0 hit points destroys it and leaves behind a sheet of frigid air in the space the wall occupied. A creature moving through the sheet of frigid air for the first time on a turn must make a Constitution saving throw. That creature takes 5d6 cold damage on a failed save, or half as much damage on a successful one.',
+			'You create a wall of ice on a solid surface within range. You can form it into a hemispherical dome or a sphere with a radius of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-square panels. Each panel must be contiguous with another panel. In any form, the wall is 1 foot thick and lasts for the duration.</p><p>If the wall cuts through a creature’s space when it appears, the creature within its area is pushed to one side of the wall and must make a Dexterity saving throw. On a failed save, the creature takes 10d6 cold damage, or half as much damage on a successful save.</p><p>The wall is an object that can be damaged and thus breached. It has AC 12 and 30 hit points per 10-foot section, and it is vulnerable to fire damage. Reducing a 10-foot section of wall to 0 hit points destroys it and leaves behind a sheet of frigid air in the space the wall occupied. A creature moving through the sheet of frigid air for the first time on a turn must make a Constitution saving throw. That creature takes 5d6 cold damage on a failed save, or half as much damage on a successful one.',
 		duration: 'Concentration, up to 10 minutes',
 		higher_levels:
 			'When you cast this spells using a spells slot of 7th level or higher, the damage the wall deals when it appears increases by 2d6, and the damage from passing through the sheet of frigid air increases by 1d6, for each slot level above 6th.',
@@ -7134,7 +7260,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['wizard', 'level6'],
-		type: '6th-level evocation'
+		type: '6th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7147,7 +7274,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'An invisible wall of force springs into existence at a point you choose within range. The wall appears in any orientation you choose, as a horizontal or vertical barrier or at an angle. It can be free floating or resting on a solid surface. You can form it into a hemispherical dome or a sphere with a radius of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-by-10-foot panels. Each panel must be contiguous with another panel. In any form, the wall is 1/4 inch thick. It lasts for the duration. If the wall cuts through a creature\u2019s space when it appears, the creature is pushed to one side of the wall (your choice which side).</p><p>Nothing can physically pass through the wall. It is immune to all damage and can\u2019t be dispelled by [dispel magic]. A [disintegrate] spell destroys the wall instantly, however. The wall also extends into the Ethereal Plane, blocking ethereal travel through the wall.',
+			'An invisible wall of force springs into existence at a point you choose within range. The wall appears in any orientation you choose, as a horizontal or vertical barrier or at an angle. It can be free floating or resting on a solid surface. You can form it into a hemispherical dome or a sphere with a radius of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-by-10-foot panels. Each panel must be contiguous with another panel. In any form, the wall is 1/4 inch thick. It lasts for the duration. If the wall cuts through a creature’s space when it appears, the creature is pushed to one side of the wall (your choice which side).</p><p>Nothing can physically pass through the wall. It is immune to all damage and can’t be dispelled by [dispel magic]. A [disintegrate] spell destroys the wall instantly, however. The wall also extends into the Ethereal Plane, blocking ethereal travel through the wall.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '5',
 		name: 'Wall of Force',
@@ -7168,7 +7295,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"A nonmagical wall of solid stone springs into existence at a point you choose within range. The wall is 6 inches thick and is composed of ten 10-foot-by-10-foot panels. Each panel must be contiguous with at least one other panel. Alternatively, you can create 10-foot-by-20-foot panels that are only 3 inches thick.</p><p>If the wall cuts through a creature's space when it appears, the creature is pushed to one side of the wall (your choice). If a creature would be surrounded on all sides by the wall (or the wall and another solid surface), that creature can make a Dexterity saving throw. On a success, it can use its reaction to move up to its speed so that it is no longer enclosed by the wall.</p><p>The wall can have any shape you desire, though it can't occupy the same space as a creature or object. The wall doesn't need to be vertical or rest on any firm foundation. It must, however, merge with and be solidly supported by existing stone. Thus, you can use this spell to bridge a chasm or create a ramp.</p><p>If you create a span greater than 20 feet in length, you must halve the size of each panel to create supports. You can crudely shape the wall to create crenellations, battlements, and so on.</p><p>The wall is an object made of stone that can be damaged and thus breached. Each panel has AC 15 and 30 hit points per inch of thickness. Reducing a panel to 0 hit points destroys it and might cause connected panels to collapse at the DM\u2019s discretion.</p><p>If you maintain your concentration on this spell for its whole duration, the wall becomes permanent and can't be dispelled. Otherwise, the wall disappears when the spell ends.",
+			"A nonmagical wall of solid stone springs into existence at a point you choose within range. The wall is 6 inches thick and is composed of ten 10-foot-by-10-foot panels. Each panel must be contiguous with at least one other panel. Alternatively, you can create 10-foot-by-20-foot panels that are only 3 inches thick.</p><p>If the wall cuts through a creature's space when it appears, the creature is pushed to one side of the wall (your choice). If a creature would be surrounded on all sides by the wall (or the wall and another solid surface), that creature can make a Dexterity saving throw. On a success, it can use its reaction to move up to its speed so that it is no longer enclosed by the wall.</p><p>The wall can have any shape you desire, though it can't occupy the same space as a creature or object. The wall doesn't need to be vertical or rest on any firm foundation. It must, however, merge with and be solidly supported by existing stone. Thus, you can use this spell to bridge a chasm or create a ramp.</p><p>If you create a span greater than 20 feet in length, you must halve the size of each panel to create supports. You can crudely shape the wall to create crenellations, battlements, and so on.</p><p>The wall is an object made of stone that can be damaged and thus breached. Each panel has AC 15 and 30 hit points per inch of thickness. Reducing a panel to 0 hit points destroys it and might cause connected panels to collapse at the DM’s discretion.</p><p>If you maintain your concentration on this spell for its whole duration, the wall becomes permanent and can't be dispelled. Otherwise, the wall disappears when the spell ends.",
 		duration: 'Concentration, up to 10 minutes',
 		level: '5',
 		name: 'Wall of Stone',
@@ -7176,7 +7303,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7199,7 +7327,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'level6'],
-		type: '6th-level conjuration'
+		type: '6th-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7262,7 +7391,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['sorcerer', 'wizard', 'level2'],
-		type: '2nd-level conjuration'
+		type: '2nd-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 minute',
@@ -7275,7 +7405,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You and up to ten willing creatures you can see within range assume a gaseous form for the duration, appearing as wisps of cloud. While in this cloud form, a creature has a flying speed of 300 feet and has resistance to damage from nonmagical weapons. The only actions a creature can take in this form are the Dash action or to revert to its normal form. Reverting takes 1 minute, during which time a creature is incapacitated and can\u2019t move. Until the spell ends, a creature can revert to cloud form, which also requires the 1-minute transformation.</p><p>If a creature is in cloud form and flying when the effect ends, the creature descends 60 feet per round for 1 minute until it lands, which it does safely. If it can\u2019t land after 1 minute, the creature falls the remaining distance.',
+			'You and up to ten willing creatures you can see within range assume a gaseous form for the duration, appearing as wisps of cloud. While in this cloud form, a creature has a flying speed of 300 feet and has resistance to damage from nonmagical weapons. The only actions a creature can take in this form are the Dash action or to revert to its normal form. Reverting takes 1 minute, during which time a creature is incapacitated and can’t move. Until the spell ends, a creature can revert to cloud form, which also requires the 1-minute transformation.</p><p>If a creature is in cloud form and flying when the effect ends, the creature descends 60 feet per round for 1 minute until it lands, which it does safely. If it can’t land after 1 minute, the creature falls the remaining distance.',
 		duration: '8 hours',
 		level: '6',
 		name: 'Wind Walk',
@@ -7296,7 +7426,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			"A wall of strong wind rises from the ground at a point you choose within range. You can make the wall up to 50 feet long, 15 feet high, and 1 foot thick. You can shape the wall in any way you choose so long as it makes one continuous path along the ground. The wall lasts for the duration.</p><p>When the wall appears, each creature within its area must make a Strength saving throw. A creature takes 3d8 bludgeoning damage on a failed save, or half as much damage on a successful one.</p><p>The strong wind keeps fog, smoke, and other gases at bay. Small or smaller flying creatures or objects can't pass through the wall. Loose, lightweight materials brought into the wall fly upward. Arrows, bolts, and other ordinary projectiles launched at targets behind the wall are deflected upward and automatically miss. (Boulders hurled by giants or siege engines, and similar projectiles, are unaffected.) Creatures in gaseous form can\u2019t pass through it.",
+			"A wall of strong wind rises from the ground at a point you choose within range. You can make the wall up to 50 feet long, 15 feet high, and 1 foot thick. You can shape the wall in any way you choose so long as it makes one continuous path along the ground. The wall lasts for the duration.</p><p>When the wall appears, each creature within its area must make a Strength saving throw. A creature takes 3d8 bludgeoning damage on a failed save, or half as much damage on a successful one.</p><p>The strong wind keeps fog, smoke, and other gases at bay. Small or smaller flying creatures or objects can't pass through the wall. Loose, lightweight materials brought into the wall fly upward. Arrows, bolts, and other ordinary projectiles launched at targets behind the wall are deflected upward and automatically miss. (Boulders hurled by giants or siege engines, and similar projectiles, are unaffected.) Creatures in gaseous form can’t pass through it.",
 		duration: 'Concentration, up to 1 minute',
 		level: '3',
 		name: 'Wind Wall',
@@ -7304,7 +7434,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'ranger', 'level3'],
-		type: '3rd-level evocation'
+		type: '3rd-level evocation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -7316,7 +7447,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You and up to five willing creatures within 5 feet of you instantly teleport to a previously designated sanctuary. You and any creatures that teleport with you appear in the nearest unoccupied space to the spot you designated when you prepared your sanctuary (see below). If you cast this spell without first preparing a sanctuary, the spell has no effect.</p><p>You must designate a sanctuary by casting this spell within a location, such as a temple, dedicated to or strongly linked to your deity. If you attempt to cast the spell in this manner in an area that isn\u2019t dedicated to your deity, the spell has no effect.',
+			'You and up to five willing creatures within 5 feet of you instantly teleport to a previously designated sanctuary. You and any creatures that teleport with you appear in the nearest unoccupied space to the spot you designated when you prepared your sanctuary (see below). If you cast this spell without first preparing a sanctuary, the spell has no effect.</p><p>You must designate a sanctuary by casting this spell within a location, such as a temple, dedicated to or strongly linked to your deity. If you attempt to cast the spell in this manner in an area that isn’t dedicated to your deity, the spell has no effect.',
 		duration: 'Instant',
 		level: '6',
 		name: 'Word of Recall',
@@ -7344,7 +7475,8 @@ export let spells = [
 		ritual: false,
 		school: 'enchantment',
 		tags: ['bard', 'cleric', 'paladin', 'level2'],
-		type: '2nd-level enchantment'
+		type: '2nd-level enchantment',
+		save: 'cha'
 	},
 	{
 		casting_time: '1 action',
@@ -7366,7 +7498,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'druid', 'sorcerer', 'wizard', 'level1'],
-		type: '1st-level evocation'
+		type: '1st-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7398,7 +7531,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You cause up to ten words to form in a part of the sky you can see. The words appear to be made of cloud and remain in place for the spell\u2019s duration. The words dissipate when the spell ends. A strong wind can disperse the clouds and end the spell early',
+			'You cause up to ten words to form in a part of the sky you can see. The words appear to be made of cloud and remain in place for the spell’s duration. The words dissipate when the spell ends. A strong wind can disperse the clouds and end the spell early',
 		duration: 'Concentration, up to 1 hour',
 		level: '2',
 		name: 'Skywrite',
@@ -7418,7 +7551,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'You create a burst of thunderous sound, which can be heard 100 feet away. Each creature other than you within 5 feet of you must make a Constitution saving throw. On a failed save, the creature takes 1d6 thunder damage.</p><p>The spell\u2019s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).',
+			'You create a burst of thunderous sound, which can be heard 100 feet away. Each creature other than you within 5 feet of you must make a Constitution saving throw. On a failed save, the creature takes 1d6 thunder damage.</p><p>The spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).',
 		duration: 'Instant',
 		level: '0',
 		name: 'Thunderclap',
@@ -7426,7 +7559,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['bard', 'druid', 'sorcerer', 'warlock', 'wizard', 'cantrip'],
-		type: 'Evocation cantrip'
+		type: 'Evocation cantrip',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -7438,7 +7572,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A strong wind (20 miles per hour) blows around you in a 10-foot radius and moves with you, remaining centered on you. The wind lasts for the spell\u2019s duration.</p><p>* It deafens you and other creatures in its area.</p><p>* It extinguishes unprotected flames in its area that are torch-sized or smaller.</p><p>* The area is difficult terrain for creatures other than you.</p><p>* The attack rolls of ranged weapon attacks have disadvantage if they pass in or out of the wind.</p><p>* It hedges out vapor, gas, and fog that can be dispersed by strong wind.',
+			'A strong wind (20 miles per hour) blows around you in a 10-foot radius and moves with you, remaining centered on you. The wind lasts for the spell’s duration.</p><p>* It deafens you and other creatures in its area.</p><p>* It extinguishes unprotected flames in its area that are torch-sized or smaller.</p><p>* The area is difficult terrain for creatures other than you.</p><p>* The attack rolls of ranged weapon attacks have disadvantage if they pass in or out of the wind.</p><p>* It hedges out vapor, gas, and fog that can be dispersed by strong wind.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '2',
 		name: 'Warding Wind',
@@ -7458,7 +7592,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'* You instantaneously expand the flame 5 feet in one direction, provided that wood or other fuel is present in the new location.</p><p>* You instantaneously extinguish the flames within the cube.</p><p>* You double or halve the area of bright light and dim light cast by the flame, change its color, or both. The change lasts for 1 hour.</p><p>* You cause simple shapes\u2014such as the vague form of a creature, an inanimate object, or a location\u2014to appear within the flames and animate as you like. The shapes last for 1 hour.</p><p>If you cast this spell multiple times, you can have up to three of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.',
+			'* You instantaneously expand the flame 5 feet in one direction, provided that wood or other fuel is present in the new location.</p><p>* You instantaneously extinguish the flames within the cube.</p><p>* You double or halve the area of bright light and dim light cast by the flame, change its color, or both. The change lasts for 1 hour.</p><p>* You cause simple shapes—such as the vague form of a creature, an inanimate object, or a location—to appear within the flames and animate as you like. The shapes last for 1 hour.</p><p>If you cast this spell multiple times, you can have up to three of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.',
 		duration: 'Instant or 1 hour (see below)',
 		level: '0',
 		name: 'Control Flames',
@@ -7478,7 +7612,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You create a bonfire on ground that you can see within range. Until the spell ends, the bonfire fills a 5-foot cube. Any creature in the bonfire\u2019s space when you cast the spell must succeed on a Dexterity saving throw or take 1d8 fire damage. A creature must also make the saving throw when it enters the bonfire\u2019s space for the first time on a turn or ends its turn there.</p><p>The spell\u2019s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
+			'You create a bonfire on ground that you can see within range. Until the spell ends, the bonfire fills a 5-foot cube. Any creature in the bonfire’s space when you cast the spell must succeed on a Dexterity saving throw or take 1d8 fire damage. A creature must also make the saving throw when it enters the bonfire’s space for the first time on a turn or ends its turn there.</p><p>The spell’s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).',
 		duration: 'Concentration, up to 1 minute',
 		level: '0',
 		name: 'Create Bonfire',
@@ -7486,7 +7620,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'cantrip'],
-		type: 'Conjuration cantrip'
+		type: 'Conjuration cantrip',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7498,7 +7633,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You cause numbing frost to form on one creature that you can see within range. The target must make a Constitution saving throw. On a failed save, the target takes 1d6 cold damage, and it has disadvantage on the next weapon attack roll it makes before the end of its next turn.</p><p>The spell\u2019s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).',
+			'You cause numbing frost to form on one creature that you can see within range. The target must make a Constitution saving throw. On a failed save, the target takes 1d6 cold damage, and it has disadvantage on the next weapon attack roll it makes before the end of its next turn.</p><p>The spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).',
 		duration: 'Instant',
 		level: '0',
 		name: 'Frostbite',
@@ -7506,7 +7641,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'cantrip'],
-		type: 'Evocation cantrip'
+		type: 'Evocation cantrip',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -7518,7 +7654,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'* One Medium or smaller creature that you choose must succeed on a Strength saving throw or be pushed up to 5 feet away from you.</p><p>* You create a small blast of air capable of moving one object that is neither held nor carried and that weighs no more than 5 pounds. The object is pushed up to 10 feet away from you. It isn\u2019t pushed with enough force to cause damage.</p><p>* You create a harmless sensory affect using air, such as causing leaves to rustle, wind to slam shutters shut, or your clothing to ripple in a breeze.',
+			'* One Medium or smaller creature that you choose must succeed on a Strength saving throw or be pushed up to 5 feet away from you.</p><p>* You create a small blast of air capable of moving one object that is neither held nor carried and that weighs no more than 5 pounds. The object is pushed up to 10 feet away from you. It isn’t pushed with enough force to cause damage.</p><p>* You create a harmless sensory affect using air, such as causing leaves to rustle, wind to slam shutters shut, or your clothing to ripple in a breeze.',
 		duration: 'Instant',
 		level: '0',
 		name: 'Gust',
@@ -7526,7 +7662,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'wizard', 'cantrip'],
-		type: 'Transmutation cantrip'
+		type: 'Transmutation cantrip',
+		save: 'str'
 	},
 	{
 		casting_time: '1 bonus action',
@@ -7538,7 +7675,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch one to three pebbles and imbue them with magic. You or someone else can make a ranged spell attack with one of the pebbles by throwing it or hurling it with a sling. If thrown, it has a range of 60 feet. If someone else attacks with the pebble, that attacker adds your spellcasting ability modifier, not the attacker\u2019s, to the attack roll. On a hit, the target takes bludgeoning damage equal to 1d6 + your spellcasting ability modifier. Hit or miss, the spell then ends on the stone.</p><p>If you cast this spell again, the spell ends early on any pebbles still affected by it.',
+			'You touch one to three pebbles and imbue them with magic. You or someone else can make a ranged spell attack with one of the pebbles by throwing it or hurling it with a sling. If thrown, it has a range of 60 feet. If someone else attacks with the pebble, that attacker adds your spellcasting ability modifier, not the attacker’s, to the attack roll. On a hit, the target takes bludgeoning damage equal to 1d6 + your spellcasting ability modifier. Hit or miss, the spell then ends on the stone.</p><p>If you cast this spell again, the spell ends early on any pebbles still affected by it.',
 		duration: '1 minute',
 		level: '0',
 		name: 'Magic Stone',
@@ -7558,7 +7695,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'* If you target an area of loose earth, you can instantaneously excavate it, move it along the ground, and deposit it up to 5 feet away. This movement doesn\u2019t have enough force to cause damage.</p><p>* You cause shapes, colors, or both to appear on the dirt or stone, spelling out words, creating images, or shaping patterns. The changes last for 1 hour.</p><p>* If the dirt or stone you target is on the ground, you cause it to become difficult terrain. Alternatively, you can cause the ground to become normal terrain if it is already difficult terrain. This change lasts for 1 hour.</p><p>If you cast this spell multiple times, you can have no more than two of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.',
+			'* If you target an area of loose earth, you can instantaneously excavate it, move it along the ground, and deposit it up to 5 feet away. This movement doesn’t have enough force to cause damage.</p><p>* You cause shapes, colors, or both to appear on the dirt or stone, spelling out words, creating images, or shaping patterns. The changes last for 1 hour.</p><p>* If the dirt or stone you target is on the ground, you cause it to become difficult terrain. Alternatively, you can cause the ground to become normal terrain if it is already difficult terrain. This change lasts for 1 hour.</p><p>If you cast this spell multiple times, you can have no more than two of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.',
 		duration: 'Instant or 1 hour (see below)',
 		level: '0',
 		name: 'Mold Earth',
@@ -7578,7 +7715,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'* You instantaneously move or otherwise change the flow of the water as you direct, up to 5 feet in any direction. This movement doesn\u2019t have enough force to cause damage.</p><p>* You cause the water to form into simple shapes and animate at your direction. This change lasts for 1 hour.</p><p>* You change the water\u2019s color or opacity. The water must be changed in the same way throughout. This change lasts for 1 hour.</p><p>* You freeze the water, provided that there are no creatures in it. The water unfreezes in 1 hour.</p><p>If you cast this spell multiple times, you can have no more than two of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.',
+			'* You instantaneously move or otherwise change the flow of the water as you direct, up to 5 feet in any direction. This movement doesn’t have enough force to cause damage.</p><p>* You cause the water to form into simple shapes and animate at your direction. This change lasts for 1 hour.</p><p>* You change the water’s color or opacity. The water must be changed in the same way throughout. This change lasts for 1 hour.</p><p>* You freeze the water, provided that there are no creatures in it. The water unfreezes in 1 hour.</p><p>If you cast this spell multiple times, you can have no more than two of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.',
 		duration: 'Instant or 1 hour (see below)',
 		level: '0',
 		name: 'Shape Water',
@@ -7622,7 +7759,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You establish a telepathic link with one beast you touch that is friendly to you or charmed by you. The spell fails if the beast\u2019s Intelligence is 4 or higher. Until the spell ends, the link is active while you and the beast are within line of sight of each other. Through the link, the beast can understand your telepathic messages to it, and it can telepathically communicate simple emotions and concepts back to you. While the link is active, the beast gains advantage on attack rolls against any creature within 5 feet of you that you can see.',
+			'You establish a telepathic link with one beast you touch that is friendly to you or charmed by you. The spell fails if the beast’s Intelligence is 4 or higher. Until the spell ends, the link is active while you and the beast are within line of sight of each other. Through the link, the beast can understand your telepathic messages to it, and it can telepathically communicate simple emotions and concepts back to you. While the link is active, the beast gains advantage on attack rolls against any creature within 5 feet of you that you can see.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '1',
 		name: 'Beast Bond',
@@ -7653,7 +7790,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'sorcerer', 'wizard', 'level1'],
-		type: '1st-level conjuration'
+		type: '1st-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7665,7 +7803,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Choose one creature you can see within range. Yellow strips of magical energy loop around the creature. The target must succeed on a Strength saving throw or its flying speed (if any) is reduced to 0 feet for the spell\u2019s duration. An airborne creature affected by this spell descends at 60 feet per round until it reaches the ground or the spell ends.',
+			'Choose one creature you can see within range. Yellow strips of magical energy loop around the creature. The target must succeed on a Strength saving throw or its flying speed (if any) is reduced to 0 feet for the spell’s duration. An airborne creature affected by this spell descends at 60 feet per round until it reaches the ground or the spell ends.',
 		duration: 'Concentration, up to 1 minute',
 		level: '2',
 		name: 'Earthbind',
@@ -7673,7 +7811,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'level2'],
-		type: '2nd-level transmutation'
+		type: '2nd-level transmutation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -7686,7 +7825,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Choose an unoccupied 5-foot cube of air that you can see within range. An elemental force that resembles a dust devil appears in the cube and lasts for the spell\u2019s duration.</p><p>Any creature that ends its turn within 5 feet of the dust devil must make a Strength saving throw. On a failed save, the creature takes 1d8 bludgeoning damage and is pushed 10 feet away. On a successful save, the creature takes half as much damage and isn\u2019t pushed.</p><p>As a bonus action, you can move the dust devil up to 30 feet in any direction. If the dust devil moves over sand, dust, loose dirt, or small gravel, it sucks up the material and forms a 10-foot-radius cloud of debris around itself that lasts until the start of your next turn. The cloud heavily obscures its area.',
+			'Choose an unoccupied 5-foot cube of air that you can see within range. An elemental force that resembles a dust devil appears in the cube and lasts for the spell’s duration.</p><p>Any creature that ends its turn within 5 feet of the dust devil must make a Strength saving throw. On a failed save, the creature takes 1d8 bludgeoning damage and is pushed 10 feet away. On a successful save, the creature takes half as much damage and isn’t pushed.</p><p>As a bonus action, you can move the dust devil up to 30 feet in any direction. If the dust devil moves over sand, dust, loose dirt, or small gravel, it sucks up the material and forms a 10-foot-radius cloud of debris around itself that lasts until the start of your next turn. The cloud heavily obscures its area.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot level above 2nd.',
@@ -7696,7 +7835,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'sorcerer', 'wizard', 'level2'],
-		type: '2nd-level conjuration'
+		type: '2nd-level conjuration',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -7708,7 +7848,7 @@ export let spells = [
 			verbal: false
 		},
 		description:
-			'Choose one object weighing 1 to 5 pounds within range that isn\u2019t being worn or carried. The object flies in a straight line up to 90 feet in a direction you choose before falling to the ground, stopping early if it impacts against a solid surface. If the object would strike a creature, that creature must make a Dexterity saving throw. On a failed save, the object strikes the target and stops moving. In either case, both the object and the creature or solid surface take 3d8 bludgeoning damage.',
+			'Choose one object weighing 1 to 5 pounds within range that isn’t being worn or carried. The object flies in a straight line up to 90 feet in a direction you choose before falling to the ground, stopping early if it impacts against a solid surface. If the object would strike a creature, that creature must make a Dexterity saving throw. On a failed save, the object strikes the target and stops moving. In either case, both the object and the creature or solid surface take 3d8 bludgeoning damage.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 2nd level or higher, the maximum weight of objects that you can target with this spell increases by 5 pounds, and the damage increases by 1d8, for each slot level above 1st.',
@@ -7718,7 +7858,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['sorcerer', 'wizard', 'level1'],
-		type: '1st-level transmutation'
+		type: '1st-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7730,7 +7871,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You take control of the air in a 100-foot cube that you can see within range. Choose one of the following effects when you cast the spell. The effect lasts for the spell\u2019s duration, unless you use your action on a later turn to switch to a different effect. You can also use your action to temporarily halt the effect or to restart one you\u2019ve halted.',
+			'You take control of the air in a 100-foot cube that you can see within range. Choose one of the following effects when you cast the spell. The effect lasts for the spell’s duration, unless you use your action on a later turn to switch to a different effect. You can also use your action to temporarily halt the effect or to restart one you’ve halted.',
 		duration: 'Concentration, up to 1 hour',
 		level: '5',
 		name: 'Control Winds',
@@ -7750,7 +7891,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You cause up to six pillars of stone to burst from places on the ground that you can see within range. Each pillar is a cylinder that has a diameter of 5 feet and a height of up to 30 feet. The ground where a pillar appears must be wide enough for its diameter, and you can target ground under a creature if that creature is Medium or smaller. Each pillar has AC 5 and 30 hit points. When reduced to 0 hit points, a pillar crumbles into rubble, which creates an area of difficult terrain with a 10-foot radius. The rubble lasts until cleared.</p><p>If a pillar is created under a creature, that creature must succeed on a Dexterity saving throw or be lifted by the pillar. A creature can choose to fail the save.</p><p>If a pillar is prevented from reaching its full height because of a ceiling or other obstacle, a creature on the pillar takes 6d6 bludgeoning damage and is restrained, pinched between the pillar and the obstacle. The restrained creature can use an action to make a Strength or Dexterity check (the creature\u2019s choice) against the spell\u2019s saving throw DC. On a success, the creature is no longer restrained and must either move off the pillar or fall off it.',
+			'You cause up to six pillars of stone to burst from places on the ground that you can see within range. Each pillar is a cylinder that has a diameter of 5 feet and a height of up to 30 feet. The ground where a pillar appears must be wide enough for its diameter, and you can target ground under a creature if that creature is Medium or smaller. Each pillar has AC 5 and 30 hit points. When reduced to 0 hit points, a pillar crumbles into rubble, which creates an area of difficult terrain with a 10-foot radius. The rubble lasts until cleared.</p><p>If a pillar is created under a creature, that creature must succeed on a Dexterity saving throw or be lifted by the pillar. A creature can choose to fail the save.</p><p>If a pillar is prevented from reaching its full height because of a ceiling or other obstacle, a creature on the pillar takes 6d6 bludgeoning damage and is restrained, pinched between the pillar and the obstacle. The restrained creature can use an action to make a Strength or Dexterity check (the creature’s choice) against the spell’s saving throw DC. On a success, the creature is no longer restrained and must either move off the pillar or fall off it.',
 		duration: 'Instant',
 		higher_levels:
 			'When you cast this spell using a spell slot of 7th level or higher, you can create two additional pillars for each slot level above 6th.',
@@ -7760,7 +7901,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7783,7 +7925,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'wizard', 'level3'],
-		type: '3rd-level transmutation'
+		type: '3rd-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7805,7 +7948,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'warlock', 'wizard', 'level4'],
-		type: '4th-level transmutation'
+		type: '4th-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -7817,7 +7961,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You touch a quiver containing arrows or bolts. When a target is hit by a ranged weapon attack using a piece of ammunition drawn from the quiver, the target takes an extra 1d6 fire damage. The spell\u2019s magic ends on the piece of ammunition when it hits or misses, and the spell ends when twelve pieces of ammunition have been drawn from the quiver.',
+			'You touch a quiver containing arrows or bolts. When a target is hit by a ranged weapon attack using a piece of ammunition drawn from the quiver, the target takes an extra 1d6 fire damage. The spell’s magic ends on the piece of ammunition when it hits or misses, and the spell ends when twelve pieces of ammunition have been drawn from the quiver.',
 		duration: 'Concentration, up to 1 hour',
 		higher_levels:
 			'When you cast this spell using a spell slot of 4th level or higher, the number of pieces of ammunition you can affect with this spell increases by two for each slot level above 3rd.',
@@ -7847,7 +7991,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7867,7 +8012,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -7879,7 +8025,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'* You have resistance to bludgeoning, piercing, and slashing damage from nonmagical weapons.</p><p>* You can use your action to create a small earthquake on the ground in a 15-foot radius centered on you. Other creatures on that ground must succeed on a Dexterity saving throw or be knocked prone.</p><p>* You can move across difficult terrain made of earth or stone without spending extra movement. You can move through solid earth or stone as if it was air and without destabilizing it, but you can\u2019t end your movement there. If you do so, you are ejected to the nearest unoccupied space, this spell ends, and you are stunned until the end of your next turn',
+			'* You have resistance to bludgeoning, piercing, and slashing damage from nonmagical weapons.</p><p>* You can use your action to create a small earthquake on the ground in a 15-foot radius centered on you. Other creatures on that ground must succeed on a Dexterity saving throw or be knocked prone.</p><p>* You can move across difficult terrain made of earth or stone without spending extra movement. You can move through solid earth or stone as if it was air and without destabilizing it, but you can’t end your movement there. If you do so, you are ejected to the nearest unoccupied space, this spell ends, and you are stunned until the end of your next turn',
 		duration: 'Concentration, up to 10 minutes',
 		level: '6',
 		name: 'Investiture of Stone',
@@ -7887,7 +8033,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7907,7 +8054,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'sorcerer', 'warlock', 'wizard', 'level6'],
-		type: '6th-level transmutation'
+		type: '6th-level transmutation',
+		save: 'con'
 	},
 	{
 		casting_time: '1 action',
@@ -7928,7 +8076,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -7940,7 +8089,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You have resistance to acid, cold, fire, lightning, and thunder damage for the spell\u2019s duration.</p><p>When you take damage of one of those types, you can use your reaction to gain immunity to that type of damage, including against the triggering damage. If you do so, the resistances end, and you have the immunity until the end of your next turn, at which time the spell ends.',
+			'You have resistance to acid, cold, fire, lightning, and thunder damage for the spell’s duration.</p><p>When you take damage of one of those types, you can use your reaction to gain immunity to that type of damage, including against the triggering damage. If you do so, the resistances end, and you have the immunity until the end of your next turn, at which time the spell ends.',
 		duration: 'Concentration, up to 1 minute',
 		level: '6',
 		name: 'Primordial Ward',
@@ -7961,7 +8110,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You conjure up a wave of water that crashes down on an area within range. The area can be up to 30 feet long, up to 10 feet wide, and up to 10 feet tall. Each creature in that area must make a Dexterity saving throw. On a failure, a creature takes 4d8 bludgeoning damage and is knocked prone. On a success, a creature takes half as much damage and isn\u2019t knocked prone. The water then spreads out across the ground in all directions, extinguishing unprotected flames in its area and within 30 feet of it.',
+			'You conjure up a wave of water that crashes down on an area within range. The area can be up to 30 feet long, up to 10 feet wide, and up to 10 feet tall. Each creature in that area must make a Dexterity saving throw. On a failure, a creature takes 4d8 bludgeoning damage and is knocked prone. On a success, a creature takes half as much damage and isn’t knocked prone. The water then spreads out across the ground in all directions, extinguishing unprotected flames in its area and within 30 feet of it.',
 		duration: 'Instant',
 		level: '3',
 		name: 'Tidal Wave',
@@ -7969,7 +8118,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'wizard', 'level3'],
-		type: '3rd-level conjuration'
+		type: '3rd-level conjuration',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -7990,7 +8140,8 @@ export let spells = [
 		ritual: false,
 		school: 'transmutation',
 		tags: ['druid', 'wizard', 'level5'],
-		type: '5th-level transmutation'
+		type: '5th-level transmutation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -8003,7 +8154,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You conjure up a wall of water on the ground at a point you can see within range. You can make the wall up to 30 feet long, 10 feet high, and 1 foot thick, or you can make a ringed wall up to 20 feet in diameter  20 feet high, and 1 foot thick. The wall vanishes when the spell ends. The wall\u2019s space is difficult terrain.</p><p>Any ranged weapon attack that enters the wall\u2019s space has disadvantage on the attack roll, and fire damage is halved if the fire effect passes through the wall to reach its target. Spells that deal cold damage that pass through the wall cause the area of the wall they pass through to freeze solid (at least a 5-foot square section is frozen). Each 5-foot-square frozen section has AC 5 and 15 hit points. Reducing a frozen section to 0 hit points destroys it. When a section is destroyed, the wall\u2019s water doesn\u2019t fill it.',
+			'You conjure up a wall of water on the ground at a point you can see within range. You can make the wall up to 30 feet long, 10 feet high, and 1 foot thick, or you can make a ringed wall up to 20 feet in diameter  20 feet high, and 1 foot thick. The wall vanishes when the spell ends. The wall’s space is difficult terrain.</p><p>Any ranged weapon attack that enters the wall’s space has disadvantage on the attack roll, and fire damage is halved if the fire effect passes through the wall to reach its target. Spells that deal cold damage that pass through the wall cause the area of the wall they pass through to freeze solid (at least a 5-foot square section is frozen). Each 5-foot-square frozen section has AC 5 and 15 hit points. Reducing a frozen section to 0 hit points destroys it. When a section is destroyed, the wall’s water doesn’t fill it.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '3',
 		name: 'Wall of Water',
@@ -8024,7 +8175,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You conjure up a sphere of water with a 10-foot radius on a point you can see within range. The sphere can hover in the air, but no more than 10 feet off the ground. The sphere remains for the spell\u2019s duration.</p><p>Any creature in the sphere\u2019s space must make a Strength saving throw. On a successful save, a creature is ejected from that space to the nearest unoccupied space outside it. A Huge or larger creature succeeds on the saving throw automatically. On a failed save, a creature is restrained by the sphere and is engulfed by the water. At the end of each of its turns, a restrained target can repeat the saving throw.</p><p>The sphere can restrain a maximum of four Medium or smaller creatures or one Large creature. If the sphere restrains a creature in excess of these numbers, a random creature that was already restrained by the sphere falls out of it and lands prone in a space within 5 feet of it.</p><p>As an action, you can move the sphere up to 30 feet in a straight line. If it moves over a pit, cliff, or other drop, it safely descends until it is hovering 10 feet over ground. Any creature restrained by the sphere moves with it. You can ram the sphere into creatures, forcing them to make the saving throw, but no more than once per turn.</p><p>When the spell ends, the sphere falls to the ground and extinguishes all normal flames within 30 feet of it. Any creature restrained by the sphere is knocked prone in the space where it falls.',
+			'You conjure up a sphere of water with a 10-foot radius on a point you can see within range. The sphere can hover in the air, but no more than 10 feet off the ground. The sphere remains for the spell’s duration.</p><p>Any creature in the sphere’s space must make a Strength saving throw. On a successful save, a creature is ejected from that space to the nearest unoccupied space outside it. A Huge or larger creature succeeds on the saving throw automatically. On a failed save, a creature is restrained by the sphere and is engulfed by the water. At the end of each of its turns, a restrained target can repeat the saving throw.</p><p>The sphere can restrain a maximum of four Medium or smaller creatures or one Large creature. If the sphere restrains a creature in excess of these numbers, a random creature that was already restrained by the sphere falls out of it and lands prone in a space within 5 feet of it.</p><p>As an action, you can move the sphere up to 30 feet in a straight line. If it moves over a pit, cliff, or other drop, it safely descends until it is hovering 10 feet over ground. Any creature restrained by the sphere moves with it. You can ram the sphere into creatures, forcing them to make the saving throw, but no more than once per turn.</p><p>When the spell ends, the sphere falls to the ground and extinguishes all normal flames within 30 feet of it. Any creature restrained by the sphere is knocked prone in the space where it falls.',
 		duration: 'Concentration, up to 1 minute',
 		level: '4',
 		name: 'Watery Sphere',
@@ -8032,7 +8183,8 @@ export let spells = [
 		ritual: false,
 		school: 'conjuration',
 		tags: ['druid', 'sorcerer', 'wizard', 'level4'],
-		type: '4th-level conjuration'
+		type: '4th-level conjuration',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -8045,7 +8197,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A whirlwind howls down to a point on the ground you specify. The whirlwind is a 10-foot-radius, 30-foot-high cylinder centered on that point. Until the spell ends, you can use your action to move the whirlwind up to 30 feet in any direction along the ground. The whirlwind sucks up any Medium or smaller objects that aren\u2019t secured to anything and that aren\u2019t worn or carried by anyone.</p><p>A creature must make a Dexterity saving throw the first time on a turn that it enters the whirlwind or that the whirlwind enters its space, including when the whirlwind first appears. A creature takes 10d6 bludgeoning damage on a failed save, or half as much damage on a successful one. In addition, a Large or smaller creature that fails the save must succeed on a Strength saving throw or become restrained in the whirlwind until the spell ends. When a creature starts its turn restrained by the whirlwind, the creature is pulled 5 feet higher inside it, unless the creature is at the top. A restrained creature moves with the whirlwind and falls when the spell ends, unless the creature has some means to stay aloft.</p><p>A restrained creature can use an action to make a Strength or Dexterity check against your spell save DC. If successful, the creature is no longer restrained by the whirlwind and is hurled 3d6 \u00d7 10 feet away from it in a random direction.',
+			'A whirlwind howls down to a point on the ground you specify. The whirlwind is a 10-foot-radius, 30-foot-high cylinder centered on that point. Until the spell ends, you can use your action to move the whirlwind up to 30 feet in any direction along the ground. The whirlwind sucks up any Medium or smaller objects that aren’t secured to anything and that aren’t worn or carried by anyone.</p><p>A creature must make a Dexterity saving throw the first time on a turn that it enters the whirlwind or that the whirlwind enters its space, including when the whirlwind first appears. A creature takes 10d6 bludgeoning damage on a failed save, or half as much damage on a successful one. In addition, a Large or smaller creature that fails the save must succeed on a Strength saving throw or become restrained in the whirlwind until the spell ends. When a creature starts its turn restrained by the whirlwind, the creature is pulled 5 feet higher inside it, unless the creature is at the top. A restrained creature moves with the whirlwind and falls when the spell ends, unless the creature has some means to stay aloft.</p><p>A restrained creature can use an action to make a Strength or Dexterity check against your spell save DC. If successful, the creature is no longer restrained by the whirlwind and is hurled 3d6 × 10 feet away from it in a random direction.',
 		duration: 'Concentration, up to 1 minute',
 		level: '7',
 		name: 'Whirlwind',
@@ -8053,7 +8205,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['druid', 'wizard', 'level7'],
-		type: '7th-level evocation'
+		type: '7th-level evocation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -8065,7 +8218,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'Flames wreathe one creature you can see within range. The target must make a Dexterity saving throw. It takes 7d6 fire damage on a failed save, or half as much damage on a successful one. On a failed save, the target also burns for the spell\u2019s duration. The burning target sheds bright light in a 30-foot radius and dim light for an additional 30 feet. At the end of each of its turns, the target repeats the saving throw. It takes 3d6 fire damage on a failed save, and the spell ends on a successful one. These magical flames can\u2019t be extinguished through nonmagical means.</p><p>If damage from this spell reduces a target to 0 hit points, the target is turned to ash.',
+			'Flames wreathe one creature you can see within range. The target must make a Dexterity saving throw. It takes 7d6 fire damage on a failed save, or half as much damage on a successful one. On a failed save, the target also burns for the spell’s duration. The burning target sheds bright light in a 30-foot radius and dim light for an additional 30 feet. At the end of each of its turns, the target repeats the saving throw. It takes 3d6 fire damage on a failed save, and the spell ends on a successful one. These magical flames can’t be extinguished through nonmagical means.</p><p>If damage from this spell reduces a target to 0 hit points, the target is turned to ash.',
 		duration: 'Concentration, up to 1 minute',
 		level: '5',
 		name: 'Immolation',
@@ -8073,7 +8226,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level5'],
-		type: '5th-level evocation'
+		type: '5th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -8085,7 +8239,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'A 20-foot-radius sphere of whirling air springs into existence centered on a point you choose within range. The sphere remains for the spell\u2019s duration. Each creature in the sphere when it appears or that ends its turn there must succeed on a Strength saving throw or take 2d6 bludgeoning damage. The sphere\u2019s space is difficult terrain.</p><p>Until the spell ends, you can use a bonus action on each of your turns to cause a bolt of lightning to leap from the center of the sphere toward one creature you choose within 60 feet of the center. Make a ranged spell attack. You have advantage on the attack roll if the target is in the sphere. On a hit, the target takes 4d6 lightning damage.</p><p>Creatures within 30 feet of the sphere have disadvantage on Wisdom (Perception) checks made to listen.',
+			'A 20-foot-radius sphere of whirling air springs into existence centered on a point you choose within range. The sphere remains for the spell’s duration. Each creature in the sphere when it appears or that ends its turn there must succeed on a Strength saving throw or take 2d6 bludgeoning damage. The sphere’s space is difficult terrain.</p><p>Until the spell ends, you can use a bonus action on each of your turns to cause a bolt of lightning to leap from the center of the sphere toward one creature you choose within 60 feet of the center. Make a ranged spell attack. You have advantage on the attack roll if the target is in the sphere. On a hit, the target takes 4d6 lightning damage.</p><p>Creatures within 30 feet of the sphere have disadvantage on Wisdom (Perception) checks made to listen.',
 		duration: 'Concentration, up to 1 minute',
 		higher_levels:
 			'When you cast this spell using a spell slot of 5th level or higher, the damage increases for each of its effects by 1d6 for each slot level above 4th.',
@@ -8095,7 +8249,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level4'],
-		type: '4th-level evocation'
+		type: '4th-level evocation',
+		save: 'str'
 	},
 	{
 		casting_time: '1 action',
@@ -8118,7 +8273,8 @@ export let spells = [
 		ritual: false,
 		school: 'evocation',
 		tags: ['sorcerer', 'wizard', 'level4'],
-		type: '4th-level evocation'
+		type: '4th-level evocation',
+		save: 'dex'
 	},
 	{
 		casting_time: '1 action',
@@ -8131,7 +8287,7 @@ export let spells = [
 			verbal: true
 		},
 		description:
-			'You conjure up a wall of swirling sand on the ground at a point you can see within range. You can make the wall up to 30 feet long, 10 feet high, and 10 feet thick, and it vanishes when the spell ends. It blocks line of sight but not movement. A creature is blinded while in the wall\u2019s space and must spend 3 feet of movement for every 1 foot it moves there.',
+			'You conjure up a wall of swirling sand on the ground at a point you can see within range. You can make the wall up to 30 feet long, 10 feet high, and 10 feet thick, and it vanishes when the spell ends. It blocks line of sight but not movement. A creature is blinded while in the wall’s space and must spend 3 feet of movement for every 1 foot it moves there.',
 		duration: 'Concentration, up to 10 minutes',
 		level: '3',
 		name: 'Wall of Sand',

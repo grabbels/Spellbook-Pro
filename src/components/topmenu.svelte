@@ -2,16 +2,18 @@
 	import Button from './button.svelte';
 	import Section from './section.svelte';
 	import { activeSpells } from './stores-persist';
-	import { spellListEmpty, notification } from './stores';
-	import { topMenuOpenClose } from './globalfunctions.svelte';
+	import { spellListEmpty, notification, modalCall, filters, session } from './stores';
+	import { topMenuOpenClose, removeFilters, refreshList } from './globalfunctions.svelte';
 	let fileinput;
 
 	function empty() {
 		let text = 'Are you sure you want to remove all your saved spells?';
 		if (confirm(text) == true) {
 			$activeSpells.length = 0;
+			$filters = false;
+			removeFilters();
 			topMenuOpenClose();
-			$notification = 'Spellbook has been cleared#alert'
+			$notification = 'Spellbook has been cleared#alert';
 			// $notification = 'Spellbook has been cleared';
 		}
 	}
@@ -35,6 +37,17 @@
 		}
 	}
 
+	function save() {
+		$modalCall = 'save';
+	}
+	function load() {
+		if ($session) {
+			$modalCall = 'load';
+		} else {
+			$notification = 'You need to <a href="/account/login">log in</a> to load spellbooks#alert'
+		}
+	}
+
 	const onFileSelected = (e) => {
 		let file = e.target.files[0];
 		let reader = new FileReader();
@@ -49,7 +62,7 @@
 <Section name="topmenu">
 	<div class="wrapper">
 		<div>
-			<Button
+			<!-- <Button
 				disabled={$spellListEmpty}
 				on:click={download}
 				href=""
@@ -65,7 +78,25 @@
 				type="fill"
 				icon="ri-upload-line"
 				text="Import"
+			/> -->
+			<Button
+				disabled={$spellListEmpty}
+				on:click={save}
+				href=""
+				type="fill"
+				icon="ri-save-3-line"
+				text="Save"
 			/>
+			<Button on:click={load} href="" type="fill" icon="ri-folder-open-line" text="Load" />
+			<!-- <Button
+				on:click={() => {
+					fileinput.click();
+				}}
+				href=""
+				type="fill"
+				icon="ri-upload-line"
+				text="Import"
+			/> -->
 			<input
 				type="file"
 				id="input-file"
@@ -80,6 +111,14 @@
 				type="fill"
 				icon="ri-file-2-line"
 				text="Export PDF"
+			/>
+			<Button
+				disabled={$spellListEmpty}
+				on:click={refreshList}
+				href=""
+				type="fill"
+				icon="ri-refresh-line"
+				text="Refresh list"
 			/>
 			<Button
 				disabled={$spellListEmpty}

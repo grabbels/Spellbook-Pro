@@ -13,13 +13,16 @@
 		topmenuopen,
 		notification,
 		pagetitle,
-		session
+		session,
+		modalCall,
+		quickQuery
 	} from '../components/stores';
 	import { retrieveSession } from '../components/globalfunctions.svelte';
 	import { loggedIn, userNickname } from '../components/stores-persist';
 	import bg from '../img/menu-bg.png';
 	import bgalt from '../img/menu-bg-alt.png';
 	import '@fontsource/kanit';
+	import Modal from '../components/modal.svelte';
 	let timeOut = 3000;
 	export const closeMenu = () => {
 		if ($sidemenuopen === true || $topmenuopen === true) {
@@ -74,8 +77,7 @@
 	}
 </script>
 
-<Body class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : ''} />
-<!-- <svelte:body class="{$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : ''}"/> -->
+<Body class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''} />
 
 <div class="topmenu" style="background-image: url('{bgalt}')" class:open={$topmenuopen}>
 	<TopMenu />
@@ -129,6 +131,12 @@
 			</p>
 		</div>
 	</div>
+{/if}
+
+{#if ($modalCall && $modalCall != 'lookup') || ($modalCall && $quickQuery)}
+	{#key $modalCall}
+		<Modal />
+	{/key}
 {/if}
 
 <style lang="scss">

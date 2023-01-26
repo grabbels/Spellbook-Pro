@@ -1,15 +1,17 @@
 <script>
 	import { pagetitle } from '../components/stores.js';
-	$pagetitle = "Home";
+	import { activeSpells } from '../components/stores-persist.js';
+	$pagetitle = 'Home';
 	import Section from '../components/section.svelte';
 	import Spellsheet from '../components/spellsheet.svelte';
+	import Filters from '../components/filters.svelte';
 
 	// let menu = 'menu';
 </script>
-
-<Section name="title">
-	<!-- <h1>Welcome to SvelteKit</h1>
-	<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p> -->
+<Section name="filters">
+	{#if $activeSpells.length > 0}
+		<Filters/>
+	{/if}
 </Section>
 <Section name="spellsheet">
 	<Spellsheet />

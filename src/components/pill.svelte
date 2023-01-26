@@ -6,8 +6,8 @@
 </script>
 
 <div class="pill {size} {icon === 'ri-checkbox-blank-circle-fill' ? 'placeholder' : ''}">
-	<i class={icon} />{text}
-	<div class="pill {size} label"><i class={icon} />{label}</div>
+	<i class={icon} /><span>{text}</span>
+	{#if label}<div class="pill {size} label"><i class={icon} />{label}</div>{/if}
 </div>
 
 <style lang="scss">
@@ -29,7 +29,7 @@
 			color: var(--white);
 			background-color: var(--translucent);
 			font-size: 0.9rem;
-			margin: 0.5rem 0.4rem 0.5rem 0;
+			margin: 0.5rem 0.4rem 0 0;
 			border-radius: 50vh;
 			// &:first-child {
 			//     border-radius: 50vh 0 0 50vh;
@@ -73,7 +73,7 @@
 			box-shadow: 0 3px 10px rgba(19, 19, 19, 0.4);
 		}
 		&:hover {
-			.label {
+			.label {	
 				display: block;
 			}
 		}

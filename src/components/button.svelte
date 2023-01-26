@@ -48,13 +48,12 @@
 		>{#if icon}<i class={icon} />{/if}{text}</a
 	>
 {:else}
-	<button on:click class={type} class:disabled
+	<button type="button" on:click class={type} class:disabled
 		>{#if icon}<i class={icon} />{/if}{text}</button
 	>
 {/if}
 
 <style lang="scss" global>
-
 	button,
 	.button,
 	label.button {
@@ -64,7 +63,7 @@
 		cursor: pointer;
 		padding: 0.35rem 1rem;
 		margin-right: 0.2rem;
-		margin-bottom: .4rem;
+		margin-bottom: 0.4rem;
 		font-size: 1rem;
 		border-radius: 6px;
 		font-weight: 500;
@@ -158,6 +157,14 @@
 				div {
 					transform: translateY(1px);
 				}
+			}
+		}
+		&.subtle {
+			background-color: var(--moretranslucent);
+			border-color: var(--moretranslucent);
+			color: white;
+			&:hover {
+				background-color: var(--purple);
 			}
 		}
 		&.outline {

@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
-	import { pagetitle, session } from '../components/stores';
+	import { pagetitle, session, modalCall, quickQuery } from '../components/stores';
 	import { loggedIn, userNickname } from '../components/stores-persist';
 	import {
 		topMenuOpenClose,
@@ -48,7 +48,7 @@
 			{#if $pagetitle === 'Home'}
 				<Button
 					href=""
-					on:click={() => topMenuOpenClose}
+					on:click={() => topMenuOpenClose()}
 					type="fill"
 					icon="ri-menu-2-line"
 					text="menu"
@@ -57,7 +57,7 @@
 		</div>
 
 		<div class="header_right">
-			<input type="text" placeholder="Quick spell lookup..." />
+			<input type="text" placeholder="Quick spell lookup..." bind:value={$quickQuery} on:input={() => $modalCall = 'lookup'} />
 			{#if $session && $pagetitle !== 'My account'}
 				<Button type="fill" icon="ri-contacts-book-2-line" text="Account" href="/account" />
 			{:else if $pagetitle == 'My account' && $session}

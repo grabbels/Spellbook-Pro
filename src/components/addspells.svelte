@@ -9,7 +9,26 @@
 	let searchField;
 	let clear;
 	let resultsList;
-	
+	// spellssave();
+	// function spellssave() {
+	// 	for (let i = 0; i < spells.length; i++) {
+	// 		let spellDescription = spells[i].description.toLowerCase();
+	// 		spellDescription.includes('strength sav')
+	// 			? (spells[i].save = 'str')
+	// 			: spellDescription.includes('dexterity sav')
+	// 			? (spells[i].save = 'dex')
+	// 			: spellDescription.includes('constitution sav')
+	// 			? (spells[i].save = 'con')
+	// 			: spellDescription.includes('intelligence sav')
+	// 			? (spells[i].save = 'int')
+	// 			: spellDescription.includes('wisdom sav')
+	// 			? (spells[i].save = 'wis')
+	// 			: spellDescription.includes('charisma sav')
+	// 			? (spells[i].save = 'cha')
+	// 			: '';
+	// 	}
+	// 	console.log(spells)
+	// }
 	$: if ($sidemenuopen === true) {
 		searchField.focus();
 	}
@@ -19,14 +38,15 @@
 		results = [];
 	}
 	const addSpell = (spell) => {
-		if ($activeSpells.includes(spell)) {
+		console.log($activeSpells);
+		if ($activeSpells.filter((e) => e.name === spell.name).length > 0) {
 			$notification = 'This spell is already in your spellbook.#error';
 		} else {
+			spell.display = true;
 			$activeSpells.push(spell);
 		}
 		$activeSpells = $activeSpells;
 	};
-	
 </script>
 
 <div class="wrapper">
@@ -135,6 +155,7 @@
 		position: relative;
 		transition: 0.2s;
 		scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+		
 		// scrollbar-width:;
 
 		li {
