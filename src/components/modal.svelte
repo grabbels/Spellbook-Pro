@@ -13,7 +13,12 @@
 		quickQuery,
 		lookupSpell
 	} from './stores';
-	import { retrieveSession, loadSpellsheetsByUserId, classOptions } from './globalfunctions.svelte';
+	import {
+		retrieveSession,
+		loadSpellsheetsByUserId,
+		classOptions,
+		refreshList
+	} from './globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import Button from './button.svelte';
 	import { supabaseClient } from '$lib/db';
@@ -73,7 +78,7 @@
 	// function newSave() {
 	// 	savePrompt = true;
 	// }
-	$: console.log($modalCall)
+	$: console.log($modalCall);
 	var resultNumber = -1;
 	function handleKeyDown(e) {
 		if (e.key == 'ArrowDown' && results) {
@@ -104,7 +109,7 @@
 
 	function handleLookup(i) {
 		$lookupSpell = results[i];
-		$modalCall = 'spell';	
+		$modalCall = 'spell';
 	}
 
 	async function handleSave(e) {
@@ -170,6 +175,7 @@
 					$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
 				} else if (data) {
 					$activeSpells = data[0].list;
+					refreshList();
 					$modalCall = '';
 					$modalCall = $modalCall;
 					$topmenuopen = false;
@@ -220,12 +226,12 @@
 								<Pill text={spellsheet.class} size="small" icon="ri-contacts-line" />
 								<Pill text="Level {spellsheet.level}" size="small" icon="ri-user-star-line" />
 							</button>
-							{#if i === listLength - 1 && $savedSpellSheets.length < 9 && $modalCall == 'save'}
-								<button class="slot add" on:click={() => (savePrompt = true)}
-									><i class="ri-add-line" /></button
-								>
-							{/if}
 						{/each}
+						{#if listLength == 0 || $savedSpellSheets.length < 9 && $modalCall == 'save'}
+							<button class="slot add" on:click={() => (savePrompt = true)}
+								><i class="ri-add-line" /></button
+							>
+						{/if}
 
 						<!-- {#each (placeholderTiles.length - $savedSpellSheets.length) as placeholder}
 							<div class="slot placeholder"></div>

@@ -10,12 +10,13 @@
 		actionFilter,
 		rangeFilter,
 		searchFilter,
-		saveFilter
+		saveFilter,
+		filters
 	} from './stores';
 	import { activeSpells, loggedIn } from './stores-persist';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
-	import {spells} from './spells';
+	import { spells } from './spells';
 	export let classOptions =
 		'<option value="" disabled selected hidden>Select class</option><option value="Artificer">Artificer</option><option value="Barbarian">Barbarian</option><option value="Bard">Bard</option><option value="Cleric">Cleric</option><option value="Druid">Druid</option><option value="Fighter">Fighter</option><option value="Monk">Monk</option><option value="Paladin">Paladin</option><option value="Ranger">Ranger</option><option value="Rogue">Rogue</option><option value="Sorcerer">Sorcerer</option><option value="Warlock">Warlock</option><option value="Wizard">Wizard</option>';
 
@@ -110,12 +111,23 @@
 	}
 
 	export function refreshList() {
-		let staleList = get(activeSpells)
-		let freshList = []
+		let staleList = get(activeSpells);
+		let freshList = [];
 		for (let i = 0; i < staleList.length; i++) {
 			freshList.push(spells.filter((o) => o.name == staleList[i].name).pop());
-			
 		}
-		activeSpells.set(freshList)
+		activeSpells.set(freshList);
+	}
+
+	export function empty() {
+		let text = 'Are you sure you want to remove all your saved spells?';
+		if (confirm(text) == true) {
+			activeSpells.set([]);
+			filters.set(false)
+			removeFilters();
+			topMenuOpenClose();
+			notification.set('Spellbook has been cleared#alert');
+			// $notification = 'Spellbook has been cleared';
+		}
 	}
 </script>

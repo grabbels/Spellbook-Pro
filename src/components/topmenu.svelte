@@ -3,20 +3,9 @@
 	import Section from './section.svelte';
 	import { activeSpells } from './stores-persist';
 	import { spellListEmpty, notification, modalCall, filters, session } from './stores';
-	import { topMenuOpenClose, removeFilters, refreshList } from './globalfunctions.svelte';
+	import { topMenuOpenClose, removeFilters, refreshList, empty } from './globalfunctions.svelte';
 	let fileinput;
 
-	function empty() {
-		let text = 'Are you sure you want to remove all your saved spells?';
-		if (confirm(text) == true) {
-			$activeSpells.length = 0;
-			$filters = false;
-			removeFilters();
-			topMenuOpenClose();
-			$notification = 'Spellbook has been cleared#alert';
-			// $notification = 'Spellbook has been cleared';
-		}
-	}
 	function download() {
 		var activeSpellsSave = JSON.stringify($activeSpells);
 		// var favoriteSpellsSave = localStorage.favoriteSpells.split(',');

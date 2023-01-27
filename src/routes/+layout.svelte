@@ -216,6 +216,7 @@
 
 			p {
 				color: var(--black);
+				margin-bottom: 0;
 				:global(a) {
 					color: var(--bg);
 					transition: 0.1s;
