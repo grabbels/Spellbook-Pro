@@ -23,6 +23,7 @@
 	import bgalt from '../img/menu-bg-alt.png';
 	import '@fontsource/kanit';
 	import Modal from '../components/modal.svelte';
+	import Pdf from '../components/pdf.svelte';
 	let timeOut = 3000;
 	export const closeMenu = () => {
 		if ($sidemenuopen === true || $topmenuopen === true) {
@@ -56,12 +57,9 @@
 		if (user) {
 			$loggedIn = true;
 			$userNickname = user.user_metadata.nickname;
-			console.log(user.user_metadata.nickname);
-			console.log($loggedIn);
 		} else {
 			$userNickname = null;
 			$loggedIn = false;
-			console.log($loggedIn);
 		}
 
 		// }
@@ -77,7 +75,9 @@
 	}
 </script>
 
-<Body class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''} />
+<Body
+	class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''}
+/>
 
 <div class="topmenu" style="background-image: url('{bgalt}')" class:open={$topmenuopen}>
 	<TopMenu />
@@ -119,14 +119,15 @@
 				? 'error'
 				: $notification.split('#')[1].includes('alert')
 				? 'alert'
+				: $notification.split('#')[1].includes('positive')
+				? 'positive'
 				: $notification.split('#')[1].includes('info')
 				? 'info'
 				: ''} notification_inner"
 		>
 			<p>
-				<i class="ri-error-warning-fill" /><i class="ri-alert-fill" /><i
-					class="ri-information-line"
-				/>
+				<i class="ri-error-warning-fill" /><i class="ri-alert-fill" />
+				<i class="ri-checkbox-circle-line" /> <i class="ri-information-line" />
 				{@html $notification.split('#')[0]}
 			</p>
 		</div>
@@ -213,7 +214,6 @@
 			background-color: var(--white);
 			border-radius: 50vh;
 			filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
-
 			p {
 				color: var(--black);
 				margin-bottom: 0;
@@ -252,6 +252,14 @@
 					i.ri-information-line {
 						display: inline;
 						color: var(--lightblue);
+					}
+				}
+			}
+			&.positive {
+				p {
+					i.ri-checkbox-circle-line {
+						display: inline;
+						color: var(--lightgreen);
 					}
 				}
 			}

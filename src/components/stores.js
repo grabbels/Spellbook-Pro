@@ -18,3 +18,4 @@ export const saveFilter = writable('')
 export const activeLevels = writable('')
 export const quickQuery = writable('');
 export const lookupSpell = writable('');
+export const savePrompt = writable(false)

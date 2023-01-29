@@ -11,7 +11,8 @@
 		userNickname,
 		topmenuopen,
 		quickQuery,
-		lookupSpell
+		lookupSpell,
+		savePrompt
 	} from './stores';
 	import {
 		retrieveSession,
@@ -25,23 +26,28 @@
 	import { activeSpells } from './stores-persist';
 	import Close from './close.svelte';
 	import SchoolIcon from './schoolicon.svelte';
+	import Colorpicker from './colorpicker.svelte';
+	import SaveSlot from './saveslot.svelte';
+	import Loading from './loading.svelte';
 	export let modal;
-	let savePrompt = false;
 	let loadingSave;
 	let saveName;
 	let saveLevel;
 	let saveClass;
 	let saveDescription;
+	let saveColor = 'var(--purple)';
 	let overwriteId;
 	let saveForm;
 	let listLength;
 	let quickInput;
 	let results;
 	let result = [];
+	let colorPicker = false;
 	$: $modalCall, ($quickQuery = '');
+	$: saveColor, (colorPicker = false);
 	// $modalCall = 'save';
 	let placeholderTiles = [1, 2, 3, 4, 5, 6, 7, 8];
-	if ($modalCall == 'save' || 'load') {
+	if ($modalCall == 'save' || 'load' || 'edit') {
 		if (!$userId || !$userNickname) {
 			if ($session) {
 				$userId = $session.user.id;
@@ -133,7 +139,8 @@
 					level: saveLevel.value,
 					description: saveDescription.value,
 					list: $activeSpells,
-					user_id: $userId
+					user_id: $userId,
+					color: saveColor
 				})
 				.select();
 			if (error) {
@@ -144,7 +151,7 @@
 				$notification = 'Spellbook saved.#info';
 
 				overwriteId = '';
-				savePrompt = false;
+				$savePrompt = false;
 				$topmenuopen = false;
 				// loadSpellsheetsByUserId($userId);
 				$modalCall = '';
@@ -155,13 +162,16 @@
 
 	async function handleClick(id) {
 		if ($modalCall == 'save') {
-			if (
+			if (id === 'add') {
+				$savePrompt = true;
+			} else if (
+				id != 'add' &&
 				confirm(
 					'This will overwrite the spellbook in the selected slot. Do you want to continue?'
 				) == true
 			) {
 				overwriteId = id;
-				savePrompt = true;
+				$savePrompt = true;
 			}
 		} else if ($modalCall == 'load') {
 			if (
@@ -202,54 +212,52 @@
 			{#if $modalCall !== 'lookup'}
 				<Close on:click={() => ($modalCall = '')} />
 			{/if}
-			{#if $modalCall == 'save' || $modalCall == 'load'}
+			{#if $modalCall == 'save' || $modalCall == 'load' || $modalCall == 'edit'}
 				<div class="modal_inner">
 					<div class="bookmark_decal"><i class="ri-bookmark-fill" /></div>
-
-					{#if $modalCall == 'save'}
-						<h2>Save slots</h2>
-						<p>Select a slot to save your spellbook in:</p>
-					{/if}
-					{#if $modalCall == 'load'}
-						<h2>Saved spellbooks</h2>
-						<p>Select which spellbook you would like to load:</p>
-					{/if}
-					<div class="save_slots">
-						{#each $savedSpellSheets as spellsheet, i}
-							<button
-								transition:fade={{ duration: 100 }}
-								data-id={spellsheet.id}
-								class="slot taken"
-								on:click={() => handleClick(spellsheet.id)}
-							>
-								<h3>{spellsheet.name}</h3>
-								<Pill text={spellsheet.class} size="small" icon="ri-contacts-line" />
-								<Pill text="Level {spellsheet.level}" size="small" icon="ri-user-star-line" />
-							</button>
-						{/each}
-						{#if listLength == 0 || $savedSpellSheets.length < 9 && $modalCall == 'save'}
-							<button class="slot add" on:click={() => (savePrompt = true)}
-								><i class="ri-add-line" /></button
-							>
-						{/if}
-
-						<!-- {#each (placeholderTiles.length - $savedSpellSheets.length) as placeholder}
-							<div class="slot placeholder"></div>
-						{/each} -->
+					{#if $savePrompt === false}
 						{#if $modalCall == 'save'}
-							<div class="save_slots placeholder">
-								{#each placeholderTiles as tile}
-									<div class="slot placeholder" />
+							<h2>Save slots</h2>
+							<p>Select a slot to save your spellbook in:</p>
+						{/if}
+						{#if $modalCall == 'load'}
+							<h2>Saved spellbooks</h2>
+							<p>Select which spellbook you would like to load:</p>
+						{/if}
+						{#if $savedSpellSheets.length > 0}
+							<div class="save_slots">
+								{#each $savedSpellSheets as spellsheet}
+									<SaveSlot data={spellsheet} on:click={() => handleClick(spellsheet.id)} />
 								{/each}
 							</div>
+						{:else}
+							<Loading />
 						{/if}
-					</div>
-
-					{#if savePrompt === true}
+					{/if}
+					{#if $savePrompt === true || $modalCall === 'edit'}
 						<div transition:fly={{ duration: 150, y: 10 }} class="new_save">
 							<form bind:this={saveForm} on:submit={(e) => handleSave(e)}>
-								<label for="name">Spellbook name</label>
-								<input bind:this={saveName} name="name" type="text" maxlength="30" />
+								<div class="grid name-color">
+									<div>
+										<label for="name">Spellbook name</label>
+										<input bind:this={saveName} name="name" type="text" maxlength="30" />
+									</div>
+									<div>
+										<label for="name">Color</label>
+										<input
+											type="checkbox"
+											name="color"
+											style="background-color: {saveColor}"
+											on:click={() => (colorPicker = true)}
+										/>
+										<!-- <button name="color" style="background-color: {saveColor}" on:click={() => (colorPicker = true)} /> -->
+										{#if colorPicker}
+											<div style="position: relative">
+												<Colorpicker bind:selectedColor={saveColor} />
+											</div>
+										{/if}
+									</div>
+								</div>
 								<div class="grid">
 									<div>
 										<label for="class">Character class</label>
@@ -282,7 +290,12 @@
 								<Button
 									on:click={(e) => {
 										e.preventDefault;
-										savePrompt = false;
+										if ($modalCall === 'edit') {
+											$modalCall = '';
+											$savePrompt = false;
+										} else {
+											$savePrompt = false;
+										}
 									}}
 									text="Cancel"
 									type="fill"
@@ -420,20 +433,27 @@
 		top: 0;
 		bottom: 0;
 		right: 0;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(0, 0, 0, 0.4);
+		backdrop-filter: blur(3px);
 		z-index: 998;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		.modal {
 			height: auto;
-			min-height: 350px;
+			// min-height: 350px;
+			max-height: 100vh;
 			width: 100%;
 			max-width: 800px;
-			box-shadow: 0 5px 20px rgba(2, 2, 2, 0.6);
+			box-shadow: 0 8px 20px rgba(8, 8, 8, 0.4);
 			background-color: var(--spellbg);
 			border-radius: 6px;
 			position: relative;
+			&.load {
+				.slot:not(.taken) {
+					display: none;
+				}
+			}
 			.close_modal {
 				position: fixed;
 				width: 100vw;
@@ -443,10 +463,13 @@
 				z-index: -1;
 			}
 			.modal_inner {
+				height: 100%;
 				padding: 2rem;
 				position: relative;
 				background-color: var(--spellbg);
 				border-radius: 6px;
+				max-height: 100vh;
+				overflow-y: auto;
 				.bookmark_decal {
 					transform: rotate(90deg);
 					position: absolute;
@@ -464,72 +487,58 @@
 					grid-gap: 0.5rem;
 					margin-top: 1rem;
 					position: relative;
-					&.placeholder {
-						position: absolute;
-						left: 0;
-						top: 0;
-						width: 100%;
-						height: 100%;
-						pointer-events: none;
-						margin-top: 0;
-					}
-					.slot {
-						background-color: var(--moretranslucent);
-						border-radius: 6px;
-						aspect-ratio: 1 / 1.15;
-						position: relative;
-						margin: 0;
-						transition: 0.1s;
-						border: 2px solid transparent;
-						padding: 0.5rem;
-						&.add {
-							background-color: transparent;
-						}
-						h3 {
-							line-height: 1.3;
-							margin-bottom: 0.5rem;
-						}
-
-						i {
-							position: absolute;
-							left: 50%;
-							top: 50%;
-							transform: translate(-50%, -50%);
-							font-size: 3rem;
-							color: var(--moretranslucent);
-							transition: 0.1s;
-						}
-						&:hover {
-							background-color: rgba(255, 255, 255, 0.2);
-							border-color: var(--accent);
-							i {
-								color: var(--translucent);
-							}
-						}
-						&.taken {
-							background-color: var(--purple);
-						}
-					}
+					z-index: 1;
+					// &.placeholder {
+					// 	position: absolute;
+					// 	left: 0;
+					// 	top: 0;
+					// 	width: 100%;
+					// 	height: 100%;
+					// 	pointer-events: none;
+					// 	margin-top: 0;
+					// }
+					// &.placeholder {
+					// 	margin: 0;
+					// 	position: absolute;
+					// 	height: 100%;
+					// 	width: 100%;
+					// 	top: 0;
+					// 	left: 0;
+					// 	z-index: -1;
+					// }
 				}
 				.new_save {
-					position: absolute;
-					left: 0;
-					top: 0;
 					height: auto;
 					min-height: 100%;
 					width: 100%;
+					max-height: 100%;
 					padding: 2rem;
 					border-radius: 6px;
 					background-color: var(--spellbg);
 					display: flex;
 					align-items: center;
 					justify-content: center;
+					z-index: 1;
 					form {
 						max-width: 400px;
 						.grid {
 							display: grid;
 							grid-template-columns: 1fr 150px;
 							grid-gap: 1rem;
+							&.name-color {
+								grid-template-columns: 1fr 41.4px;
+								input[type='checkbox'] {
+									all: unset;
+									cursor: pointer;
+									height: 41.4px;
+									width: 41.4px;
+									padding: 0;
+									margin: 0;
+									border: none;
+									display: block;
+									border-radius: 6px;
+								}
+							}
 						}
 						label {
 							color: var(--white);

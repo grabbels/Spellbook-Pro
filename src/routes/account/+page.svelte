@@ -1,5 +1,12 @@
 <script>
-	import { pagetitle, session, notification, savedSpellSheets } from '../../components/stores';
+	import {
+		pagetitle,
+		session,
+		notification,
+		savedSpellSheets,
+		modalCall,
+		savePrompt
+	} from '../../components/stores';
 	import { fade } from 'svelte/transition';
 	import { activeSpells, loggedIn } from '../../components/stores-persist';
 	import Section from '../../components/section.svelte';
@@ -13,6 +20,7 @@
 	import Button from '../../components/button.svelte';
 	import { goto } from '$app/navigation';
 	import Close from '../../components/close.svelte';
+	import SaveSlot from '../../components/saveslot.svelte';
 	// let savedSpellSheets = [];
 	let openCard = null;
 	let userId;
@@ -24,7 +32,6 @@
 		userId = $session.user.id;
 		userNickname = $session.user.user_metadata.nickname;
 		userEmail = $session.user.email;
-		console.log($session);
 		loadSpellsheetsByUserId(userId);
 	} else {
 		let promiseSession = retrieveSession();
@@ -35,9 +42,13 @@
 				userNickname = value.user.user_metadata.nickname;
 				userEmail = value.user.email;
 				loadSpellsheetsByUserId(userId);
-				console.log($session);
 			}
 		});
+	}
+
+	function handleClick(id) {
+		$modalCall = 'edit';
+		$savePrompt = true;
 	}
 
 	$pagetitle = 'My account';
@@ -45,99 +56,94 @@
 		if (savedSpellSheets.length > 2) {
 			openCard === spellsheet ? (openCard = null) : (openCard = spellsheet);
 		} else {
-			console.log(event.target.classList);
 			event.target.classList.contains('open') ? (openCard = null) : (openCard = spellsheet);
-			console.log(openCard);
 		}
 	}
-	async function editBookDetails(e) {
-		console.log(e.target);
-		let thisCardInner;
-		if (e.target.classList.contains('cancel')) {
-			thisCardInner = e.target.parentElement.parentElement.parentElement.parentElement;
-		} else if (e.target.classList.contains('close_veil')) {
-			thisCardInner = e.target.previousElementSibling;
-		} else {
-			thisCardInner = e.target.parentElement.parentElement.parentElement;
-		}
-		let description = thisCardInner.querySelector('p');
-		let title = thisCardInner.querySelector('h3');
-		let levelPill = thisCardInner.querySelector('.pill:not(.label):nth-child(2)');
-		let classPill = thisCardInner.querySelector('.pill:not(.label):nth-child(1)');
-		let pills = thisCardInner.querySelector('.pills');
-		let editPills = thisCardInner.querySelector('.edit-pills');
-		if (editing === false && !e.target.classList.contains('close_veil')) {
-			//Start editing
-			editing = true;
-			editButtonText = 'Save changes';
-			thisCardInner.classList.add('editing');
+	// async function editBookDetails(e) {
+	// 	let thisCardInner;
+	// 	if (e.target.classList.contains('cancel')) {
+	// 		thisCardInner = e.target.parentElement.parentElement.parentElement.parentElement;
+	// 	} else if (e.target.classList.contains('close_veil')) {
+	// 		thisCardInner = e.target.previousElementSibling;
+	// 	} else {
+	// 		thisCardInner = e.target.parentElement.parentElement.parentElement;
+	// 	}
+	// 	let description = thisCardInner.querySelector('p');
+	// 	let title = thisCardInner.querySelector('h3');
+	// 	let levelPill = thisCardInner.querySelector('.pill:not(.label):nth-child(2)');
+	// 	let classPill = thisCardInner.querySelector('.pill:not(.label):nth-child(1)');
+	// 	let pills = thisCardInner.querySelector('.pills');
+	// 	let editPills = thisCardInner.querySelector('.edit-pills');
+	// 	if (editing === false && !e.target.classList.contains('close_veil')) {
+	// 		//Start editing
+	// 		editing = true;
+	// 		editButtonText = 'Save changes';
+	// 		thisCardInner.classList.add('editing');
 
-			//title
-			let currentTitle = title.innerText;
-			let titleInput = document.createElement('input');
-			titleInput.value = currentTitle;
-			title.after(titleInput);
-			title.style.display = 'none';
+	// 		//title
+	// 		let currentTitle = title.innerText;
+	// 		let titleInput = document.createElement('input');
+	// 		titleInput.value = currentTitle;
+	// 		title.after(titleInput);
+	// 		title.style.display = 'none';
 
-			//description
-			let currentText = description.innerText;
-			let descriptionInput = document.createElement('textarea');
-			descriptionInput.setAttribute('maxlength', '185');
-			descriptionInput.value = currentText;
-			description.after(descriptionInput);
-			description.style.display = 'none';
+	// 		//description
+	// 		let currentText = description.innerText;
+	// 		let descriptionInput = document.createElement('textarea');
+	// 		descriptionInput.setAttribute('maxlength', '185');
+	// 		descriptionInput.value = currentText;
+	// 		description.after(descriptionInput);
+	// 		description.style.display = 'none';
 
-			//level
-			let currentLevel = levelPill.querySelector('span').innerText.split(' ')[1];
-			let editPills = document.createElement('div');
-			editPills.classList = 'edit-pills';
-			editPills.innerHTML =
-				'<div><label for="class">Class</label><select name="class">' +
-				classOptions +
-				'</select></div><div><label for="level">Level</label><input type="number" value="' +
-				currentLevel +
-				'" name="level" max="20" min="1"></div>';
-			pills.after(editPills);
-			pills.style.display = 'none';
-		} else {
-			//Stop editing
-			let titleInput = thisCardInner.querySelectorAll('input')[0];
-			let descriptionInput = thisCardInner.querySelector('textarea');
-			if (e.target.classList.contains('save')) {
-				//save editing
-				title.innerText = titleInput.value;
-				description.innerText = descriptionInput.value;
-				levelPill.querySelector('span').innerText =
-					'Level ' + editPills.querySelector('input').value;
-				classPill.querySelector('span').innerText = editPills.querySelector('select').value;
-				const { error } = await supabaseClient
-					.from('spellbooks')
-					.update({
-						name: titleInput.value,
-						class: classPill.querySelector('span').innerText,
-						level: editPills.querySelector('input').value,
-						description: descriptionInput.value
-					})
-					.eq('id', thisCardInner.getAttribute('data-id'));
-				if (error) {
-					console.log(error);
-				}
-			}
-			titleInput.remove();
-			descriptionInput.remove();
-			editPills.remove();
-			pills.style.display = 'block';
-			description.style.display = 'block';
-			title.style.display = 'block';
-			editButtonText = 'Edit details';
-			editing = false;
-			thisCardInner.classList.remove('editing');
-		}
-	}
+	// 		//level
+	// 		let currentLevel = levelPill.querySelector('span').innerText.split(' ')[1];
+	// 		let editPills = document.createElement('div');
+	// 		editPills.classList = 'edit-pills';
+	// 		editPills.innerHTML =
+	// 			'<div><label for="class">Class</label><select name="class">' +
+	// 			classOptions +
+	// 			'</select></div><div><label for="level">Level</label><input type="number" value="' +
+	// 			currentLevel +
+	// 			'" name="level" max="20" min="1"></div>';
+	// 		pills.after(editPills);
+	// 		pills.style.display = 'none';
+	// 	} else {
+	// 		//Stop editing
+	// 		let titleInput = thisCardInner.querySelectorAll('input')[0];
+	// 		let descriptionInput = thisCardInner.querySelector('textarea');
+	// 		if (e.target.classList.contains('save')) {
+	// 			//save editing
+	// 			title.innerText = titleInput.value;
+	// 			description.innerText = descriptionInput.value;
+	// 			levelPill.querySelector('span').innerText =
+	// 				'Level ' + editPills.querySelector('input').value;
+	// 			classPill.querySelector('span').innerText = editPills.querySelector('select').value;
+	// 			const { error } = await supabaseClient
+	// 				.from('spellbooks')
+	// 				.update({
+	// 					name: titleInput.value,
+	// 					class: classPill.querySelector('span').innerText,
+	// 					level: editPills.querySelector('input').value,
+	// 					description: descriptionInput.value
+	// 				})
+	// 				.eq('id', thisCardInner.getAttribute('data-id'));
+	// 			if (error) {
+	// 				console.log(error);
+	// 			}
+	// 		}
+	// 		titleInput.remove();
+	// 		descriptionInput.remove();
+	// 		editPills.remove();
+	// 		pills.style.display = 'block';
+	// 		description.style.display = 'block';
+	// 		title.style.display = 'block';
+	// 		editButtonText = 'Edit details';
+	// 		editing = false;
+	// 		thisCardInner.classList.remove('editing');
+	// 	}
+	// }
 
 	async function removeSpellsheet(e, i) {
-		console.log(e);
-		console.log($savedSpellSheets[i]);
 		let spellbookId = e.target.closest('.card_inner').getAttribute('data-id');
 		if (
 			confirm('Are you sure you want to remove this spellbook? This action is irreversable.') ==
@@ -174,9 +180,15 @@
 	<div class="grid">
 		<div class="panel spellsheets">
 			<h2>Saved spellbooks</h2>
-			<div class="grid">
+
+			<div class="save_slots">
+				{#each $savedSpellSheets as spellsheet}
+					<SaveSlot data={spellsheet} on:click={() => handleClick(spellsheet.id)} />
+				{/each}
+			</div>
+
+			<!-- <div class="grid">
 				{#each $savedSpellSheets as spellsheet, i}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="card spellbook {openCard === spellsheet ? 'open' : ''}"
 						on:click|self={() => {
@@ -253,7 +265,7 @@
 						/>
 					</div>
 				{/each}
-			</div>
+			</div> -->
 		</div>
 		<div class="panel details">
 			<h2>Acccount information</h2>
@@ -276,10 +288,40 @@
 </Section>
 
 <style lang="scss">
+	.save_slots {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		grid-gap: 0.5rem;
+		margin-top: 1rem;
+		position: relative;
+		z-index: 1;
+		button {
+			box-shadow: 10px 10px 0 black;
+		}
+		// &.placeholder {
+		// 	position: absolute;
+		// 	left: 0;
+		// 	top: 0;
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	pointer-events: none;
+		// 	margin-top: 0;
+		// }
+		// &.placeholder {
+		// 	margin: 0;
+		// 	position: absolute;
+		// 	height: 100%;
+		// 	width: 100%;
+		// 	top: 0;
+		// 	left: 0;
+		// 	z-index: -1;
+		// }
+	}
 	.grid {
 		display: grid;
 		grid-template-columns: 1fr 400px;
 		grid-gap: 2rem;
+
 		.panel {
 			h2 {
 				opacity: 0.85;

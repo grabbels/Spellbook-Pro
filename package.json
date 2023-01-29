@@ -44,6 +44,7 @@
 		"@sveltejs/adapter-cloudflare": "^1.0.4",
 		"@sveltejs/adapter-static": "^1.0.5",
 		"array-move": "^4.0.0",
+		"html2pdf.js": "^0.10.1",
 		"maxlength-contenteditable": "^1.0.1",
 		"remixicon": "^2.5.0",
 		"svelte-local-storage-store": "^0.3.2"

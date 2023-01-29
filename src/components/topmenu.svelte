@@ -2,8 +2,10 @@
 	import Button from './button.svelte';
 	import Section from './section.svelte';
 	import { activeSpells } from './stores-persist';
-	import { spellListEmpty, notification, modalCall, filters, session } from './stores';
+	import { spellListEmpty, notification, modalCall, filters, session, topmenuopen } from './stores';
 	import { topMenuOpenClose, removeFilters, refreshList, empty } from './globalfunctions.svelte';
+	import Pdf from './pdf.svelte';
+	let exportpdf = false;
 	let fileinput;
 
 	function download() {
@@ -33,7 +35,7 @@
 		if ($session) {
 			$modalCall = 'load';
 		} else {
-			$notification = 'You need to <a href="/account/login">log in</a> to load spellbooks#alert'
+			$notification = 'You need to <a href="/account/login">log in</a> to load spellbooks#alert';
 		}
 	}
 
@@ -47,6 +49,8 @@
 		};
 	};
 </script>
+
+<Pdf working={exportpdf} />
 
 <Section name="topmenu">
 	<div class="wrapper">
@@ -100,14 +104,7 @@
 				type="fill"
 				icon="ri-file-2-line"
 				text="Export PDF"
-			/>
-			<Button
-				disabled={$spellListEmpty}
-				on:click={refreshList}
-				href=""
-				type="fill"
-				icon="ri-refresh-line"
-				text="Refresh list"
+				on:click={()=>exportpdf = true}
 			/>
 			<Button
 				disabled={$spellListEmpty}
@@ -115,7 +112,7 @@
 				href=""
 				type="outline alt"
 				icon="ri-delete-bin-line"
-				text="Clear all"
+				text="Clear spellbook"
 			/>
 			<!-- <Button
 				href=""
@@ -125,10 +122,20 @@
 			/> -->
 		</div>
 		<div>
+			<Button
+				disabled={$spellListEmpty}
+				on:click={refreshList}
+				href=""
+				type="subtle"
+				icon="ri-refresh-line"
+				text="Refresh list"
+			/>
 			<Button on:click={topMenuOpenClose} type="outline alt" icon="ri-close-line" text="close" />
 		</div>
 	</div>
 </Section>
+
+<svelte:window on:keydown={(e) => (e.key == 'Escape' ? ($topmenuopen = false) : '')} />
 
 <style lang="scss">
 	.wrapper {

@@ -99,7 +99,15 @@
 	export async function loadSpellsheetsByUserId(id) {
 		const { data, error } = await supabaseClient.from('spellbooks').select().eq('user_id', id);
 		if (data) {
-			savedSpellSheets.set(data);
+			// console.log(data.length)
+			let placeholderSlots = 7 - data.length;
+			console.log(placeholderSlots + data.length + 1)
+			let retrievedSaves = data
+			retrievedSaves.push({id: 'add'})
+			for (let i = 0; i < placeholderSlots; i++) {
+				retrievedSaves.push({})
+			}
+			savedSpellSheets.set(retrievedSaves)
 		}
 	}
 
@@ -117,13 +125,14 @@
 			freshList.push(spells.filter((o) => o.name == staleList[i].name).pop());
 		}
 		activeSpells.set(freshList);
+		// notification.set('Spellbook refreshed#positive')
 	}
 
 	export function empty() {
 		let text = 'Are you sure you want to remove all your saved spells?';
 		if (confirm(text) == true) {
 			activeSpells.set([]);
-			filters.set(false)
+			filters.set(false);
 			removeFilters();
 			topMenuOpenClose();
 			notification.set('Spellbook has been cleared#alert');

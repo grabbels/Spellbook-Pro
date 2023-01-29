@@ -3,9 +3,10 @@
 	export let text;
 	export let size;
 	export let label;
+	export let print = false
 </script>
 
-<div class="pill {size} {icon === 'ri-checkbox-blank-circle-fill' ? 'placeholder' : ''}">
+<div class="pill {size} {print ? 'print' : ''} {icon === 'ri-checkbox-blank-circle-fill' ? 'placeholder' : ''}">
 	<i class={icon} /><span>{text}</span>
 	{#if label}<div class="pill {size} label"><i class={icon} />{label}</div>{/if}
 </div>
@@ -73,13 +74,20 @@
 			box-shadow: 0 3px 10px rgba(19, 19, 19, 0.4);
 		}
 		&:hover {
-			.label {	
+			.label {
 				display: block;
 			}
 		}
 		&.placeholder {
-			background-color:var(--white)!important;
+			background-color: var(--white) !important;
 			color: transparent;
+		}
+		&.print {
+			background-color: black!important;
+			color: white!important;
+			i {
+				color: white!important;
+			}
 		}
 	}
 </style>

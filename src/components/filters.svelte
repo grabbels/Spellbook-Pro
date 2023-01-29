@@ -41,6 +41,8 @@
 		}
 	}
 
+	$: $activeSpells, filterSpells()
+
 	function filterSpells() {
 		if (!$actionFilter && !$rangeFilter && !$searchFilter && !$saveFilter) {
 			$filters = false;
@@ -50,7 +52,6 @@
 		} else {
 			$filters = true;
 		}
-		console.log($saveFilter)
 		$activeSpells.filter((item) => {
 			if ($actionFilter || $rangeFilter || $searchFilter || $saveFilter) {
 				($actionFilter ? item.casting_time.toLowerCase().includes($actionFilter) : true) &&

@@ -8,7 +8,7 @@
 		topMenuOpenClose,
 		sideMenuOpenClose,
 		handleLogOut
-	} from '../components/globalfunctions.svelte';
+	} from './globalfunctions.svelte';
 </script>
 
 <Section name="header">

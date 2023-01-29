@@ -47,7 +47,6 @@
 	}
 	async function handleRegister() {
 		$notification = '';
-		console.log('test');
 		if (registerPassword.length > 5) {
 			if (registerPassword === registerPasswordConfirm) {
 				const { data, error } = await supabaseClient

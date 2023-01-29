@@ -40,7 +40,6 @@
 		'level 9'
 	];
 	$: $activeSpells, setActiveLevels();
-	$: console.log($activeSpells);
 	function setActiveLevels() {
 		$activeLevels = [];
 		for (let spell of $activeSpells) {
@@ -126,7 +125,7 @@
 		{#each $activeLevels as level}
 			<div class="grid_wrapper panel" id={level}>
 				<h2>{levels[level]}</h2>
-				<div class="grid" on:dragover|preventDefault>
+				<div class="grid">
 					{#each $activeSpells as spell}
 						{#if spell.display === true}
 							{@const spellDescription = spell.description.toLowerCase()}
