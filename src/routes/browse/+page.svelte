@@ -8,7 +8,7 @@
 	} from '../../components/stores.js';
 	import { getUserId } from '../../components/globalfunctions.svelte';
 	import { activeSpells, userNickname } from '../../components/stores-persist.js';
-	import { supabaseClient } from '$lib/db';
+	import { supabaseClient } from '$lib/supabaseClient';
 	import { createClient } from '@supabase/supabase-js';
 	import Section from '../../components/section.svelte';
 	import { fade } from 'svelte/transition';

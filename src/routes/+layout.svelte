@@ -5,7 +5,7 @@
 	import { Body } from 'svelte-body';
 	import { fly, fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { supabaseClient } from '$lib/db';
+	import { supabaseClient } from '$lib/supabaseClient';
 	import { page } from '$app/stores';
 	import { invalidate } from '$app/navigation';
 	import Header from '../components/header.svelte';

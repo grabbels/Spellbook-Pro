@@ -18,7 +18,7 @@
 		loadSpellsheetsByUserId,
 		classOptions
 	} from '../../components/globalfunctions.svelte';
-	import { supabaseClient } from '$lib/db';
+	import { supabaseClient } from '$lib/supabaseClient';
 	import Pill from '../../components/pill.svelte';
 	import Button from '../../components/button.svelte';
 	import { goto } from '$app/navigation';

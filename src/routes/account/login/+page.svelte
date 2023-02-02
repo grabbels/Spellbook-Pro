@@ -5,7 +5,7 @@
 	import Button from '../../../components/button.svelte';
 	import { pagetitle, notification, session, modalCall } from '../../../components/stores';
 	import { onMount } from 'svelte';
-	import { supabaseClient } from '$lib/db';
+	import { supabaseClient } from '$lib/supabaseClient';
 	let showRegister;
 	let showLogin;
 	let registerForm;
@@ -141,7 +141,8 @@
 						/>
 						<input type="checkbox" name="termsconditions" id="termsconditions" required />
 						<label for="termsconditions"
-							>I agree to the <button class="inline" on:click={() => $modalCall = 'terms'}>terms and conditions</button
+							>I agree to the <button class="inline" on:click={() => ($modalCall = 'terms')}
+								>terms and conditions</button
 							>.</label
 						><br />
 						<button class="{loadingRegister ? 'loading' : ''} button fill accent" type="submit"

@@ -1,5 +1,5 @@
 <script context="module">
-	import { supabaseClient } from '$lib/db';
+	import { supabaseClient } from '$lib/supabaseClient';
 	import {
 		topmenuopen,
 		sidemenuopen,

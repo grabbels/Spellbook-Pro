@@ -26,7 +26,7 @@
 	} from './globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import Button from './button.svelte';
-	import { supabaseClient } from '$lib/db';
+	import { supabaseClient } from '$lib/supabaseClient';
 	import { activeSpells } from './stores-persist';
 	import Close from './close.svelte';
 	import SchoolIcon from './schoolicon.svelte';
