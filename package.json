@@ -43,7 +43,6 @@
 		"@supabase/supabase-js": "^2.4.1",
 		"@sveltejs/adapter-cloudflare": "^1.0.4",
 		"@sveltejs/adapter-static": "^1.0.5",
-		"html2pdf.js": "^0.10.1",
 		"maxlength-contenteditable": "^1.0.1",
 		"remixicon": "^2.5.0",
 		"svelte-local-storage-store": "^0.3.2"
