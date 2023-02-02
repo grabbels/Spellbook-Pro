@@ -1,13 +1,12 @@
 <script>
 	import { activeSpells } from './stores-persist';
-	import html2pdf from 'html2pdf.js/dist/html2pdf.bundle.js';
+	// import html2pdf from 'html2pdf.js/dist/html2pdf.bundle.js';
 	import { get } from 'svelte/store';
 	import Pill from './pill.svelte';
 	import SchoolIcon from './schoolicon.svelte';
 	import { activeLevels } from './stores';
-	import { onMount, beforeUpdate, tick, afterUpdate } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import { refreshList } from './globalfunctions.svelte';
-	import { construct_svelte_component } from 'svelte/internal';
 	const levels = [
 		'cantrips',
 		'level 1',
