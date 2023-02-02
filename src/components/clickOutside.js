@@ -4,7 +4,7 @@ export function clickOutside(node) {
 	window.addEventListener('click', handleClick);
 
 	function handleClick(e) {
-		if (!node.contains(e.target)) {
+		if (!node.contains(e.target) && !e.target.classList.contains('handle')) {
 			node.dispatchEvent(new CustomEvent('outsideclick'));
 		}
 	}

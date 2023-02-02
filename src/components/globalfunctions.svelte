@@ -11,7 +11,10 @@
 		rangeFilter,
 		searchFilter,
 		saveFilter,
-		filters
+		filters,
+		modalCall,
+		savePrompt,
+		bookToEdit, userId
 	} from './stores';
 	import { activeSpells, loggedIn } from './stores-persist';
 	import { get } from 'svelte/store';
@@ -19,6 +22,21 @@
 	import { spells } from './spells';
 	export let classOptions =
 		'<option value="" disabled selected hidden>Select class</option><option value="Artificer">Artificer</option><option value="Barbarian">Barbarian</option><option value="Bard">Bard</option><option value="Cleric">Cleric</option><option value="Druid">Druid</option><option value="Fighter">Fighter</option><option value="Monk">Monk</option><option value="Paladin">Paladin</option><option value="Ranger">Ranger</option><option value="Rogue">Rogue</option><option value="Sorcerer">Sorcerer</option><option value="Warlock">Warlock</option><option value="Wizard">Wizard</option>';
+	export let classes = [
+		'Artificer',
+		'Barbarian',
+		'Bard',
+		'Cleric',
+		'Druid',
+		'Fighter',
+		'Monk',
+		'Paladin',
+		'Ranger',
+		'Rogue',
+		'Sorcerer',
+		'Warlock',
+		'Wizard'
+	];
 
 	export const moveItem = (array, to, from) => {
 		const item = array[from];
@@ -67,7 +85,7 @@
 		if (error) {
 			console.log(error);
 		} else {
-			session.set(false);
+			session.set('');
 			goto('/');
 			notification.set("You've been logged out.#info");
 		}
@@ -80,34 +98,41 @@
 		return session;
 	}
 
-	// async function loadPremades() {
-	// 	const { data, error } = await supabaseClient.from('spellbooks').select();
-	// 	if (data) {
-	// 		console.log(data);
-	// 	}
-	// }
-	// export async function loadSpellsheetsByUserId(id) {
-	// 	const { data, error } = await supabaseClient
-	// 		.from('spellbooks')
-	// 		.select()
-	// 		.eq('list_creatorid', id);
-	// 	if (data) {
-	// 		console.log(data);
-	// 	}
-	// }
-
 	export async function loadSpellsheetsByUserId(id) {
-		const { data, error } = await supabaseClient.from('spellbooks').select().eq('user_id', id);
-		if (data) {
-			// console.log(data.length)
-			let placeholderSlots = 7 - data.length;
-			console.log(placeholderSlots + data.length + 1)
-			let retrievedSaves = data
-			retrievedSaves.push({id: 'add'})
-			for (let i = 0; i < placeholderSlots; i++) {
-				retrievedSaves.push({})
+		if (!id) {
+			const {
+				data: { user }
+			} = await supabaseClient.auth.getUser();
+			if (user) {
+				id = user.id;
+				handleLoad();
 			}
-			savedSpellSheets.set(retrievedSaves)
+		} else {
+			handleLoad();
+		} 
+		async function handleLoad() {
+			const { data, error } = await supabaseClient
+				.from('spellbooks')
+				.select()
+				.eq('user_id', id)
+				.order('created', { ascending: false });
+			if (data) {
+				let placeholderSlots = 7 - data.length;
+				let retrievedSaves = data;
+				retrievedSaves.push({ id: 'add' });
+				for (let i = 0; i < placeholderSlots; i++) {
+					retrievedSaves.push({});
+				}
+				if (retrievedSaves.length > 0) {
+					savedSpellSheets.set(retrievedSaves);
+				} else {
+					savedSpellSheets.set('none');
+				}
+				
+				console.log('getting saved books');
+			} else if (error) {
+				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+			}
 		}
 	}
 
@@ -124,7 +149,7 @@
 		for (let i = 0; i < staleList.length; i++) {
 			freshList.push(spells.filter((o) => o.name == staleList[i].name).pop());
 		}
-		activeSpells.set(freshList);
+		activeSpells.set(freshList.sort((a, b) => a.level - b.level));
 		// notification.set('Spellbook refreshed#positive')
 	}
 
@@ -137,6 +162,92 @@
 			topMenuOpenClose();
 			notification.set('Spellbook has been cleared#alert');
 			// $notification = 'Spellbook has been cleared';
+		}
+	}
+
+	export async function removeBook(id) {
+		let toBeRemovedFrom = get(savedSpellSheets);
+		if (confirm('Are you sure you want to delete this spellbook?') == true) {
+			const { error } = await supabaseClient
+				.from('spellbooks')
+				.delete()
+				.eq('id', id)
+				.then(
+					toBeRemovedFrom.splice(
+						toBeRemovedFrom.findIndex(function (i) {
+							return i.id === id;
+						}),
+						1
+					)
+				);
+			if (error) {
+				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+			} else {
+				savedSpellSheets.set(toBeRemovedFrom);
+			}
+		}
+	}
+	export async function editBook(id) {
+		const { data, error } = await supabaseClient.from('spellbooks').select().eq('id', id);
+		if (error) {
+			console.log(error);
+			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+		} else if (data) {
+			bookToEdit.set(data[0]);
+			modalCall.set('edit');
+		}
+	}
+
+	export async function loadBook(id) {
+		if (
+			confirm(
+				'This will wipe your current spellbook, you can save your current spellbook before loading another one.'
+			) == true
+		) {
+			const { data, error } = await supabaseClient.from('spellbooks').select().eq('id', id);
+			if (error) {
+				console.log(error);
+				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+			} else if (data) {
+				activeSpells.set(data[0].list);
+				refreshList();
+				modalCall.set('');
+				// $modalCall = $modalCall;
+				topmenuopen.set(false);
+				goto('/');
+			}
+		} else {
+			console.log('nope');
+			modalCall.set('save');
+		}
+	}
+
+	export async function publishBook(id) {
+		const { error } = await supabaseClient
+			.from('spellbooks')
+			.update({ published: true })
+			.eq('id', id);
+		if (error) {
+			console.log(error);
+			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+		} else {
+			loadSpellsheetsByUserId(get(userId))
+			notification.set('Spellbook published!#positive');
+		}
+	}
+
+	export async function unpublishBook(id) {
+		const { error } = await supabaseClient
+			.from('spellbooks')
+			.update({ published: false })
+			.eq('id', id);
+		if (error) {
+			console.log(error);
+			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+		} else {
+			loadSpellsheetsByUserId(get(userId))
+
+			notification.set('Spellbook made private.#info');
 		}
 	}
 </script>

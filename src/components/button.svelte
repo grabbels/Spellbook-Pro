@@ -44,7 +44,7 @@
 		/></label
 	>
 {:else if href}
-	<a {href} class="button {type}" class:disabled
+	<a {href} class="button {type}" on:click class:disabled
 		>{#if icon}<i class={icon} />{/if}{text}</a
 	>
 {:else}
@@ -57,19 +57,38 @@
 	button,
 	.button,
 	label.button {
+		text-align: center;
 		text-decoration: none;
 		display: inline-block;
 		user-select: none;
 		cursor: pointer;
 		padding: 0.35rem 1rem;
-		margin-right: 0.2rem;
-		margin-bottom: 0.4rem;
+		// margin-right: 0.4rem;
+		// margin-bottom: 0.4rem;
+		margin: 0 0 .4rem;
 		font-size: 1rem;
 		border-radius: 6px;
 		font-weight: 500;
 		transition: 0.1s;
 		min-height: 46.4px;
 		position: relative;
+		&:first-child {
+			margin-left: 0;
+		}
+		&:last-child {
+			margin-right: 0;
+		}
+		&.mobile {
+			display: none;
+		}
+		@media only screen and (max-width: 1024px) {
+			&.desktop {
+				display: none;
+			}
+			&.mobile {
+				display: inline-block;
+			}
+		}
 		&.fill {
 			color: var(--white);
 			background-color: var(--translucent);

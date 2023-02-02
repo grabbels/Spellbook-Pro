@@ -7,10 +7,12 @@
 	import { onMount } from 'svelte';
 	import { moveItem, removeFilters } from './globalfunctions.svelte';
 	import Close from './close.svelte';
-	import { filters, activeLevels, modalCall, lookupSpell } from './stores';
+	import { filters, activeLevels, modalCall, lookupSpell, bookmarksOpen } from './stores';
 	import Button from './button.svelte';
 	import PlaceholderCard from './placeholdercard.svelte';
 	import Bookmarks from './bookmarks.svelte';
+	import Grid from './grid.svelte';
+
 	let spellsheet;
 	let spellsOrderedInDom;
 	let orderedSpellsNames = [];
@@ -119,13 +121,13 @@
 	}
 </script>
 
-<div class="spellsheet_wrapper" bind:this={spellsheet}>
+<div class="spellsheet_wrapper" bind:this={spellsheet} class:bookmarksopen={$bookmarksOpen}>
 	<Bookmarks />
 	<div>
 		{#each $activeLevels as level}
 			<div class="grid_wrapper panel" id={level}>
 				<h2>{levels[level]}</h2>
-				<div class="grid">
+				<Grid>
 					{#each $activeSpells as spell}
 						{#if spell.display === true}
 							{@const spellDescription = spell.description.toLowerCase()}
@@ -242,7 +244,7 @@
 							{/if}
 						{/if}
 					{/each}
-				</div>
+				</Grid>
 			</div>
 		{:else}
 			{#if $filters === true}
@@ -276,11 +278,28 @@
 		grid-template-columns: 60px 1fr;
 		grid-gap: 1rem;
 		align-items: flex-start;
-		transition: 0.2s;
+		
 		// &.bookmarks {
 		// 	grid-template-columns: 60px 1fr;
 		// 	grid-gap: 1rem;
 		// }
+		h2 {
+			position: sticky;
+			top: 0;
+			// opacity: 0.5;
+			z-index: 2;
+		}
+		@media only screen and (max-width: 1024px) {
+			grid-template-columns: 0 1fr;
+			grid-gap: 0;
+			transition: 0.2s;
+			&.bookmarksopen {
+				width: calc(100% + 60px + 5vw);
+				grid-template-columns: 60px 1fr;
+				grid-gap: 2.5vw;
+				
+			}
+		}
 	}
 	.grid_wrapper {
 		&:last-child {

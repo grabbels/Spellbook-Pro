@@ -2,7 +2,7 @@
 	export let icon;
 	export let text;
 	export let size;
-	export let label;
+	export let label = '';
 	export let print = false
 </script>
 
@@ -21,6 +21,7 @@
 		font-weight: 400;
 		user-select: none;
 		position: relative;
+		
 		i {
 			font-size: 1.2rem;
 			vertical-align: -4.5px;
@@ -31,6 +32,9 @@
 			background-color: var(--translucent);
 			font-size: 0.9rem;
 			margin: 0.5rem 0.4rem 0 0;
+			&:last-child {
+			margin-right: 0;
+		}
 			border-radius: 50vh;
 			// &:first-child {
 			//     border-radius: 50vh 0 0 50vh;

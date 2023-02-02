@@ -1,5 +1,6 @@
 <script>
 	export let school;
+	export let type = ''
 	var iconClass = '';
 	$: switch (school.toLowerCase()) {
 		case 'evocation':
@@ -35,21 +36,21 @@
 </script>
 
 {#if school.toLowerCase() === 'evocation'}
-	<i class="{school.toLowerCase()} ri-fire-line" />
+	<i class="{school.toLowerCase()} {type} ri-fire-line" />
 {:else if school.toLowerCase() === 'abjuration'}
-	<i class="{school.toLowerCase()} ri-shield-line" />
+	<i class="{school.toLowerCase()} {type} ri-shield-line" />
 {:else if school.toLowerCase() === 'conjuration'}
-	<i class="{school.toLowerCase()} ri-loader-line" />
+	<i class="{school.toLowerCase()} {type} ri-loader-line" />
 {:else if school.toLowerCase() === 'divination'}
-	<i class="{school.toLowerCase()} ri-open-arm-line" />
+	<i class="{school.toLowerCase()} {type} ri-open-arm-line" />
 {:else if school.toLowerCase() === 'enchantment'}
-	<i class="{school.toLowerCase()} ri-magic-line" />
+	<i class="{school.toLowerCase()} {type} ri-magic-line" />
 {:else if school.toLowerCase() === 'illusion'}
-	<i class="{school.toLowerCase()} ri-spy-line" />
+	<i class="{school.toLowerCase()} {type} ri-spy-line" />
 {:else if school.toLowerCase() === 'necromancy'}
-	<i class="{school.toLowerCase()} ri-skull-line" />
+	<i class="{school.toLowerCase()} {type} ri-skull-line" />
 {:else if school.toLowerCase() === 'transmutation'}
-	<i class="{school.toLowerCase()} ri-contrast-line" />
+	<i class="{school.toLowerCase()} {type} ri-contrast-line" />
 {/if}
 
 <style lang="scss">
@@ -83,5 +84,10 @@
         &.transmutation {
             color:#ca3cc7
         }
+		&.small {
+			font-size: 1.3rem;
+			margin-right: .2rem;
+			vertical-align: -5px;
+		}
 	}
 </style>

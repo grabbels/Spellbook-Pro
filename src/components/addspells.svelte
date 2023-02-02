@@ -5,6 +5,8 @@
 	import { activeSpells } from './stores-persist';
 	import { fly } from 'svelte/transition';
 	import { spells } from './spells';
+	import bg from '../img/menu-bg.png';
+	import Button from './button.svelte';
 	let results = [];
 	let result = [];
 	let searchField;
@@ -30,6 +32,7 @@
 	// 	}
 	// 	console.log(spells)
 	// }
+
 	$: if ($sidemenuopen === true) {
 		searchField.focus();
 	}
@@ -40,11 +43,13 @@
 	}
 	const addSpell = (spell) => {
 		console.log($activeSpells);
+		$notification = '';
 		if ($activeSpells.filter((e) => e.name === spell.name).length > 0) {
 			$notification = 'This spell is already in your spellbook.#error';
 		} else {
 			spell.display = true;
 			$activeSpells.push(spell);
+			$notification = 'Spell added.#info';
 		}
 		$activeSpells = $activeSpells;
 	};
@@ -75,57 +80,124 @@
 			$sidemenuopen = false;
 		}
 	}
+	function touchFeedback(e) {
+		console.log(e);
+		let feedback = document.createElement('div');
+		feedback.classList.add('feedback');
+		feedback.style.left = e.clientX + 'px';
+		feedback.style.right = e.clientY + 'px';
+		e.target.append(feedback);
+		setTimeout(() => {
+			feedback.classList.add('animate');
+		}, 1);
+
+		setTimeout(() => {
+			feedback.remove();
+		}, 401);
+	}
 </script>
 
-<div class="wrapper" on:keydown={handleKeyDown}>
-	<input
-		on:click={() => (resultNumber = -1)}
-		bind:value={query}
-		type="text"
-		id="spellsearch"
-		placeholder="Search for spells..."
-		bind:this={searchField}
-	/>
-	<button on:click={() => (query = '')} class="clear" class:show={query}
-		><i class="ri-close-circle-fill" /></button
-	>
-	<ul bind:this={resultsList} tabindex="-1">
-		{#if results.length > 0}
-			{#each results as spell, i}
-				<li
-					class={$activeSpells.includes(spell[i]) ? 'disabled' : ''}
-					transition:fly={{ y: 10, duration: 200 }}
-				>
-					<button bind:this={result[i]} on:click={() => addSpell(spell)} tabindex="0">
+<div class="sidemenu" style="background-image: url('{bg}')" class:open={$sidemenuopen}>
+	<div class="wrapper" on:keydown={handleKeyDown}>
+		<input
+			on:click={() => (resultNumber = -1)}
+			bind:value={query}
+			type="text"
+			id="spellsearch"
+			placeholder="Search for spells..."
+			bind:this={searchField}
+		/>
+		<button on:click={() => (query = '')} class="clear" class:show={query}
+			><i class="ri-close-circle-fill" /></button
+		>
+		<ul bind:this={resultsList} tabindex="-1">
+			{#if results.length > 0}
+				{#each results as spell, i}
+					<li
+						class={$activeSpells.includes(spell[i]) ? 'disabled' : ''}
+						transition:fly={{ y: 10, duration: 200 }}
+					>
+						<button
+							bind:this={result[i]}
+							on:click={(e) => {
+								addSpell(spell), touchFeedback(e);
+							}}
+							tabindex="0"
+						>
+							<div>
+								<SchoolIcon school={spell.school} />
+							</div>
+							<div>
+								<h3>{spell.name}</h3>
+								<p>{spell.type}</p>
+								<i class="ri-add-line" />
+							</div>
+						</button>
+					</li>
+				{/each}
+			{:else if query.length > 0}
+				<li transition:fly={{ y: 10, duration: 200 }}>
+					<button style="pointer-events: none">
 						<div>
-							<SchoolIcon school={spell.school} />
+							<!-- <SchoolIcon school={spell.school} /> -->
 						</div>
 						<div>
-							<h3>{spell.name}</h3>
-							<p>{spell.type}</p>
-							<i class="ri-add-line" />
+							<!-- <h3>{spell.name}</h3> -->
+							<p>No results</p>
+							<!-- <i class="ri-add-line" /> -->
 						</div>
 					</button>
 				</li>
-			{/each}
-		{:else if query.length > 0}
-			<li transition:fly={{ y: 10, duration: 200 }}>
-				<button style="pointer-events: none">
-					<div>
-						<!-- <SchoolIcon school={spell.school} /> -->
-					</div>
-					<div>
-						<!-- <h3>{spell.name}</h3> -->
-						<p>No results</p>
-						<!-- <i class="ri-add-line" /> -->
-					</div>
-				</button>
-			</li>
-		{/if}
-	</ul>
+			{/if}
+		</ul>
+		<div class="close_button"><Button on:click={() => $sidemenuopen = false} type="outline alt" text="close" icon="ri-close-line" /></div>
+	</div>
 </div>
 
 <style lang="scss">
+	:global(.feedback) {
+		width: 600px;
+		height: 600px;
+		transform: scale(0.2) translateX(-50%);
+		transition: 0.4s;
+		opacity: 1;
+		border-radius: 50vh;
+		background-color: var(--moretranslucent);
+		position: absolute;
+		transform-origin: left;
+	}
+	:global(.feedback.animate) {
+		opacity: 0;
+		transform: scale(1) translateX(-50%);
+	}
+
+	.sidemenu {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100vh;
+		max-width: 400px;
+		width: 100vw;
+		background-position: top center;
+		background-size: cover;
+		transform: translateX(-100%);
+		transition: transform 0.3s;
+		z-index: 3;
+		&.open {
+			transform: translateX(0%);
+		}
+		&:before {
+			position: absolute;
+			content: '';
+			height: 100%;
+			width: 60px;
+			right: 0;
+			top: 0;
+			z-index: -1;
+			background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+		}
+	}
+
 	::-webkit-scrollbar-thumb {
 		background-color: rgba(255, 255, 255, 0.3);
 	}
@@ -143,6 +215,12 @@
 		height: 100%;
 		padding: 2rem 1.5rem 2rem 3rem;
 		position: relative;
+		@media only screen and (max-width: 1024px) {
+			padding: 2rem 3vw 1rem;
+			display: grid;
+			grid-template-rows: 42px 1fr 46px;
+			grid-gap: 0.8rem;
+		}
 	}
 	input {
 		margin-bottom: 0;
@@ -167,6 +245,14 @@
 			display: block;
 		}
 	}
+	.close_button {
+		display: none;
+		width: 100%;
+		@media only screen and (max-width: 1024px) {
+			display: block;
+			text-align: center;
+		}
+	}
 	ul {
 		height: 100%;
 		width: 100%;
@@ -176,7 +262,9 @@
 		position: relative;
 		transition: 0.2s;
 		scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-
+		@media only screen and (max-width: 1024px) {
+			margin-top: 0;
+		}
 		// scrollbar-width:;
 
 		li {
@@ -191,6 +279,7 @@
 			}
 			button {
 				all: unset;
+				box-sizing: border-box;
 				padding: 0.35rem 0.8rem 0.5rem;
 				width: 100%;
 				height: 100%;
@@ -198,11 +287,16 @@
 				grid-template-columns: 40px 1fr;
 				align-items: center;
 				border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+				position: relative;
+				overflow: hidden;
 				&:focus {
 					background-color: rgba(255, 255, 255, 0.15);
 					:global(& + i) {
 						opacity: 1;
 					}
+				}
+				* {
+					pointer-events: none;
 				}
 			}
 			i {
@@ -216,12 +310,14 @@
 				opacity: 0;
 				color: var(--translucent);
 			}
-			&:hover {
-				button {
-					background-color: rgba(255, 255, 255, 0.15);
-				}
-				i {
-					opacity: 1;
+			@media (pointer: fine) {
+				&:hover {
+					button {
+						background-color: rgba(255, 255, 255, 0.15);
+					}
+					i {
+						opacity: 1;
+					}
 				}
 			}
 			&.disabled {

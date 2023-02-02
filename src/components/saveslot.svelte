@@ -1,9 +1,18 @@
 <script>
+	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
+	import Button from './button.svelte';
+	import {
+		editBook,
+		loadBook,
+		removeBook,
+		publishBook,
+		unpublishBook
+	} from './globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import { modalCall, pagetitle } from './stores';
 	export let data = null;
-	// export let type = '';
+	export let type = '';
 </script>
 
 {#if data.name}
@@ -11,12 +20,59 @@
 		style="background-color: {data ? data.color : ''}"
 		transition:fade={{ duration: 100 }}
 		data-id={data ? data.id : ''}
-		class="slot {data.name ? 'taken' : ''} {$pagetitle == 'My account' ? 'shadow' : ''}"
+		class="slot {data.name ? 'taken' : ''} {$pagetitle == 'My account' ? 'shadow' : ''} {type}"
 		on:click
 	>
 		<h3>{data.name}</h3>
-		<Pill text={data.class} size="small" icon="ri-contacts-line" />
-		<Pill text="Level {data.level}" size="small" icon="ri-user-star-line" />
+
+		<div style="width: 100%">
+			<Pill text={data.class} size="small" icon="ri-contacts-line" />
+			<Pill text="Level {data.level}" size="small" icon="ri-user-star-line" />
+		</div>
+		{#if type === 'large'}
+			<div class="controls">
+				<div>
+					<Button
+						icon="ri-edit-line"
+						type="fill"
+						text="Edit details"
+						on:click={editBook(data.id)}
+					/>
+					<Button
+						icon="ri-folder-open-line"
+						type="fill blue"
+						text="Open spellbook"
+						on:click={loadBook(data.id)}
+					/>
+					{#if data.published === false}
+						<Button
+							icon="ri-upload-cloud-2-line"
+							type="fill accent"
+							text="Publish spellbook"
+							on:click={publishBook(data.id)}
+						/>
+					{:else if data.published === true}
+						<Button
+							icon="ri-lock-line"
+							type="outline accent"
+							text="Make private"
+							on:click={unpublishBook(data.id)}
+						/>
+					{/if}
+					<Button
+						icon="ri-delete-bin-line"
+						type="fill alt"
+						text="Delete spellbook"
+						on:click={removeBook(data.id)}
+					/>
+					<!-- <button on:click={editBook(data.id)}> <i class="ri-edit-line" /> </button>
+					<button on:click={loadBook(data.id)}> <i class="ri-folder-open-line" /> </button>
+					<button on:click={publishBook(data.id)}> <i class="ri-upload-cloud-2-line" /> </button> -->
+				</div>
+				<!-- <button on:click={removeBook(data.id)}>  <i class="ri-delete-bin-line"></i>  </button> -->
+			</div>
+			<div class="description">{data.description}</div>
+		{/if}
 	</button>
 {:else if data.id === 'add' && $modalCall === 'save'}
 	<button transition:fade={{ duration: 100 }} class="slot" on:click>
@@ -35,7 +91,24 @@
 		margin: 0;
 		transition: 0.1s;
 		border: 2px solid transparent;
+		min-height: 200px;
 		padding: 0.5rem;
+		@media only screen and (max-width: 1024px) {
+			aspect-ratio: unset;
+		}
+		&.large {
+			aspect-ratio: unset;
+			min-height: 250px;
+			border-width: 0;
+			padding: 2rem 1rem;
+			&:hover {
+				cursor: auto;
+				.controls {
+					opacity: 1;
+					pointer-events: all;
+				}
+			}
+		}
 		&.placeholder {
 			pointer-events: none;
 		}
@@ -52,6 +125,64 @@
 			font-size: 3rem;
 			color: var(--moretranslucent);
 			transition: 0.1s;
+		}
+		.controls {
+			opacity: 0;
+			pointer-events: none;
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			padding: 2rem 1rem;
+			border-radius: 6px;
+			background-color: var(--spellbg);
+			border-color: var(--spellbg);
+			transition: 0.1s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			div {
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: column;
+				max-width: 200px;
+				margin-top: 0.4rem;
+			}
+			// button {
+			// 	padding: 0;
+			// 	width: 30px;
+			// 	height: 30px;
+			// 	min-height: 0;
+			// 	margin: 0 0.1rem 0 0;
+			// 	&:last-child {
+			// 		margin: 0;
+			// 	}
+
+			// 	i {
+			// 		font-size: 1.5rem;
+			// 		color: var(--lesstranslucent);
+			// 	}
+			// 	&:hover {
+			// 		i {
+			// 			color: var(--accent);
+			// 		}
+			// 	}
+			// 	&:only-of-type {
+			// 		font-size: 1.8rem;
+			// 		&:hover {
+			// 			i {
+			// 				color: var(--red);
+			// 			}
+			// 		}
+			// 	}
+			// }
+		}
+		.description {
+			color: white;
+			margin-top: 1rem;
+			font-size: 0.95rem;
 		}
 		&:hover {
 			background-color: rgba(255, 255, 255, 0.2);

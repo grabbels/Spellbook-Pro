@@ -5,7 +5,6 @@
 	import Section from '../components/section.svelte';
 	import Spellsheet from '../components/spellsheet.svelte';
 	import Filters from '../components/filters.svelte';
-
 	// let menu = 'menu';
 </script>
 <Section name="filters">

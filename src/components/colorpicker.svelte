@@ -1,6 +1,11 @@
 <script>
-	export let selectedColor = 'var(--purple)';
+	export let selectedColor;
+	if (!selectedColor && $bookToEdit) {
+		console.log('edit')
+		selectedColor = $bookToEdit.color
+	}
 	import { colors } from './colors';
+	import { bookToEdit } from './stores';
 </script>
 
 <div class="color_picker">

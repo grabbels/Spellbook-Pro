@@ -1,11 +1,13 @@
 <script>
 	import { fade, scale } from 'svelte/transition';
 	import { removeFilters } from './globalfunctions.svelte';
-	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter } from './stores';
+	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter, bookmarksOpen } from './stores';
 	import { activeSpells } from './stores-persist';
+	import { clickOutside } from './clickOutside.js';
 	let actionFilterArray = [];
 	let rangeFilterArray = [];
 	let saveFilterArray = [];
+	let filtersOpen = false;
 	$: $activeSpells, collectFilters();
 	$: filterSpells($actionFilter, $rangeFilter, $searchFilter, $saveFilter);
 	function collectFilters() {
@@ -36,12 +38,16 @@
 				actionFilterArray.push('re-action');
 			}
 			if (save && !saveFilterArray.includes(save)) {
-				saveFilterArray.push(save)
+				saveFilterArray.push(save);
 			}
 		}
 	}
 
-	$: $activeSpells, filterSpells()
+	function handleClickOutside() {
+		console.log('outside');
+	}
+
+	$: $activeSpells, filterSpells();
 
 	function filterSpells() {
 		if (!$actionFilter && !$rangeFilter && !$searchFilter && !$saveFilter) {
@@ -66,8 +72,20 @@
 	}
 </script>
 
-<div class="filters_wrapper panel">
-	<h3 style="font-size: 1.1rem; opacity: .8; display: inline-block; height:auto; align-self:center ">Filters</h3>
+<button class="filters_handle handle" class:open={$bookmarksOpen ? true : filtersOpen ? true : ''} on:click={() => (filtersOpen = true)}
+	><div><i class="ri-filter-2-fill" /></div></button
+>
+
+<div
+	class:open={filtersOpen}
+	class="filters_wrapper panel"
+	use:clickOutside
+	on:outsideclick={() => (filtersOpen = false)}
+>
+	<button on:click={() => (filtersOpen = false)} class="down"
+		><i class="ri-arrow-down-s-line" /></button
+	>
+	<h3 class="button"><i class="ri-filter-2-line" /> Filters</h3>
 	<div class="filter" data-filter="search">
 		<input bind:value={$searchFilter} type="text" placeholder="Search spellbook..." />
 	</div>
@@ -169,14 +187,54 @@
 		padding: 1rem 2rem 1rem 1rem;
 		display: flex;
 		flex-wrap: nowrap;
-		position: sticky;
-		top: 0.5rem;
+		position: relative;
+		// top: 0.5rem;
 		gap: 1rem;
 		background-color: var(--translucentdark);
+		@media only screen and (max-width: 1024px) {
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 20;
+			flex-wrap: wrap;
+			backdrop-filter: blur(20px);
+			border-radius: 12px 12px 0 0;
+			transform: translateY(100%);
+			transition: 0.3s;
+			&.open {
+				transform: translateY(0);
+			}
+		}
+		.down {
+			display: none;
+			@media only screen and (max-width: 1024px) {
+				display: block;
+				position: absolute;
+				top: 0.7rem;
+				right: 1rem;
+				i {
+					color: white;
+					font-size: 1.7rem;
+				}
+			}
+		}
+		h3 {
+			font-size: 1.1rem;
+			opacity: 0.8;
+			display: inline-block;
+			height: auto;
+			align-self: center;
+			padding-left: 0.5rem;
+			margin: 0;
+		}
 		.filter {
 			display: flex;
 			align-items: center;
 			position: relative;
+			@media only screen and (max-width: 1024px) {
+				width: 100%;
+			}
 			input,
 			button {
 				margin-bottom: 0;
@@ -192,6 +250,9 @@
 			}
 			input {
 				background-color: var(--moretranslucent);
+				@media only screen and (max-width: 1024px) {
+					width: 100%;
+				}
 			}
 			&.castingtime,
 			&.range,

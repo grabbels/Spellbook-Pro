@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Section from '../../../components/section.svelte';
 	import Button from '../../../components/button.svelte';
-	import { pagetitle, notification, session } from '../../../components/stores';
+	import { pagetitle, notification, session, modalCall } from '../../../components/stores';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/db';
 	let showRegister;
@@ -18,6 +18,9 @@
 	let loginPassword;
 	let loadingLogin;
 	let loadingRegister;
+	let registerPanel;
+	let loginPanel;
+	let windowHeight;
 	$pagetitle = 'Login';
 	onMount(() => {
 		if ($page.url.searchParams.get('register')) {
@@ -29,20 +32,24 @@
 			showRegister = '';
 		}
 	});
-	function handleShowRegister() {
+	function handleShowRegister(e) {
+		e.preventDefault;
 		const newUrl = new URL($page.url);
 		newUrl?.searchParams?.set('register', 'true');
 		goto(newUrl);
 		showRegister = 'show';
 		showLogin = '';
+		// registerPanel.scrollIntoView({ behavior: 'smooth' }, true);
 		// registerForm.removeAttribute('novalidate')
 	}
-	function handleShowLogin() {
+	function handleShowLogin(e) {
+		e.preventDefault;
 		const newUrl = new URL($page.url);
 		newUrl?.searchParams?.delete('register');
 		goto(newUrl);
 		showRegister = '';
 		showLogin = 'show';
+		// loginPanel.scrollIntoView({ behavior: 'smooth' }, true);
 		// registerForm.setAttribute('novalidate', 'novalidate')
 	}
 	async function handleRegister() {
@@ -66,7 +73,7 @@
 						}
 					});
 					if (error) {
-						console.log(error)
+						console.log(error);
 					} else if (data) {
 						console.log(data);
 						if (data.session === null) {
@@ -107,7 +114,7 @@
 
 <Section name="login">
 	<div class="grid">
-		<div class="register section {showRegister}">
+		<div bind:this={registerPanel} class="register section {showRegister}">
 			<div class="panel_inner">
 				<div class="register_form">
 					<h2>Register</h2>
@@ -134,7 +141,7 @@
 						/>
 						<input type="checkbox" name="termsconditions" id="termsconditions" required />
 						<label for="termsconditions"
-							>I agree to the <a href="/termsconditions" target="_blank">terms and conditions</a
+							>I agree to the <button class="inline" on:click={() => $modalCall = 'terms'}>terms and conditions</button
 							>.</label
 						><br />
 						<button class="{loadingRegister ? 'loading' : ''} button fill accent" type="submit"
@@ -142,14 +149,15 @@
 							<div><i class="ri-loader-5-line" /></div></button
 						>
 						<p>
-							Already have an account? <button on:click={handleShowLogin}>Click here</button> to log
-							in.
+							Already have an account? <button on:click={(e) => handleShowLogin(e)}
+								>Click here</button
+							> to log in.
 						</p>
 					</form>
 				</div>
 			</div>
 		</div>
-		<div class="login section {showLogin}">
+		<div bind:this={loginPanel} id="login" class="login section {showLogin}">
 			<div class="panel_inner">
 				<Button text="back" href="/" type="outline" icon="ri-arrow-left-s-line" />
 				<div class="login_form">
@@ -174,12 +182,20 @@
 						<li>Save multiple spellsheets</li>
 						<li>Manage your spellsheets in your account</li>
 					</ul>
-					<Button on:click={handleShowRegister} href="" type="fill" icon="" text="Register" />
+					<Button
+						on:click={(e) => handleShowRegister(e)}
+						href=""
+						type="fill"
+						icon=""
+						text="Register"
+					/>
 				</div>
 			</div>
 		</div>
 	</div>
 </Section>
+
+<svelte:window bind:innerHeight={windowHeight} />
 
 <style lang="scss">
 	.grid {
@@ -189,6 +205,11 @@
 		grid-template-rows: 1fr;
 		min-height: 100vh;
 		align-items: center;
+		@media only screen and (max-width: 1024px) {
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: column-reverse;
+		}
 		.section {
 			width: 100%;
 			display: flex;
@@ -196,11 +217,16 @@
 			align-items: flex-start;
 			height: 600px;
 			margin-top: 2rem;
+			height: 100vh;
 			.panel_inner {
 				padding: 2rem;
 				max-width: 450px;
 				// background-color: purple;
 				width: 100%;
+				@media only screen and (max-width: 1024px) {
+					max-width: none;
+					padding: 2rem 2vw;
+				}
 				h2 {
 					margin-bottom: 0.5rem;
 				}
@@ -208,12 +234,24 @@
 			&.register {
 				justify-content: flex-end;
 				padding-right: 4rem;
-
+				@media only screen and (max-width: 1024px) {
+					padding: 4rem 0 0;
+					display: none;
+					&.show {
+						display: block;
+					}
+				}
 				.panel_inner {
 					.register_form {
 						opacity: 0;
 						transform: translateX(40px);
 						transition: 0.3s;
+						button.inline {
+							all: unset;
+							display: inline-block;
+							cursor: pointer;
+							text-decoration: underline;
+						}
 					}
 				}
 				&.show {
@@ -227,7 +265,13 @@
 			}
 			&.login {
 				border-left: 1px solid var(--moretranslucent);
-
+				@media only screen and (max-width: 1024px) {
+					border: none;
+					display: none;
+					&.show {
+						display: block;
+					}
+				}
 				.panel_inner {
 					max-width: 450px;
 					.login_form {

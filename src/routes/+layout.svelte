@@ -1,4 +1,7 @@
 <script>
+	import PageTransition from '../components/PageTransition.svelte';
+	/** @type {import('./$types').LayoutData} */
+	export let data;
 	import { Body } from 'svelte-body';
 	import { fly, fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
@@ -15,12 +18,14 @@
 		pagetitle,
 		session,
 		modalCall,
-		quickQuery
+		quickQuery,
+		userId,
+		userEmail,
+		userNickname
 	} from '../components/stores';
 	import { retrieveSession } from '../components/globalfunctions.svelte';
-	import { loggedIn, userNickname } from '../components/stores-persist';
-	import bg from '../img/menu-bg.png';
-	import bgalt from '../img/menu-bg-alt.png';
+	import { loggedIn, firstVisit } from '../components/stores-persist';
+
 	import '@fontsource/kanit';
 	import Modal from '../components/modal.svelte';
 	import Pdf from '../components/pdf.svelte';
@@ -48,6 +53,23 @@
 			subscription.unsubscribe();
 		};
 	});
+	onMount(() => {
+		if ($session) {
+			$userId = $session.user.id;
+			$userNickname = $session.user.user_metadata.nickname;
+			$userEmail = $session.user.email;
+		} else {
+			let promiseSession = retrieveSession();
+			promiseSession.then((value) => {
+				if (value) {
+					$session = value;
+					$userId = value.user.id;
+					$userNickname = value.user.user_metadata.nickname;
+					$userEmail = value.user.email;
+				}
+			});
+		}
+	});
 
 	async function checkIfLoggedIn() {
 		// if ($loggedIn === null) {
@@ -68,24 +90,29 @@
 		let promiseSession = retrieveSession();
 		promiseSession.then((value) => {
 			$session = value;
-			// console.log($session);
+			// $userId = value.user.id
 		});
 	} else {
-		console.log($session);
+		// $userId = $session.user.id
+	}
+	console.log;
+	let body;
+	let scrollTop;
+	console.log($firstVisit);
+	if ($firstVisit === false) {
+		$modalCall = 'welcome';
+		$firstVisit = true;
 	}
 </script>
 
 <Body
+	bind:this={body}
 	class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''}
 />
 
-<div class="topmenu" style="background-image: url('{bgalt}')" class:open={$topmenuopen}>
-	<TopMenu />
-</div>
+<TopMenu />
 
-<div class="sidemenu" style="background-image: url('{bg}')" class:open={$sidemenuopen}>
-	<AddSpells />
-</div>
+<AddSpells />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 
@@ -97,23 +124,27 @@
 	<main>
 		{#key $pagetitle}
 			{#if $pagetitle != 'Login'}
-				<div in:fade={{ duration: 300 }}>
+				<div>
 					<Header />
 				</div>
 			{/if}
 		{/key}
-		{#key $pagetitle}
-			<div in:fly={{ y: 10, duration: 300 }}>
-				<slot />
-			</div>
-		{/key}
+		<!-- {#key $pagetitle} -->
+		<!-- <div in:fly={{ y: 10, duration: 300 }}> -->
+		<PageTransition pathname={data.pathname}><slot /></PageTransition>
+		<!-- {/key} -->
 	</main>
 
 	<div on:click={closeMenu} class="closemenu" />
 </div>
 
 {#if $notification}
-	<div transition:fly={{ y: 10, duration: 300 }} class:show={$notification} class="notification">
+	<button
+		transition:fly={{ y: 10, duration: 300 }}
+		on:click={() => ($notification = '')}
+		class:show={$notification}
+		class="notification"
+	>
 		<div
 			class="{$notification.split('#')[1].includes('error')
 				? 'error'
@@ -125,13 +156,17 @@
 				? 'info'
 				: ''} notification_inner"
 		>
-			<p>
+			<div>
 				<i class="ri-error-warning-fill" /><i class="ri-alert-fill" />
 				<i class="ri-checkbox-circle-line" /> <i class="ri-information-line" />
-				{@html $notification.split('#')[0]}
-			</p>
+			</div>
+			<div>
+				<p>
+					{@html $notification.split('#')[0]}
+				</p>
+			</div>
 		</div>
-	</div>
+	</button>
 {/if}
 
 {#if ($modalCall && $modalCall != 'lookup') || ($modalCall && $quickQuery)}
@@ -172,8 +207,25 @@
 			transition: 0.5s;
 			opacity: 0;
 		}
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(238deg, rgb(77, 35, 112) 0%, rgb(35, 14, 75) 100%);
+			z-index: -1;
+			transition: 0.5s;
+			opacity: 0;
+		}
 		&.browse {
 			&::after {
+				opacity: 1;
+			}
+		}
+		&.account {
+			&::before {
 				opacity: 1;
 			}
 		}
@@ -195,6 +247,9 @@
 		}
 		&.topmenuopen {
 			transform: translateY(115px);
+			@media only screen and (max-width: 1024px) {
+				transform: translateY(0px);
+			}
 			.closemenu {
 				display: block;
 			}
@@ -209,12 +264,25 @@
 		z-index: 999;
 		display: flex;
 		justify-content: center;
+		padding: 0;
+		cursor: auto;
 		.notification_inner {
 			padding: 0.8rem 3rem;
 			background-color: var(--white);
 			border-radius: 50vh;
+			display: grid;
+			grid-template-columns: 34px 1fr;
+			div {
+				display: flex;
+				align-items: center;
+			}
+			@media only screen and (max-width: 1024px) {
+				padding: 0.4rem 1rem;
+				margin: 0 0.5rem;
+			}
 			filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
 			p {
+				text-align: left;
 				color: var(--black);
 				margin-bottom: 0;
 				:global(a) {
@@ -224,99 +292,40 @@
 						color: var(--accent);
 					}
 				}
-				i {
-					display: none;
-					font-size: 1.5rem;
-					vertical-align: -6px;
-					// margin-right: .5rem;
+			}
+			i {
+				display: none;
+				font-size: 1.5rem;
+				vertical-align: -6px;
+				// margin-right: .5rem;
+				@media only screen and (max-width: 1024px) {
+					float: left;
 				}
 			}
 			&.error {
-				p {
-					i.ri-error-warning-fill {
-						display: inline;
-						color: var(--secondary);
-					}
+				i.ri-error-warning-fill {
+					display: inline;
+					color: var(--secondary);
 				}
 			}
 			&.alert {
-				p {
-					i.ri-alert-fill {
-						display: inline;
-						color: var(--yellow);
-					}
+				i.ri-alert-fill {
+					display: inline;
+					color: var(--yellow);
 				}
 			}
 			&.info {
-				p {
-					i.ri-information-line {
-						display: inline;
-						color: var(--lightblue);
-					}
+				i.ri-information-line {
+					display: inline;
+					color: var(--lightblue);
 				}
 			}
 			&.positive {
-				p {
-					i.ri-checkbox-circle-line {
-						display: inline;
-						color: var(--lightgreen);
-					}
+				i.ri-checkbox-circle-line {
+					display: inline;
+					color: var(--lightgreen);
 				}
 			}
-		}
-	}
-
-	.topmenu {
-		background-color: var(--bg);
-		position: relative;
-		width: 100vw;
-		background-position: center center;
-		background-size: cover;
-		transform: translateY(-100%);
-		transition: transform 0.3s;
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 3;
-		height: 115px;
-		&:before {
-			position: absolute;
-			content: '';
-			height: 60px;
-			width: 100%;
-			left: 0;
-			bottom: 0;
-			// z-index: -1;
-			background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-		}
-		&.open {
-			transform: translateY(0%);
-		}
-	}
-
-	.sidemenu {
-		position: fixed;
-		left: 0;
-		top: 0;
-		height: 100vh;
-		width: 400px;
-		background-position: top center;
-		background-size: cover;
-		transform: translateX(-100%);
-		transition: transform 0.3s;
-		z-index: 3;
-		&.open {
-			transform: translateX(0%);
-		}
-		&:before {
-			position: absolute;
-			content: '';
-			height: 100%;
-			width: 60px;
-			right: 0;
-			top: 0;
-			z-index: -1;
-			background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
 		}
 	}
 </style>
