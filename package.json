@@ -40,7 +40,7 @@
 		"@fontsource/lato": "^4.5.10",
 		"@fontsource/roboto": "^4.5.8",
 		"@supabase/auth-helpers-sveltekit": "^0.8.7",
-		"@supabase/supabase-js": "^2.4.1",
+		"@supabase/supabase-js": "^2.7.0",
 		"@sveltejs/adapter-cloudflare": "^1.0.4",
 		"@sveltejs/adapter-static": "^1.0.5",
 		"@sveltejs/adapter-vercel": "^1.0.6",
