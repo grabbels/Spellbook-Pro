@@ -140,7 +140,7 @@
 										: openSpell === spell
 										? 'open'
 										: 'not-open'}"
-									on:click|self={() => {
+									on:click={() => {
 										// openClickedSpell(spell);
 										$modalCall = 'spell';
 										$lookupSpell = spell;

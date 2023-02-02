@@ -53,7 +53,7 @@
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="card item {openBook === null ? '' : openBook === book ? 'open' : 'not-open'}"
-						on:click|self={() => {
+						on:click={() => {
 							$modalCall = 'spellbook';
 							$lookupBook = book;
 						}}
