@@ -1,0 +1,9 @@
+import * as universal from '../entries/pages/_layout.js';
+
+export const index = 0;
+export const component = async () => (await import('../entries/pages/_layout.svelte.js')).default;
+export const file = '_app/immutable/components/pages/_layout.svelte-94fc8705.js';
+export { universal };
+export const imports = ["_app/immutable/components/pages/_layout.svelte-94fc8705.js","_app/immutable/chunks/singletons-4e7778da.js","_app/immutable/chunks/pill-9fbe8380.js","_app/immutable/chunks/stores-f5e17f9d.js","_app/immutable/chunks/supabaseClient-e444a6b7.js","_app/immutable/chunks/browser-ponyfill-10e9505f.js","_app/immutable/chunks/stores-e4cd7406.js","_app/immutable/chunks/button-ad6f7d8d.js","_app/immutable/chunks/schoolicon-84d1b6cf.js","_app/immutable/chunks/close-6d43106c.js","_app/immutable/chunks/saveslot-2b600b0a.js","_app/immutable/chunks/loading-47aa1dda.js","_app/immutable/modules/pages/_layout.js-8ebbb5d9.js","_app/immutable/chunks/_layout-1e7edd17.js"];
+export const stylesheets = ["_app/immutable/assets/_layout-ef826d43.css","_app/immutable/assets/pill-fea2efa0.css","_app/immutable/assets/stores-4e1e9b0b.css","_app/immutable/assets/button-0a69ca13.css","_app/immutable/assets/schoolicon-3587021a.css","_app/immutable/assets/close-0aa98529.css","_app/immutable/assets/saveslot-b71bb08c.css","_app/immutable/assets/loading-65d932a7.css"];
+export const fonts = ["_app/immutable/assets/kanit-thai-400-normal-d03834de.woff2","_app/immutable/assets/kanit-all-400-normal-a5d1bebf.woff","_app/immutable/assets/kanit-vietnamese-400-normal-93b1ffa8.woff2","_app/immutable/assets/kanit-latin-ext-400-normal-c917f94a.woff2","_app/immutable/assets/kanit-latin-400-normal-af6af03b.woff2","_app/immutable/assets/remixicon-e61f0d10.woff2","_app/immutable/assets/remixicon-c2dacfbc.woff","_app/immutable/assets/remixicon-0ac8bc3c.ttf"];

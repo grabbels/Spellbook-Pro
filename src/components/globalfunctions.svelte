@@ -90,6 +90,9 @@
 			console.log(error);
 		} else {
 			session.set('');
+			userEmail.set('');
+			userId.set('');
+			userNickname.set('');
 			goto('/');
 			notification.set("You've been logged out.#info");
 		}
@@ -293,9 +296,11 @@
 			redirectTo: siteUrl + '/account/update-password'
 		});
 		if (data) {
+			console.log(data)
 			notification.set(
 				'An email has been sent to your registered email address with instructions on how to change your password#info'
 			);
+			modalCall.set('')
 		} else if (error) {
 			console.log(error);
 			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');

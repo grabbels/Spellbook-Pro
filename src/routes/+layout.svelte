@@ -23,7 +23,7 @@
 		userEmail,
 		userNickname
 	} from '../components/stores';
-	import { retrieveSession,refreshSession } from '../components/globalfunctions.svelte';
+	import { retrieveSession, refreshSession } from '../components/globalfunctions.svelte';
 	import { loggedIn, firstVisit } from '../components/stores-persist';
 
 	import '@fontsource/kanit';
@@ -43,7 +43,7 @@
 		}, timeOut);
 	}
 	onMount(() => {
-		refreshSession()	
+		refreshSession();
 	});
 
 	async function checkIfLoggedIn() {
@@ -78,7 +78,7 @@
 		$modalCall = 'welcome';
 		$firstVisit = false;
 	} else {
-		$modalCall = ''
+		$modalCall = '';
 	}
 </script>
 
@@ -100,7 +100,7 @@
 >
 	<main>
 		{#key $pagetitle}
-			{#if $pagetitle != 'Login' && $pagetitle != "Password reset"}
+			{#if $pagetitle != 'Login' && $pagetitle != 'Password reset'}
 				<div>
 					<Header />
 				</div>
@@ -154,7 +154,6 @@
 
 <style lang="scss">
 	@import '../../node_modules/remixicon/fonts/remixicon.css';
-
 	:global {
 		@import '../../static/reset';
 		@import '../global.scss';

@@ -183,6 +183,7 @@
 		transform: translateX(-100%);
 		transition: transform 0.3s;
 		z-index: 3;
+		height: -webkit-fill-available;
 		&.open {
 			transform: translateX(0%);
 		}

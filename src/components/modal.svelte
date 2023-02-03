@@ -23,7 +23,8 @@
 		classes,
 		refreshList,
 		loadBook,
-		importBook
+		importBook,
+		editPassword
 	} from './globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import Button from './button.svelte';
@@ -41,12 +42,19 @@
 	let saveName;
 	let saveLevel;
 	let saveClass;
+	let savePublish;
+	let loading = false;
+	if ($bookToEdit.published == true) {
+		savePublish = true;
+	}
+
 	let saveDescription;
 	let saveColor = $bookToEdit ? $bookToEdit.color : 'var(--purple)';
 	let overwriteId;
 	let quickInput;
 	let results;
 	let form;
+	let email;
 	let result = [];
 	let colorPicker = false;
 	let levelList = [];
@@ -63,7 +71,10 @@
 		'level 9'
 	];
 
-	$: $modalCall, ($quickQuery = '');
+	// $: $modalCall, ($quickQuery = '');
+	$: if ($modalCall == '') {
+		$quickQuery = '';
+	}
 	$: saveColor, (colorPicker = false), console.log(saveColor);
 	if ($modalCall == 'save' || 'load' || 'edit') {
 		if (!$userId || !$userNickname) {
@@ -96,6 +107,8 @@
 	onMount(() => {
 		if ($modalCall == 'lookup') {
 			quickInput.focus();
+			quickInput.value = $quickQuery;
+			// console.log($quickQuery)
 		}
 		for (let i = 0; i < levelList.length; i++) {
 			console.log(levelList[i]);
@@ -169,7 +182,8 @@
 					description: saveDescription.value,
 					list: $activeSpells,
 					user_id: $userId,
-					color: saveColor
+					color: saveColor,
+					published: savePublish
 				})
 				.select();
 			if (error) {
@@ -237,9 +251,10 @@
 					</p>
 					<p>
 						Have a look around, but be warned that there might be scary and dangerous bugs lurking
-						around! They bite. This app is currently very much in beta, and I would be very thankful if you
-						could report any issues or bugs you may encounter. Features requests or ideas are also
-						very welcome! You'll find buttons to report bugs and submit spells in the menu. Have fun!
+						around! They bite. This app is currently very much in beta, and I would be very thankful
+						if you could report any issues or bugs you may encounter. Features requests or ideas are
+						also very welcome! You'll find buttons to report bugs and submit spells in the menu.
+						Have fun!
 					</p>
 					<p>Have fun!</p>
 				</div>
@@ -335,6 +350,12 @@
 									maxlength="300"
 									value={$bookToEdit.description ? $bookToEdit.description : ''}
 								/>
+								<input bind:checked={savePublish} name="publish" id="publish" type="checkbox" />
+								<label for="publish" style="display: inline"
+									>Publish this spellbook to the premade spellbooks database so others can find it
+									too.</label
+								><br /><br />
+
 								<button class="{loadingSave ? 'loading' : ''} button fill accent" type="submit"
 									><i class="ri-save-3-line" />Save
 									<div><i class="ri-loader-5-line" /></div></button
@@ -361,8 +382,24 @@
 				<div class="modal_inner">
 					<PrivacyPolicy />
 				</div>
+			{:else if $modalCall == 'resetpassword'}
+				<div class="modal_inner">
+					<h2>Password reset</h2>
+					<form on:submit|preventDefault={editPassword(email)}>
+						<label style="margin-bottom: .5rem; display: block" for="email">Email address</label>
+						<input bind:value={email} type="email" name="email" />
+						<button
+							on:click={() => (loading = true)}
+							class="{loading ? 'loading' : ''} button fill accent"
+							type="submit"
+							>Change password
+							<div><i class="ri-loader-5-line" /></div></button
+						>
+					</form>
+				</div>
 			{:else if $modalCall == 'lookup'}
 				<div class="modal_inner">
+					<!-- svelte-ignore a11y-autofocus -->
 					<input
 						bind:this={quickInput}
 						bind:value={$quickQuery}
@@ -690,6 +727,11 @@
 							margin-bottom: 0.25rem;
 							display: inline-block;
 						}
+						input[type='checkbox'] {
+							width: auto;
+							display: inline;
+							margin: 0 0.3rem 0 0;
+						}
 						button[type='submit'] {
 							div {
 								position: absolute;
@@ -725,6 +767,13 @@
 					}
 				}
 			}
+			&.resetpassword {
+				.modal_inner {
+					form {
+						max-width: 400px;
+					}
+				}
+			}
 			&.lookup {
 				background-color: rgba(0, 0, 0, 0.5);
 				// backdrop-filter: blur(10px);
@@ -737,6 +786,9 @@
 				}
 				.modal_inner {
 					// background-color: transparent;
+					@media only screen and (max-width: 1024px) {
+						padding-bottom: 0.5rem;
+					}
 					input {
 						height: 55px;
 						margin: 0;
@@ -751,6 +803,9 @@
 						transition: 0.2s;
 						max-height: 60vh;
 						scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+						@media only screen and (max-width: 1024px) {
+							max-height: 100%;
+						}
 						// scrollbar-width:;
 
 						li {
@@ -858,6 +913,38 @@
 						}
 					}
 				}
+			}
+		}
+	}
+	button[type='submit'] {
+		div {
+			position: absolute;
+			display: none;
+			animation-name: rotate;
+			animation-iteration-count: infinite;
+			animation-timing-function: linear;
+			animation-duration: 0.6s;
+			top: -3px;
+			width: 100%;
+			text-align: center;
+			left: 0;
+			i {
+				font-size: 2rem;
+				color: var(--bg);
+			}
+			@keyframes rotate {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		}
+		&.loading {
+			color: var(--accent);
+			div {
+				display: block;
 			}
 		}
 	}

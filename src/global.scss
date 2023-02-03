@@ -53,6 +53,12 @@ body {
 	}
 }
 
+button.inline {
+	all: unset;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 
 
 .card {

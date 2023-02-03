@@ -3,12 +3,26 @@
 	import { clickOutside } from './clickOutside.js';
 </script>
 
-<button class="bookmarks_handle handle" class:open={$bookmarksOpen} on:click={()=> $bookmarksOpen = true}><div><i class="ri-bookmark-fill" /></div></button>
-<div class="bookmarks panel" class:open={$bookmarksOpen} use:clickOutside
-	on:outsideclick={() => ($bookmarksOpen = false)}>
-	<a on:click={()=> $bookmarksOpen = false} href="#top" class="bookmark"><div><i class="ri-bookmark-fill" /></div></a>
+{#if $activeLevels.length > 0}
+	<button
+		class="bookmarks_handle handle"
+		class:open={$bookmarksOpen}
+		on:click={() => ($bookmarksOpen = true)}><div><i class="ri-bookmark-fill" /></div></button
+	>
+{/if}
+<div
+	class="bookmarks panel"
+	class:open={$bookmarksOpen}
+	use:clickOutside
+	on:outsideclick={() => ($bookmarksOpen = false)}
+>
+	<a on:click={() => ($bookmarksOpen = false)} href="#top" class="bookmark"
+		><div><i class="ri-bookmark-fill" /></div></a
+	>
 	{#each $activeLevels as level}
-		<a on:click={()=> $bookmarksOpen = false} href="#{level}" class="bookmark"><div>{level}</div></a>
+		<a on:click={() => ($bookmarksOpen = false)} href="#{level}" class="bookmark"
+			><div>{level}</div></a
+		>
 	{/each}
 </div>
 
@@ -25,10 +39,10 @@
 		overflow-x: hidden;
 		@media only screen and (max-width: 1024px) {
 			opacity: 0;
-            transition: .15s;
-            &.open {
-                opacity: 1;
-            }
+			transition: 0.15s;
+			&.open {
+				opacity: 1;
+			}
 		}
 		.bookmark {
 			display: inline-block;

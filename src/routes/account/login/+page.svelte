@@ -3,7 +3,15 @@
 	import { goto } from '$app/navigation';
 	import Section from '../../../components/section.svelte';
 	import Button from '../../../components/button.svelte';
-	import { pagetitle, notification, session, modalCall, userEmail, userId, userNickname } from '../../../components/stores';
+	import {
+		pagetitle,
+		notification,
+		session,
+		modalCall,
+		userEmail,
+		userId,
+		userNickname
+	} from '../../../components/stores';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/supabaseClient';
 	let showRegister;
@@ -53,16 +61,27 @@
 		// registerForm.setAttribute('novalidate', 'novalidate')
 	}
 	async function handleRegister() {
+		loadingRegister = true;
 		$notification = '';
 		if (registerPassword.length > 5) {
+			console.log(registerNickname);
 			if (registerPassword === registerPasswordConfirm) {
 				const { data, error } = await supabaseClient
 					.from('nicknames')
-					.insert([{ user_nickname: registerNickname }]);
-				if (error.code == 23505) {
-					// console.log(error.code)
-					$notification = 'The nickname is already in use, try another one!#error';
+					.insert([{ user_nickname: registerNickname }]).select();
+				if (error) {
+					
+					if (error.code == 23505) {
+						console.log(error);
+						$notification = 'The nickname is already in use, try another one!#error';
+						loadingRegister = false;
+					} else {
+						console.log(error);
+						$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+						loadingRegister = false;
+					}
 				} else if (data) {
+					
 					const { data, error } = await supabaseClient.auth.signUp({
 						email: registerEmail,
 						password: registerPassword,
@@ -73,25 +92,35 @@
 						}
 					});
 					if (error) {
+						
 						console.log(error);
+						$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+						loadingRegister = false;
 					} else if (data) {
-						console.log(data);
-						if (data.session === null) {
+						console.log(data)
+						if (data.user === null) {
 							$notification =
 								"An account using your email address already exists. <a href='/account/update-reset'>Forgot password?</a>#error";
+							loadingRegister = false;
 						} else {
 							$notification =
 								"Registered succesfully! Please confirm your email address using the email you'll receive shortly. No email? Check your spam-folder or try again.#info";
 							registerForm.reset();
+							loadingRegister = false;
 							handleShowLogin();
+							
 						}
+					} else {
+						console.log('nothing')
 					}
 				}
 			} else {
 				$notification = 'The passwords do not match#error';
+				loadingRegister = false;
 			}
 		} else {
 			$notification = 'Password should be at least 6 characters long#error';
+			loadingRegister = false;
 		}
 	}
 
@@ -185,6 +214,13 @@
 							<div><i class="ri-loader-5-line" /></div></button
 						>
 					</form>
+					<p style="margin-bottom: 2rem">
+						Forgot your password? <button
+							on:click={() => ($modalCall = 'resetpassword')}
+							class="inline">Reset it here</button
+						>!
+					</p>
+
 					<p>No account yet? Create one to:</p>
 					<ul>
 						<li>Manage your spellsheets from anywhere</li>
@@ -213,7 +249,7 @@
 		display: grid;
 		grid-template-columns: 1fr minmax(auto, 600px);
 		grid-template-rows: 1fr;
-		min-height: 100vh;
+		min-height: 95vh;
 		align-items: center;
 		@media only screen and (max-width: 1024px) {
 			display: flex;
@@ -227,7 +263,7 @@
 			align-items: center;
 			height: 600px;
 			margin-top: 2rem;
-			height: 100vh;
+			height: 85vh;
 			.panel_inner {
 				padding: 2rem;
 				max-width: 450px;
