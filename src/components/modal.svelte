@@ -14,7 +14,9 @@
 		lookupSpell,
 		savePrompt,
 		bookToEdit,
-		lookupBook
+		lookupBook,
+		profileUser,
+		userProfile
 	} from './stores';
 	import {
 		retrieveSession,
@@ -24,7 +26,8 @@
 		refreshList,
 		loadBook,
 		importBook,
-		editPassword
+		editPassword,
+		getUserProfile
 	} from './globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import Button from './button.svelte';
@@ -37,6 +40,7 @@
 	import Loading from './loading.svelte';
 	import PrivacyPolicy from './privacy-policy.svelte';
 	import Submitspells from './submitspells.svelte';
+	import Saveslot from './saveslot.svelte';
 	export let modal;
 	let loadingSave;
 	let saveName;
@@ -223,6 +227,9 @@
 		} else if ($modalCall == 'load') {
 			loadBook(id);
 		}
+	}
+	$: if ($profileUser) {
+		getUserProfile();
 	}
 </script>
 
@@ -516,6 +523,18 @@
 				<div class="modal_inner">
 					<Submitspells />
 				</div>
+			{:else if $modalCall == 'profile'}
+				<div class="modal_inner">
+					{#if $userProfile}
+					<h2>{$userProfile[0].creator}</h2>
+					<h3 style="margin-bottom: 1rem">Published spellbooks</h3>
+					<div class="grid">
+						{#each $userProfile as spellbook}
+							<Saveslot on:click={() => {$lookupBook = spellbook, $modalCall = 'spellbook' }} type="large noedit" data={spellbook} />
+						{/each}
+					</div>
+					{/if}
+				</div>
 			{:else if $modalCall == 'spellbook'}
 				<div class="modal_inner" on:keydown={handleKeyDown}>
 					<div class="card">
@@ -530,8 +549,9 @@
 								<p style="color: {$lookupBook.color}">
 									created by <a
 										on:click={() => {
-											$modalCall = '';
+											$modalCall = 'profile';
 											$quickQuery = '';
+											$profileUser = $lookupBook.user_id;
 										}}
 										style="color: {$lookupBook.color}"
 										href="/"><strong>{$lookupBook.creator}</strong></a
@@ -772,6 +792,13 @@
 					form {
 						max-width: 400px;
 					}
+				}
+			}
+			&.profile {
+				.grid {
+					display: grid;
+					gap: .5rem;
+					grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 				}
 			}
 			&.lookup {

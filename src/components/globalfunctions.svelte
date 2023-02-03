@@ -17,7 +17,9 @@
 		bookToEdit,
 		userId,
 		userEmail,
-		userNickname
+		userNickname,
+		profileUser,
+		userProfile
 	} from './stores';
 	import { activeSpells, loggedIn } from './stores-persist';
 	import { get } from 'svelte/store';
@@ -124,16 +126,17 @@
 				.eq('user_id', id)
 				.order('created', { ascending: false });
 			if (data) {
-				let placeholderSlots = 7 - data.length;
-				let retrievedSaves = data;
-				retrievedSaves.push({ id: 'add' });
-				for (let i = 0; i < placeholderSlots; i++) {
-					retrievedSaves.push({});
-				}
-				if (retrievedSaves.length > 0) {
-					savedSpellSheets.set(retrievedSaves);
-				} else {
+				console.log(data);
+				if (data.length < 1) {
 					savedSpellSheets.set('none');
+				} else {
+					let placeholderSlots = 7 - data.length;
+					let retrievedSaves = data;
+					retrievedSaves.push({ id: 'add' });
+					for (let i = 0; i < placeholderSlots; i++) {
+						retrievedSaves.push({});
+					}
+					savedSpellSheets.set(retrievedSaves);
 				}
 
 				console.log('getting saved books');
@@ -159,17 +162,15 @@
 	}
 
 	export async function setUserData() {
-
-			let promiseSession = retrieveSession();
-			promiseSession.then((value) => {
-				if (value) {
-					session.set(value);
-					userId.set(value.user.id);
-					userNickname.set(value.user.user_metadata.nickname);
-					userEmail.set(value.user.email);
-				}
-			});
-		
+		let promiseSession = retrieveSession();
+		promiseSession.then((value) => {
+			if (value) {
+				session.set(value);
+				userId.set(value.user.id);
+				userNickname.set(value.user.user_metadata.nickname);
+				userEmail.set(value.user.email);
+			}
+		});
 	}
 
 	export function removeFilters() {
@@ -296,14 +297,24 @@
 			redirectTo: siteUrl + '/account/update-password'
 		});
 		if (data) {
-			console.log(data)
+			console.log(data);
 			notification.set(
 				'An email has been sent to your registered email address with instructions on how to change your password#info'
 			);
-			modalCall.set('')
+			modalCall.set('');
 		} else if (error) {
 			console.log(error);
 			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+		}
+	}
+
+	export async function getUserProfile() {
+		const { data, error } = await supabaseClient
+			.from('spellbooks')
+			.select()
+			.eq('user_id', get(profileUser));
+		if (data) {
+			userProfile.set(data)
 		}
 	}
 </script>

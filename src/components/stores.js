@@ -23,3 +23,5 @@ export const bookToEdit = writable('');
 export const savePrompt = writable(false)
 export const bookmarksOpen = writable(false)
 export const lookupBook = writable('');
+export const profileUser = writable('');
+export const userProfile = writable('');

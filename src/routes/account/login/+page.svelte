@@ -68,9 +68,9 @@
 			if (registerPassword === registerPasswordConfirm) {
 				const { data, error } = await supabaseClient
 					.from('nicknames')
-					.insert([{ user_nickname: registerNickname }]).select();
+					.insert([{ user_nickname: registerNickname }])
+					.select();
 				if (error) {
-					
 					if (error.code == 23505) {
 						console.log(error);
 						$notification = 'The nickname is already in use, try another one!#error';
@@ -81,7 +81,6 @@
 						loadingRegister = false;
 					}
 				} else if (data) {
-					
 					const { data, error } = await supabaseClient.auth.signUp({
 						email: registerEmail,
 						password: registerPassword,
@@ -92,12 +91,11 @@
 						}
 					});
 					if (error) {
-						
 						console.log(error);
 						$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
 						loadingRegister = false;
 					} else if (data) {
-						console.log(data)
+						console.log(data);
 						if (data.user === null) {
 							$notification =
 								"An account using your email address already exists. <a href='/account/update-reset'>Forgot password?</a>#error";
@@ -108,10 +106,9 @@
 							registerForm.reset();
 							loadingRegister = false;
 							handleShowLogin();
-							
 						}
 					} else {
-						console.log('nothing')
+						console.log('nothing');
 					}
 				}
 			} else {
@@ -140,11 +137,27 @@
 				$userId = $session.user.id;
 				$userNickname = $session.user.user_metadata.nickname;
 				$userEmail = $session.user.email;
+				checkUserNickname();
 				goto('/account');
 			} else if (error) {
 				console.log(error);
 				loadingLogin = false;
 				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+			}
+		}
+	}
+	async function checkUserNickname() {
+		const { data, error } = await supabaseClient
+			.from('nicknames')
+			.select()
+			.eq('user_nickname', $userNickname);
+		if (data) {
+			console.log(data);
+			if (data.user_id != $userId) {
+				const {} = await supabaseClient
+					.from('nicknames')
+					.update({ user_id: $userId })
+					.eq('user_nickname', $userNickname);
 			}
 		}
 	}

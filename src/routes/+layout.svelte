@@ -23,7 +23,7 @@
 		userEmail,
 		userNickname
 	} from '../components/stores';
-	import { retrieveSession, refreshSession } from '../components/globalfunctions.svelte';
+	import { retrieveSession, refreshSession, setUserData } from '../components/globalfunctions.svelte';
 	import { loggedIn, firstVisit } from '../components/stores-persist';
 
 	import '@fontsource/kanit';
@@ -65,6 +65,7 @@
 		let promiseSession = retrieveSession();
 		promiseSession.then((value) => {
 			$session = value;
+			setUserData();
 			// $userId = value.user.id
 		});
 	} else {

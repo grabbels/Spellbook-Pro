@@ -29,48 +29,50 @@
 			<Pill text={data.class} size="small" icon="ri-contacts-line" />
 			<Pill text="Level {data.level}" size="small" icon="ri-user-star-line" />
 		</div>
-		{#if type === 'large'}
-			<div class="controls">
-				<div>
-					<Button
-						icon="ri-edit-line"
-						type="fill"
-						text="Edit details"
-						on:click={editBook(data.id)}
-					/>
-					<Button
-						icon="ri-folder-open-line"
-						type="fill blue"
-						text="Open spellbook"
-						on:click={loadBook(data.id)}
-					/>
-					{#if data.published === false}
+		{#if type.includes('large')}
+			{#if !type.includes('noedit')}
+				<div class="controls">
+					<div>
 						<Button
-							icon="ri-upload-cloud-2-line"
-							type="fill accent"
-							text="Publish spellbook"
-							on:click={publishBook(data.id)}
+							icon="ri-edit-line"
+							type="fill"
+							text="Edit details"
+							on:click={editBook(data.id)}
 						/>
-					{:else if data.published === true}
 						<Button
-							icon="ri-lock-line"
-							type="outline accent"
-							text="Make private"
-							on:click={unpublishBook(data.id)}
+							icon="ri-folder-open-line"
+							type="fill blue"
+							text="Open spellbook"
+							on:click={loadBook(data.id)}
 						/>
-					{/if}
-					<Button
-						icon="ri-delete-bin-line"
-						type="fill alt"
-						text="Delete spellbook"
-						on:click={removeBook(data.id)}
-					/>
-					<!-- <button on:click={editBook(data.id)}> <i class="ri-edit-line" /> </button>
+						{#if data.published === false}
+							<Button
+								icon="ri-upload-cloud-2-line"
+								type="fill accent"
+								text="Publish spellbook"
+								on:click={publishBook(data.id)}
+							/>
+						{:else if data.published === true}
+							<Button
+								icon="ri-lock-line"
+								type="outline accent"
+								text="Make private"
+								on:click={unpublishBook(data.id)}
+							/>
+						{/if}
+						<Button
+							icon="ri-delete-bin-line"
+							type="fill alt"
+							text="Delete spellbook"
+							on:click={removeBook(data.id)}
+						/>
+						<!-- <button on:click={editBook(data.id)}> <i class="ri-edit-line" /> </button>
 					<button on:click={loadBook(data.id)}> <i class="ri-folder-open-line" /> </button>
 					<button on:click={publishBook(data.id)}> <i class="ri-upload-cloud-2-line" /> </button> -->
+					</div>
+					<!-- <button on:click={removeBook(data.id)}>  <i class="ri-delete-bin-line"></i>  </button> -->
 				</div>
-				<!-- <button on:click={removeBook(data.id)}>  <i class="ri-delete-bin-line"></i>  </button> -->
-			</div>
+			{/if}
 			<div class="description">{data.description}</div>
 		{/if}
 	</button>
@@ -107,6 +109,13 @@
 					opacity: 1;
 					pointer-events: all;
 				}
+			}
+		}
+		&.noedit {
+			border: 2px solid transparent;
+			&:hover {
+				cursor: pointer;
+				border: 2px solid var(--accent);
 			}
 		}
 		&.placeholder {
