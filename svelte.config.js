@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-node';
 import sveltePreprocess from 'svelte-preprocess';
 import autoprefixer from 'autoprefixer';
 
@@ -10,7 +10,7 @@ const config = {
 		}
 	}),
 	kit: {
-		adapter: adapter()
+		adapter: adapter({ out: 'build' })
 
 		// vite: {
 		// 	define: {
