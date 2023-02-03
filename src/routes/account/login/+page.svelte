@@ -81,7 +81,7 @@
 								"An account using your email address already exists. <a href='/account/update-reset'>Forgot password?</a>#error";
 						} else {
 							$notification =
-								"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
+								"Registered succesfully! Please confirm your email address using the email you'll receive shortly. No email? Check your spam-folder or try again.#info";
 							registerForm.reset();
 							handleShowLogin();
 						}
