@@ -261,7 +261,6 @@
 						around! They bite. This app is currently very much in beta, and I would be very thankful
 						if you could report any issues or bugs you may encounter. Features requests or ideas are
 						also very welcome! You'll find buttons to report bugs and submit spells in the menu.
-						Have fun!
 					</p>
 					<p>Have fun!</p>
 				</div>
@@ -548,7 +547,7 @@
 								<br />
 								<p style="color: {$lookupBook.color}">
 									created by <a
-										on:click={() => {
+										on:click|preventDefault={() => {
 											$modalCall = 'profile';
 											$quickQuery = '';
 											$profileUser = $lookupBook.user_id;
