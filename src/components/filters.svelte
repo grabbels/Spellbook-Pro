@@ -227,6 +227,8 @@
 			align-self: center;
 			padding-left: 0.5rem;
 			margin: 0;
+			white-space: nowrap;
+
 		}
 		.filter {
 			display: flex;

@@ -14,7 +14,10 @@
 		filters,
 		modalCall,
 		savePrompt,
-		bookToEdit, userId
+		bookToEdit,
+		userId,
+		userEmail,
+		userNickname
 	} from './stores';
 	import { activeSpells, loggedIn } from './stores-persist';
 	import { get } from 'svelte/store';
@@ -37,6 +40,7 @@
 		'Warlock',
 		'Wizard'
 	];
+	let siteUrl = 'http://localhost:5173';
 
 	export const moveItem = (array, to, from) => {
 		const item = array[from];
@@ -109,7 +113,7 @@
 			}
 		} else {
 			handleLoad();
-		} 
+		}
 		async function handleLoad() {
 			const { data, error } = await supabaseClient
 				.from('spellbooks')
@@ -128,12 +132,41 @@
 				} else {
 					savedSpellSheets.set('none');
 				}
-				
+
 				console.log('getting saved books');
 			} else if (error) {
 				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 			}
 		}
+	}
+
+	export async function refreshSession() {
+		() => {
+			const {
+				data: { subscription }
+			} = supabaseClient.auth.onAuthStateChange(() => {
+				invalidate('supabase:auth');
+			});
+
+			return () => {
+				subscription.unsubscribe();
+			};
+		};
+		setUserData();
+	}
+
+	export async function setUserData() {
+
+			let promiseSession = retrieveSession();
+			promiseSession.then((value) => {
+				if (value) {
+					session.set(value);
+					userId.set(value.user.id);
+					userNickname.set(value.user.user_metadata.nickname);
+					userEmail.set(value.user.email);
+				}
+			});
+		
 	}
 
 	export function removeFilters() {
@@ -222,6 +255,11 @@
 		}
 	}
 
+	export async function importBook(book) {
+		modalCall.set('save');
+		bookToEdit.set(book);
+	}
+
 	export async function publishBook(id) {
 		const { error } = await supabaseClient
 			.from('spellbooks')
@@ -231,7 +269,7 @@
 			console.log(error);
 			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 		} else {
-			loadSpellsheetsByUserId(get(userId))
+			loadSpellsheetsByUserId(get(userId));
 			notification.set('Spellbook published!#positive');
 		}
 	}
@@ -245,9 +283,22 @@
 			console.log(error);
 			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 		} else {
-			loadSpellsheetsByUserId(get(userId))
+			loadSpellsheetsByUserId(get(userId));
 
 			notification.set('Spellbook made private.#info');
+		}
+	}
+	export async function editPassword(email) {
+		const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+			redirectTo: siteUrl + '/account/update-password'
+		});
+		if (data) {
+			notification.set(
+				'An email has been sent to your registered email address with instructions on how to change your password#info'
+			);
+		} else if (error) {
+			console.log(error);
+			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 		}
 	}
 </script>

@@ -23,7 +23,7 @@
 		userEmail,
 		userNickname
 	} from '../components/stores';
-	import { retrieveSession } from '../components/globalfunctions.svelte';
+	import { retrieveSession,refreshSession } from '../components/globalfunctions.svelte';
 	import { loggedIn, firstVisit } from '../components/stores-persist';
 
 	import '@fontsource/kanit';
@@ -43,32 +43,7 @@
 		}, timeOut);
 	}
 	onMount(() => {
-		const {
-			data: { subscription }
-		} = supabaseClient.auth.onAuthStateChange(() => {
-			invalidate('supabase:auth');
-		});
-
-		return () => {
-			subscription.unsubscribe();
-		};
-	});
-	onMount(() => {
-		if ($session) {
-			$userId = $session.user.id;
-			$userNickname = $session.user.user_metadata.nickname;
-			$userEmail = $session.user.email;
-		} else {
-			let promiseSession = retrieveSession();
-			promiseSession.then((value) => {
-				if (value) {
-					$session = value;
-					$userId = value.user.id;
-					$userNickname = value.user.user_metadata.nickname;
-					$userEmail = value.user.email;
-				}
-			});
-		}
+		refreshSession()	
 	});
 
 	async function checkIfLoggedIn() {
@@ -99,9 +74,11 @@
 	let body;
 	let scrollTop;
 	console.log($firstVisit);
-	if ($firstVisit === false) {
+	if ($firstVisit == true) {
 		$modalCall = 'welcome';
-		$firstVisit = true;
+		$firstVisit = false;
+	} else {
+		$modalCall = ''
 	}
 </script>
 
@@ -123,7 +100,7 @@
 >
 	<main>
 		{#key $pagetitle}
-			{#if $pagetitle != 'Login'}
+			{#if $pagetitle != 'Login' && $pagetitle != "Password reset"}
 				<div>
 					<Header />
 				</div>

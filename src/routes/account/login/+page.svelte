@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Section from '../../../components/section.svelte';
 	import Button from '../../../components/button.svelte';
-	import { pagetitle, notification, session, modalCall } from '../../../components/stores';
+	import { pagetitle, notification, session, modalCall, userEmail, userId, userNickname } from '../../../components/stores';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/supabaseClient';
 	let showRegister;
@@ -78,7 +78,7 @@
 						console.log(data);
 						if (data.session === null) {
 							$notification =
-								"An account using your email address already exists. <a href='/account/passwordreset'>Forgot password?</a>#error";
+								"An account using your email address already exists. <a href='/account/update-reset'>Forgot password?</a>#error";
 						} else {
 							$notification =
 								"Registered succesfully! Please confirm your email address using the email you'll receive shortly.#info";
@@ -102,12 +102,21 @@
 			password: loginPassword
 		});
 		if (data) {
-			console.log(data);
-			$session = data.session;
-			goto('/account');
-		} else if (error) {
-			console.log(error);
-			loadingLogin = false;
+			if (data.session === null) {
+				$notification =
+					'This email and/or password combination is not recognized. Try again?#alert';
+				loadingLogin = false;
+			} else if (data) {
+				$session = data.session;
+				$userId = $session.user.id;
+				$userNickname = $session.user.user_metadata.nickname;
+				$userEmail = $session.user.email;
+				goto('/account');
+			} else if (error) {
+				console.log(error);
+				loadingLogin = false;
+				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+			}
 		}
 	}
 </script>
@@ -215,7 +224,7 @@
 			width: 100%;
 			display: flex;
 			justify-content: center;
-			align-items: flex-start;
+			align-items: center;
 			height: 600px;
 			margin-top: 2rem;
 			height: 100vh;

@@ -128,6 +128,7 @@
 					}
 				}
 				.block.description {
+					margin-top: 1rem;
 					p {
 						font-size: 0.95rem;
 					}

@@ -43,6 +43,184 @@ export let spells = [
 	},
 	{
 		casting_time: '1 action',
+		classes: ['artificer', 'sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: true,
+			materials_needed: ['a melee weapon worth at least 1 sp'],
+			raw: 'S, M (a melee weapon worth at least 1 sp)',
+			somatic: true,
+			verbal: false
+		},
+		description:
+			"You brandish the weapon used in the spell's casting and make a melee attack with it against one creature within 5 feet of you. On a hit, the target suffers the weapon attack's normal effects and then becomes sheathed in booming energy until the start of your next turn. If the target willingly moves 5 feet or more before then, the target takes 1d8 thunder damage, and the spell ends.",
+		duration: '1 round',
+		level: '0',
+		name: 'Booming Blade',
+		range: 'Self (5-foot radius)',
+		ritual: false,
+		school: 'evocation',
+		higer_levels:
+			'At 5th level, the melee attack deals an extra 1d8 thunder damage to the target on a hit, and the damage the target takes for moving increases to 2d8. Both damage rolls increase by 1d8 at 11th level (2d8 and 3d8) and again at 17th level (3d8 and 4d8).',
+		tags: ['ranger', 'wizard', 'level1'],
+		type: 'Evocation cantrip'
+	},
+	{
+		casting_time: '1 action',
+		classes: ['bard', 'sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: false,
+			raw: 'S',
+			somatic: false,
+			verbal: true
+		},
+		description:
+			"You brandish the weapon used in the spell's casting and make a melee attack with it against one creature within 5 feet of you. On a hit, the target suffers the weapon attack's normal effects and then becomes sheathed in booming energy until the start of your next turn. If the target willingly moves 5 feet or more before then, the target takes 1d8 thunder damage, and the spell ends.",
+		duration: 'Concentration, up to 1 round',
+		level: '0',
+		name: 'True Strike',
+		range: '30 feet',
+		ritual: false,
+		school: 'evocation',
+		higer_levels:
+			"You extend your hand and point a finger at a target in range. Your magic grants you a brief insight into the target's defenses. On your next turn, you gain advantage on your first attack roll against the target, provided that this spell hasn't ended.",
+		tags: ['ranger', 'wizard', 'level1'],
+		type: 'Divination cantrip'
+	},
+	{
+		casting_time: '1 minute',
+		classes: ['bard', 'sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: false,
+			raw: 'V',
+			somatic: false,
+			verbal: true
+		},
+		description:
+			"You cast this spell on an object no more than 1 foot on a side, doubling the object's perceived value by adding illusionary flourish or reducing its perceived value by half with the help of illusionary dents and scratches. Anyone examining the object must roll an Investigation check against your spell DC.",
+		duration: '8 hours',
+		level: '1',
+		name: 'Distort Value',
+		range: 'Touch',
+		ritual: false,
+		school: 'illusion',
+		higer_levels:
+			'When you cast this spell using a higher spell slot, you increase the size of the object by 1 foot per spell slot over 1st.',
+		tags: ['ranger', 'wizard', 'level1'],
+		type: '1st-level Illusion'
+	},
+	{
+		casting_time: '1 action',
+		classes: ['bard', 'warlock', 'wizard'],
+		components: {
+			material: false,
+			raw: 'V',
+			somatic: false,
+			verbal: true
+		},
+		description:
+			'Your gesture forces one humanoid you can see within range to make a Constitution saving throw. On a failed save, the target must move up to its speed in a direction you choose. In addition, you can cause the target to drop whatever it is holding. This spell has no effect on a humanoid that is immune to being charmed.',
+		duration: 'Instantaneous',
+		level: '1',
+		name: 'Puppet',
+		range: '120 feet',
+		ritual: false,
+		school: 'enchantment',
+		higer_levels:
+			'When you cast this spell using a higher spell slot, you increase the size of the object by 1 foot per spell slot over 1st.',
+		tags: ['ranger', 'wizard', 'level1'],
+		type: '1st-level Enchantment'
+	},
+	{
+		casting_time: '1 bonus action',
+		classes: ['sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: false,
+			raw: 'V, S',
+			somatic: true,
+			verbal: true
+		},
+		description:
+			'You weave together threads of shadow to create a sword of solidified gloom in your hand. This magic sword lasts until the spell ends. It counts as a simple melee weapon with which you are proficient. It deals 2d8 psychic damage on a hit and has the finesse, light, and thrown properties (range 20/60). In addition, when you use the sword to attack a target that is in dim light or darkness, you make the attack roll with advantage.</p><p>If you drop the weapon or throw it, it dissipates at the end of the turn. Thereafter, while the spell persists, you can use a bonus action to cause the sword to reappear in your hand.',
+		duration: 'Concentration, up to 1 minute',
+		level: '2',
+		name: 'Shadow Blade',
+		range: 'self',
+		ritual: false,
+		school: 'illusion',
+		higer_levels:
+			'When you cast this spell using a 3rd- or 4th-level spell slot, the damage increases to 3d8. When you cast it using a 5th- or 6th-level spell slot, the damage increases to 4d8. When you cast it using a spell slot of 7th level or higher, the damage increases to 5d8.',
+		tags: ['ranger', 'wizard', 'level1'],
+		type: '2nd-level Illusion'
+	},
+	{
+		casting_time: '1 action',
+		classes: ['sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: false,
+			raw: 'V',
+			somatic: false,
+			verbal: true
+		},
+		description:
+			"You teleport yourself to an unoccupied space you can see within range. Immediately after you disappear, a thunderous boom sounds, and each creature within 10 feet of the space you left must make a Constitution saving throw, taking 3d10 thunder damage on a failed save, or half as much damage on a successful one. The thunder can be heard from up to 300 feet away.</p><p>You can bring along objects as long as their weight doesn't exceed what you can carry. You can also teleport one willing creature of your size or smaller who is carrying gear up to its carrying capacity. The creature must be within 5 feet of you when you cast this spell, and there must be an unoccupied space within 5 feet of your destination space for the creature to appear in; otherwise, the creature is left behind.",
+		duration: 'Instantaneous',
+		level: '3',
+		name: 'Thunder Step',
+		range: '90 feet',
+		ritual: false,
+		school: 'conjuration',
+		higer_levels:
+			'When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d10 for each slot level above 3rd.',
+		tags: ['sorcerer', 'wizard', 'warlock', 'level3'],
+		type: '3rd-level Conjuration'
+	},
+	{
+		casting_time: '1 action',
+		classes: ['sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: false,
+			raw: 'V',
+			somatic: false,
+			verbal: true
+		},
+		description:
+			'You drive a disorienting spike of psychic energy into the mind of one creature you can see within range. The target must succeed on an Intelligence saving throw or take 1d6 psychic damage and subtract 1d4 from the next saving throw it makes before the end of your next turn.',
+		duration: '1 round',
+		level: '0',
+		name: 'Mind Sliver',
+		range: '60 feet',
+		ritual: false,
+		school: 'enchantment',
+		higer_levels:
+			"This spell's damage increases by 1d6 when you reach certain levels: 5th level (2d6), 11th level (3d6), and 17th level (4d6).",
+		tags: ['ranger', 'wizard', 'level1'],
+		type: 'Enchantment cantrip'
+	},
+	{
+		casting_time: '1 action',
+		classes: ['artificer', 'sorcerer', 'warlock', 'wizard'],
+		components: {
+			material: true,
+			materials_needed: ['a melee weapon worth at least 1 sp'],
+			raw: 'S, M (a melee weapon worth at least 1 sp)',
+			somatic: true,
+			verbal: false
+		},
+		description:
+			"You brandish the weapon used in the spell's casting and make a melee attack with it against one creature within 5 feet of you. On a hit, the target suffers the weapon attack's normal effects, and you can cause green fire to leap from the target to a different creature of your choice that you can see within 5 feet of it. The second creature takes fire damage equal to your spellcasting ability modifier.",
+		duration: 'Instantaneous',
+		level: '0',
+		name: 'Green-Flame Blade',
+		range: 'Self (5-foot radius)',
+		ritual: false,
+		school: 'evocation',
+		higer_levels:
+			'At 5th level, the melee attack deals an extra 1d8 fire damage to the target on a hit, and the fire damage to the second creature increases to 1d8 + your spellcasting ability modifier. Both damage rolls increase by 1d8 at 11th level (2d8 and 2d8) and 17th level (3d8 and 3d8).',
+		tags: ['ranger', 'wizard', 'level1'],
+		type: 'Evocation cantrip'
+	},
+	{
+		casting_time: '1 action',
 		classes: ['bard', 'druid', 'ranger'],
 		components: {
 			material: true,

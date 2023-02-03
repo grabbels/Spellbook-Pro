@@ -150,34 +150,6 @@
 				max-width: 200px;
 				margin-top: 0.4rem;
 			}
-			// button {
-			// 	padding: 0;
-			// 	width: 30px;
-			// 	height: 30px;
-			// 	min-height: 0;
-			// 	margin: 0 0.1rem 0 0;
-			// 	&:last-child {
-			// 		margin: 0;
-			// 	}
-
-			// 	i {
-			// 		font-size: 1.5rem;
-			// 		color: var(--lesstranslucent);
-			// 	}
-			// 	&:hover {
-			// 		i {
-			// 			color: var(--accent);
-			// 		}
-			// 	}
-			// 	&:only-of-type {
-			// 		font-size: 1.8rem;
-			// 		&:hover {
-			// 			i {
-			// 				color: var(--red);
-			// 			}
-			// 		}
-			// 	}
-			// }
 		}
 		.description {
 			color: white;

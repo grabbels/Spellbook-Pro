@@ -34,7 +34,7 @@
 		</div>
 		{#if $topmenuopen === false}menu{:else}close{/if}</button
 	>
-{:else if text === 'Import'}
+<!-- {:else if text === 'Import'}
 	<label role="button" for="input-file" on:keydown on:click class="{type} button" class:disabled
 		>{#if icon}<i class={icon} />{/if}{text}<input
 			type="file"
@@ -42,7 +42,7 @@
 			style="display: none"
 			accept=".json"
 		/></label
-	>
+	> -->
 {:else if href}
 	<a {href} class="button {type}" on:click class:disabled
 		>{#if icon}<i class={icon} />{/if}{text}</a

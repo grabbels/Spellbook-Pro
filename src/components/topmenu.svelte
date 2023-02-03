@@ -108,14 +108,14 @@
 				on:change={(e) => onFileSelected(e)}
 				bind:this={fileinput}
 			/>
-			<Button
+			<!-- <Button
 				disabled={$spellListEmpty}
 				href=""
 				type="fill"
 				icon="ri-file-2-line"
 				text="Export PDF"
 				on:click={() => (exportpdf = true)}
-			/>
+			/> -->
 			<Button
 				disabled={$spellListEmpty}
 				on:click={empty}
@@ -123,6 +123,19 @@
 				type="outline alt"
 				icon="ri-delete-bin-line"
 				text="Clear spellbook"
+			/>
+			<Button
+				on:click={()=> $modalCall = 'submitspell'}
+				href=""
+				type="fill blue"
+				icon="ri-file-search-line"
+				text="Missing spell"
+			/>
+			<Button
+				href="mailto:dev@semhak.dev?subject=Inky's Spellbook - bug/suggestion&body=In case of a bug, be as specific as possible with instructions how to reproduce the issue. Thank you for taking the time make Inky's Spellbook better!"
+				type="fill alt"
+				icon="ri-bug-line"
+				text="Bug/suggestion"
 			/>
 			<!-- <Button
 				href=""

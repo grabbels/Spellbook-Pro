@@ -22,7 +22,8 @@
 		classOptions,
 		classes,
 		refreshList,
-		loadBook
+		loadBook,
+		importBook
 	} from './globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import Button from './button.svelte';
@@ -33,6 +34,8 @@
 	import Colorpicker from './colorpicker.svelte';
 	import SaveSlot from './saveslot.svelte';
 	import Loading from './loading.svelte';
+	import PrivacyPolicy from './privacy-policy.svelte';
+	import Submitspells from './submitspells.svelte';
 	export let modal;
 	let loadingSave;
 	let saveName;
@@ -234,11 +237,11 @@
 					</p>
 					<p>
 						Have a look around, but be warned that there might be scary and dangerous bugs lurking
-						around! This app is currently very much in beta, and I would be very thankful if you
+						around! They bite. This app is currently very much in beta, and I would be very thankful if you
 						could report any issues or bugs you may encounter. Features requests or ideas are also
-						very welcome!
+						very welcome! You'll find buttons to report bugs and submit spells in the menu. Have fun!
 					</p>
-					<p>You'll find the bugreport button in the menu. Have fun!</p>
+					<p>Have fun!</p>
 				</div>
 			{:else if $modalCall == 'save' || $modalCall == 'load' || $modalCall == 'edit'}
 				<div class="modal_inner">
@@ -275,7 +278,7 @@
 											value={$bookToEdit.name ? $bookToEdit.name : ''}
 											name="name"
 											type="text"
-											maxlength="30"
+											maxlength="40"
 										/>
 									</div>
 									<div>
@@ -328,8 +331,8 @@
 									bind:this={saveDescription}
 									name="description"
 									style="width: 100%"
-									rows="4"
-									maxlength="185"
+									rows="6"
+									maxlength="300"
 									value={$bookToEdit.description ? $bookToEdit.description : ''}
 								/>
 								<button class="{loadingSave ? 'loading' : ''} button fill accent" type="submit"
@@ -356,11 +359,7 @@
 				</div>
 			{:else if $modalCall == 'terms'}
 				<div class="modal_inner">
-					<h2>Terms and conditions</h2>
-					<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-
-"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</p>
+					<PrivacyPolicy />
 				</div>
 			{:else if $modalCall == 'lookup'}
 				<div class="modal_inner">
@@ -476,6 +475,10 @@ Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
 						</div>
 					</div>
 				</div>
+			{:else if $modalCall == 'submitspell'}
+				<div class="modal_inner">
+					<Submitspells />
+				</div>
 			{:else if $modalCall == 'spellbook'}
 				<div class="modal_inner" on:keydown={handleKeyDown}>
 					<div class="card">
@@ -517,17 +520,21 @@ Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
 							</div>
 							<div class="block buttons">
 								<Button
-									on:click={() => {}}
+									on:click={() => {
+										loadBook($lookupBook.id);
+									}}
 									text="Open"
 									icon="ri-book-open-line"
 									type="fill accent"
 								/>
-								<Button
-									on:click={() => {}}
+								<!-- <Button
+									on:click={() => {
+										importBook($lookupBook);
+									}}
 									text="Import"
 									icon="ri-folder-download-line"
 									type="fill blue"
-								/>
+								/> -->
 							</div>
 							<div class="block spells">
 								<h3>Spells</h3>
@@ -653,6 +660,9 @@ Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
 					align-items: center;
 					justify-content: center;
 					z-index: 1;
+					@media only screen and (max-width: 1024px) {
+						padding: 2rem 0 0;
+					}
 					form {
 						max-width: 400px;
 						.grid {

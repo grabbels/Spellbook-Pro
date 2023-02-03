@@ -178,11 +178,16 @@ h3 {
 	font-size: 1.3rem;
 }
 
-p {
+p, li {
 	font-size: 1rem;
 	font-weight: 400;
 	line-height: 1.5;
 	margin-bottom: .5rem;
+	color: var(--white);
+}
+
+label {
+	color: var(--white);
 }
 
 input,
