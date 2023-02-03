@@ -44,6 +44,7 @@
 		"@sveltejs/adapter-cloudflare": "^1.0.4",
 		"@sveltejs/adapter-static": "^1.0.5",
 		"@sveltejs/adapter-vercel": "^1.0.6",
+		"autoprefixer": "^10.4.13",
 		"maxlength-contenteditable": "^1.0.1",
 		"remixicon": "^2.5.0",
 		"svelte-local-storage-store": "^0.3.2"
