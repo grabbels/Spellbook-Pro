@@ -265,36 +265,14 @@
 		margin-top: 1rem;
 		position: relative;
 		z-index: 1;
-		// &.placeholder {
-		// 	position: absolute;
-		// 	left: 0;
-		// 	top: 0;
-		// 	width: 100%;
-		// 	height: 100%;
-		// 	pointer-events: none;
-		// 	margin-top: 0;
-		// }
-		// &.placeholder {
-		// 	margin: 0;
-		// 	position: absolute;
-		// 	height: 100%;
-		// 	width: 100%;
-		// 	top: 0;
-		// 	left: 0;
-		// 	z-index: -1;
-		// }
 	}
 	.new_save {
 		height: auto;
 		min-height: 100%;
 		width: 100%;
 		max-height: 100%;
-		// padding: 2rem;
 		border-radius: 6px;
 		background-color: var(--spellbg);
-		// display: flex;
-		// align-items: center;
-		// justify-content: center;
 		h2 {
 			margin-bottom: 0.5rem;
 		}
@@ -303,7 +281,6 @@
 			padding: 2rem 0 0;
 		}
 		form {
-			// max-width: 500px;
 			.grid {
 				display: grid;
 				grid-template-columns: 1fr 150px;

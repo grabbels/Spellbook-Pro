@@ -48,6 +48,7 @@
 		}
 		&.noedit {
 			border: 2px solid transparent;
+			aspect-ratio: unset!important;
 			&:hover {
 				cursor: pointer;
 				border: 2px solid var(--accent);
@@ -90,6 +91,9 @@
 		}
 		&.shadow {
 			box-shadow: 0 3px 10px rgba(20, 20, 20, 0.3);
+		}
+		&.large {
+			aspect-ratio: unset;
 		}
 		&.account {
 			aspect-ratio: unset;

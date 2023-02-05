@@ -98,7 +98,7 @@
 		) {
 			if ((e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 97 && e.keyCode <= 122)) {
 				$modalCall = 'lookup';
-				$quickQuery = e.key;
+				// $quickQuery = e.key;
 			}
 		}
 	}
