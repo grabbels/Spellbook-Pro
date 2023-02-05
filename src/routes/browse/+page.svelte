@@ -119,6 +119,12 @@
 						font-size: 1.6rem;
 						line-height: 1.2;
 						margin-bottom: 0.5rem;
+						@media only screen and (max-width: 600px) {
+							font-size: 1.3rem;
+							i {
+								vertical-align: sub;
+							}
+						}
 						i {
 							vertical-align: bottom;
 						}
