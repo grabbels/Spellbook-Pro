@@ -15,7 +15,7 @@
 	div {
 		border-radius: 50vh;
 		display: inline-block;
-		margin: 0.5rem 0.4rem 0 0;
+		// margin: 0.5rem 0.4rem 0 0;
 		padding: 0.2rem 0.8rem 0.2rem 0.6rem;
 		font-size: 1rem;
 		font-weight: 400;
@@ -31,10 +31,7 @@
 			color: var(--white);
 			background-color: var(--translucent);
 			font-size: 0.9rem;
-			margin: 0.5rem 0.4rem 0 0;
-			&:last-child {
-			margin-right: 0;
-		}
+			// margin: 0.5rem 0.4rem 0 0;
 			border-radius: 50vh;
 			// &:first-child {
 			//     border-radius: 50vh 0 0 50vh;

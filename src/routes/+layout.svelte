@@ -22,9 +22,13 @@
 		userId,
 		userEmail,
 		userNickname
-	} from '../components/stores';
-	import { retrieveSession, refreshSession, setUserData } from '../components/globalfunctions.svelte';
-	import { loggedIn, firstVisit } from '../components/stores-persist';
+	} from '../components/stores/stores';
+	import {
+		retrieveSession,
+		refreshSession,
+		setUserData
+	} from '../components/functions/globalfunctions.svelte';
+	import { loggedIn, firstVisit } from '../components/stores/stores-persist';
 
 	import '@fontsource/kanit';
 	import Modal from '../components/modal.svelte';
@@ -80,6 +84,23 @@
 		$firstVisit = false;
 	} else {
 		$modalCall = '';
+	}
+	function handleKeyDown(e) {
+		if (
+			!e.altKey &&
+			!e.ctrlKey &&
+			!e.metaKey &&
+			$pagetitle == 'Home' &&
+			!$sidemenuopen &&
+			!$topmenuopen &&
+			!$modalCall &&
+			document.activeElement.id != 'spellbooksearch'
+		) {
+			if ((e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 97 && e.keyCode <= 122)) {
+				$modalCall = 'lookup';
+				$quickQuery = e.key;
+			}
+		}
 	}
 </script>
 
@@ -147,11 +168,11 @@
 	</button>
 {/if}
 
-{#if ($modalCall && $modalCall != 'lookup') || ($modalCall && $quickQuery)}
-	{#key $modalCall}
-		<Modal />
-	{/key}
+{#if $modalCall}
+	<Modal />
 {/if}
+
+<svelte:window on:keydown={(e) => handleKeyDown(e)} />
 
 <style lang="scss">
 	@import '../../node_modules/remixicon/fonts/remixicon.css';

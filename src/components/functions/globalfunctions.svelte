@@ -19,12 +19,14 @@
 		userEmail,
 		userNickname,
 		profileUser,
-		userProfile
-	} from './stores';
-	import { activeSpells, loggedIn } from './stores-persist';
+		userProfile,
+		pagetitle,
+		lookupBook
+	} from '../stores/stores';
+	import { activeSpells, loggedIn } from '../stores/stores-persist';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
-	import { spells } from './spells';
+	import { spells } from '../data/spells';
 	export let classOptions =
 		'<option value="" disabled selected hidden>Select class</option><option value="Artificer">Artificer</option><option value="Barbarian">Barbarian</option><option value="Bard">Bard</option><option value="Cleric">Cleric</option><option value="Druid">Druid</option><option value="Fighter">Fighter</option><option value="Monk">Monk</option><option value="Paladin">Paladin</option><option value="Ranger">Ranger</option><option value="Rogue">Rogue</option><option value="Sorcerer">Sorcerer</option><option value="Warlock">Warlock</option><option value="Wizard">Wizard</option>';
 	export let classes = [
@@ -220,7 +222,9 @@
 			if (error) {
 				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 			} else {
+
 				savedSpellSheets.set(toBeRemovedFrom);
+				return 'deleted';
 			}
 		}
 	}
@@ -273,8 +277,13 @@
 			console.log(error);
 			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 		} else {
-			loadSpellsheetsByUserId(get(userId));
-			notification.set('Spellbook published!#positive');
+			if (get(pagetitle) == 'My account') {
+				loadSpellsheetsByUserId(get(userId));
+				var setPublishedBook = get(lookupBook);
+				setPublishedBook.published = true;
+				lookupBook.set(setPublishedBook);
+				notification.set('Spellbook published!#positive');
+			}
 		}
 	}
 
@@ -288,7 +297,9 @@
 			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 		} else {
 			loadSpellsheetsByUserId(get(userId));
-
+			var setUnpublishedBook = get(lookupBook);
+			setUnpublishedBook.published = false;
+			lookupBook.set(setUnpublishedBook);
 			notification.set('Spellbook made private.#info');
 		}
 	}
@@ -314,7 +325,7 @@
 			.select()
 			.eq('user_id', get(profileUser));
 		if (data) {
-			userProfile.set(data)
+			userProfile.set(data);
 		}
 	}
 </script>

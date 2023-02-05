@@ -11,7 +11,7 @@
 		userEmail,
 		userId,
 		userNickname
-	} from '../../../components/stores';
+	} from '../../../components/stores/stores';
 	import { supabaseClient } from '$lib/supabaseClient';
 	$pagetitle = 'Password reset';
 	let loading = false;

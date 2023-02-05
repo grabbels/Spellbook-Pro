@@ -8,22 +8,23 @@
 		savePrompt,
 		userId,
 		userNickname,
-		userEmail
-	} from '../../components/stores';
-	import { activeSpells } from '../../components/stores-persist';
+		userEmail,
+		lookupBook
+	} from '../../components/stores/stores';
+	import { activeSpells } from '../../components/stores/stores-persist';
 	import Section from '../../components/section.svelte';
 	import {
 		loadSpellsheetsByUserId,
 		editPassword,
 		refreshSession,
 		setUserData
-	} from '../../components/globalfunctions.svelte';
+	} from '../../components/functions/globalfunctions.svelte';
 	import Button from '../../components/button.svelte';
 	import { goto } from '$app/navigation';
 	import SaveSlot from '../../components/saveslot.svelte';
 	import { onMount } from 'svelte';
 	import Loading from '../../components/loading.svelte';
-	import { supabaseClient } from '$lib/supabaseClient';
+	import { supabaseClient }from '$lib/supabaseClient';
 	// let savedSpellSheets = [];
 	let openCard = null;
 	// let userId;
@@ -154,7 +155,7 @@
 				{:else}
 					<div class="save_slots">
 						{#each $savedSpellSheets as spellsheet}
-							<SaveSlot data={spellsheet} type="large" />
+							<SaveSlot data={spellsheet} type="large" on:click={()=> {$modalCall = 'spellbook', $lookupBook = spellsheet}} />
 						{/each}
 					</div>
 				{/if}

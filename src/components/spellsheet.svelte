@@ -1,13 +1,13 @@
 <script>
 	// import Card from './card.svelte';
-	import { activeSpells } from './stores-persist';
+	import { activeSpells } from './stores/stores-persist';
 	import { fade } from 'svelte/transition';
 	import SchoolIcon from './schoolicon.svelte';
 	import Pill from './pill.svelte';
 	import { onMount } from 'svelte';
-	import { moveItem, removeFilters } from './globalfunctions.svelte';
+	import { moveItem, removeFilters } from './functions/globalfunctions.svelte';
 	import Close from './close.svelte';
-	import { filters, activeLevels, modalCall, lookupSpell, bookmarksOpen } from './stores';
+	import { filters, activeLevels, modalCall, lookupSpell, bookmarksOpen } from './stores/stores';
 	import Button from './button.svelte';
 	import PlaceholderCard from './placeholdercard.svelte';
 	import Bookmarks from './bookmarks.svelte';
@@ -278,7 +278,7 @@
 		grid-template-columns: 60px 1fr;
 		grid-gap: 1rem;
 		align-items: flex-start;
-		
+
 		// &.bookmarks {
 		// 	grid-template-columns: 60px 1fr;
 		// 	grid-gap: 1rem;
@@ -297,7 +297,6 @@
 				width: calc(100% + 60px + 5vw);
 				grid-template-columns: 60px 1fr;
 				grid-gap: 2.5vw;
-				
 			}
 		}
 	}

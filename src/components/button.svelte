@@ -1,11 +1,12 @@
 <script>
-	import { sidemenuopen, topmenuopen, spellListEmpty } from '../components/stores';
-
+	import { onMount } from 'svelte';
+	import { sidemenuopen, topmenuopen, spellListEmpty } from './stores/stores';
 	export let text;
 	export let icon = '';
 	export let type;
 	export let href = '';
 	export let disabled = false;
+	export let loading = '';
 	// import ''
 	// const handleMouseEnter = (event) => {
 	// 	event.target.children[0].className = event.target.children[0].className.replace('line', 'fill');
@@ -13,6 +14,9 @@
 	// const handleMouseLeave = (event) => {
 	// 	event.target.children[0].className = event.target.children[0].className.replace('fill', 'line');
 	// };
+	onMount(() => {
+		loading = false;
+	});
 </script>
 
 {#if text === 'Add spells'}
@@ -34,7 +38,7 @@
 		</div>
 		{#if $topmenuopen === false}menu{:else}close{/if}</button
 	>
-<!-- {:else if text === 'Import'}
+	<!-- {:else if text === 'Import'}
 	<label role="button" for="input-file" on:keydown on:click class="{type} button" class:disabled
 		>{#if icon}<i class={icon} />{/if}{text}<input
 			type="file"
@@ -48,9 +52,13 @@
 		>{#if icon}<i class={icon} />{/if}{text}</a
 	>
 {:else}
-	<button type="button" on:click class={type} class:disabled
-		>{#if icon}<i class={icon} />{/if}{text}</button
-	>
+	{#key loading}
+		<button type="button" on:click class={type} class:disabled class:loading
+			>{#if icon}<i class={icon} />{/if}{text}{#if loading}<div class="loader">
+					<i class="ri-loader-5-line" />
+				</div>{/if}</button
+		>
+	{/key}
 {/if}
 
 <style lang="scss" global>
@@ -65,7 +73,7 @@
 		padding: 0.35rem 1rem;
 		// margin-right: 0.4rem;
 		// margin-bottom: 0.4rem;
-		margin: 0 0 .4rem;
+		margin: 0 0 0.4rem;
 		font-size: 1rem;
 		border-radius: 6px;
 		font-weight: 500;
@@ -210,6 +218,14 @@
 					color: var(--white);
 				}
 			}
+			&.blue {
+				border-color: var(--lightblue);
+				color: var(--white);
+				&:hover {
+					background-color: var(--lightblue);
+					color: var(--white);
+				}
+			}
 		}
 		&.naked {
 			color: var(--white);
@@ -244,6 +260,36 @@
 		&.disabled {
 			opacity: 0.3;
 			pointer-events: none;
+		}
+		div.loader {
+			position: absolute;
+			display: none;
+			animation-name: rotate;
+			animation-iteration-count: infinite;
+			animation-timing-function: linear;
+			animation-duration: 0.6s;
+			top: -3px;
+			width: 100%;
+			text-align: center;
+			left: 0;
+			i {
+				font-size: 2rem;
+				color: var(--bg);
+			}
+			@keyframes rotate {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		}
+		&.loading {
+			color: transparent!important;
+			div.loader {
+				display: block;
+			}
 		}
 	}
 </style>

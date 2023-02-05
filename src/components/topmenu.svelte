@@ -1,7 +1,7 @@
 <script>
 	import Button from './button.svelte';
 	import Section from './section.svelte';
-	import { activeSpells } from './stores-persist';
+	import { activeSpells } from './stores/stores-persist';
 	import {
 		spellListEmpty,
 		notification,
@@ -10,8 +10,8 @@
 		session,
 		topmenuopen,
 		pagetitle
-	} from './stores';
-	import { topMenuOpenClose, removeFilters, refreshList, empty } from './globalfunctions.svelte';
+	} from './stores/stores';
+	import { topMenuOpenClose, removeFilters, refreshList, empty } from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
 	import Pdf from './pdf.svelte';
 	let exportpdf = false;

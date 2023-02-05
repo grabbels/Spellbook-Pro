@@ -1,6 +1,6 @@
 <script>
-	import { activeLevels, bookmarksOpen } from './stores';
-	import { clickOutside } from './clickOutside.js';
+	import { activeLevels, bookmarksOpen } from './stores/stores';
+	import { clickOutside } from './functions/clickOutside.js';
 </script>
 
 {#if $activeLevels.length > 0}

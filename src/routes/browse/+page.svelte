@@ -5,9 +5,9 @@
 		notification,
 		pagetitle,
 		lookupBook
-	} from '../../components/stores.js';
-	import { getUserId } from '../../components/globalfunctions.svelte';
-	import { activeSpells, userNickname } from '../../components/stores-persist.js';
+	} from '../../components/stores/stores.js';
+	import { getUserId } from '../../components/functions/globalfunctions.svelte';
+	import { activeSpells, userNickname } from '../../components/stores/stores-persist.js';
 	import { supabaseClient } from '$lib/supabaseClient';
 	import { createClient } from '@supabase/supabase-js';
 	import Section from '../../components/section.svelte';

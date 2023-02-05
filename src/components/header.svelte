@@ -1,10 +1,11 @@
+
 <script>
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
-	import { pagetitle, session, modalCall, quickQuery } from '../components/stores';
-	import { loggedIn, userNickname } from '../components/stores-persist';
-	import { topMenuOpenClose, sideMenuOpenClose, handleLogOut } from './globalfunctions.svelte';
+	import { pagetitle, session, modalCall, quickQuery } from './stores/stores';
+	import { loggedIn, userNickname } from './stores/stores-persist';
+	import { topMenuOpenClose, sideMenuOpenClose, handleLogOut } from './functions/globalfunctions.svelte';
 </script>
 
 <Section name="header">
@@ -61,10 +62,10 @@
 			</div>
 			<div class="header_right">
 				<input
+					readonly
 					type="text"
 					placeholder="Quick spell lookup..."
-					bind:value={$quickQuery}
-					on:input={() => ($modalCall = 'lookup')}
+					on:focus={() => ($modalCall = 'lookup')}
 				/>
 				{#if $session && $pagetitle !== 'My account'}
 					<Button

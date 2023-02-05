@@ -4,8 +4,8 @@
 		console.log('edit')
 		selectedColor = $bookToEdit.color
 	}
-	import { colors } from './colors';
-	import { bookToEdit } from './stores';
+	import { colors } from './data/colors';
+	import { bookToEdit } from './stores/stores';
 </script>
 
 <div class="color_picker">

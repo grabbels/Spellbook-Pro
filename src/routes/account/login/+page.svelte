@@ -11,7 +11,7 @@
 		userEmail,
 		userId,
 		userNickname
-	} from '../../../components/stores';
+	} from '../../../components/stores/stores';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/supabaseClient';
 	let showRegister;

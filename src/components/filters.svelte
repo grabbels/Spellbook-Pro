@@ -1,9 +1,10 @@
+<svelte:options accessors={true}/>
 <script>
 	import { fade, scale } from 'svelte/transition';
-	import { removeFilters } from './globalfunctions.svelte';
-	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter, bookmarksOpen } from './stores';
-	import { activeSpells } from './stores-persist';
-	import { clickOutside } from './clickOutside.js';
+	import { removeFilters } from './functions/globalfunctions.svelte';
+	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter, bookmarksOpen } from './stores/stores';
+	import { activeSpells } from './stores/stores-persist';
+	import { clickOutside } from './functions/clickOutside.js';
 	let actionFilterArray = [];
 	let rangeFilterArray = [];
 	let saveFilterArray = [];
@@ -87,7 +88,7 @@
 	>
 	<h3 class="button"><i class="ri-filter-2-line" /> Filters</h3>
 	<div class="filter" data-filter="search">
-		<input bind:value={$searchFilter} type="text" placeholder="Search spellbook..." />
+		<input id="spellbooksearch" bind:value={$searchFilter} type="text" placeholder="Search spellbook..." />
 	</div>
 	{#if actionFilterArray.length > 0}
 		<div class="filter castingtime" data-filter="castingtime">

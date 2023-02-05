@@ -1,6 +1,6 @@
 <script>
-	import { pagetitle } from '../components/stores.js';
-	import { activeSpells } from '../components/stores-persist.js';
+	import { pagetitle } from '../components/stores/stores.js';
+	import { activeSpells } from '../components/stores/stores-persist.js';
 	$pagetitle = 'Home';
 	import Section from '../components/section.svelte';
 	import Spellsheet from '../components/spellsheet.svelte';

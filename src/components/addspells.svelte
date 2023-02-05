@@ -1,10 +1,10 @@
 <script>
 	let query = '';
 	import SchoolIcon from './schoolicon.svelte';
-	import { sidemenuopen, notification } from './stores';
-	import { activeSpells } from './stores-persist';
+	import { sidemenuopen, notification } from './stores/stores';
+	import { activeSpells } from './stores/stores-persist';
 	import { fly } from 'svelte/transition';
-	import { spells } from './spells';
+	import { spells } from './data/spells';
 	import bg from '../img/menu-bg.png';
 	import Button from './button.svelte';
 	let results = [];

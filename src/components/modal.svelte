@@ -1,66 +1,38 @@
 <script>
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
-	import { spells } from './spells';
 	import {
 		modalCall,
-		savedSpellSheets,
-		userId,
-		session,
-		notification,
-		userNickname,
-		topmenuopen,
 		quickQuery,
 		lookupSpell,
-		savePrompt,
-		bookToEdit,
 		lookupBook,
 		profileUser,
-		userProfile
-	} from './stores';
+		userProfile,
+		bookToEdit,
+		userId,
+		pagetitle
+	} from './stores/stores';
 	import {
-		retrieveSession,
-		loadSpellsheetsByUserId,
-		classOptions,
-		classes,
-		refreshList,
 		loadBook,
-		importBook,
-		editPassword,
-		getUserProfile
-	} from './globalfunctions.svelte';
+		getUserProfile,
+		editBook,
+		publishBook,
+		unpublishBook,
+		removeBook
+	} from './functions/globalfunctions.svelte';
 	import Pill from './pill.svelte';
 	import Button from './button.svelte';
-	import { supabaseClient } from '$lib/supabaseClient';
-	import { activeSpells } from './stores-persist';
 	import Close from './close.svelte';
 	import SchoolIcon from './schoolicon.svelte';
-	import Colorpicker from './colorpicker.svelte';
-	import SaveSlot from './saveslot.svelte';
-	import Loading from './loading.svelte';
 	import PrivacyPolicy from './privacy-policy.svelte';
 	import Submitspells from './submitspells.svelte';
 	import Saveslot from './saveslot.svelte';
+	import Welcome from './modal/welcome.svelte';
+	import Saveloadedit from './modal/saveloadedit.svelte';
+	import Passwordreset from './modal/passwordreset.svelte';
+	import Lookup from './modal/lookup.svelte';
+	import Spell from './modal/spell.svelte';
 	export let modal;
-	let loadingSave;
-	let saveName;
-	let saveLevel;
-	let saveClass;
-	let savePublish;
-	let loading = false;
-	if ($bookToEdit.published == true) {
-		savePublish = true;
-	}
-
-	let saveDescription;
-	let saveColor = $bookToEdit ? $bookToEdit.color : 'var(--purple)';
-	let overwriteId;
-	let quickInput;
-	let results;
-	let form;
-	let email;
-	let result = [];
-	let colorPicker = false;
 	let levelList = [];
 	const levels = [
 		'cantrips',
@@ -74,315 +46,87 @@
 		'level 8',
 		'level 9'
 	];
+	let saveColor;
+	let publishloading = false;
+	let unpublishloading = false;
+	let removeloading = false;
+	$: saveColor = $bookToEdit ? $bookToEdit.color : 'var(--purple)';
 
-	// $: $modalCall, ($quickQuery = '');
-	$: if ($modalCall == '') {
+	let showModal = false;
+
+	$: $lookupBook, (publishloading = false), (unpublishloading = false);
+
+	$: $modalCall, showModalFunction();
+
+	function showModalFunction() {
+		if (showModal == false && $modalCall) {
+			showModal = true;
+		}
+	}
+
+	// $: if ($modalCall == '' && $modalCall == 'lookup') {
+	// 	$quickQuery = '';
+	// }
+
+	function closeModal() {
+		$modalCall = '';
 		$quickQuery = '';
+		$lookupSpell = '';
+		showModal = false;
 	}
-	$: saveColor, (colorPicker = false), console.log(saveColor);
-	if ($modalCall == 'save' || 'load' || 'edit') {
-		if (!$userId || !$userNickname) {
-			if ($session) {
-				$userId = $session.user.id;
-				$userNickname = $session.user.user_metadata.nickname;
-				loadSpellsheetsByUserId($userId);
-			} else {
-				let promiseSession = retrieveSession();
-				promiseSession.then((value) => {
-					if (value) {
-						$session = value;
-						$userId = value.user.id;
-						$userNickname = value.user.user_metadata.nickname;
-						loadSpellsheetsByUserId($userId);
-					}
-				});
-			}
-		} else {
-			loadSpellsheetsByUserId($userId);
-		}
+
+	function handleKeyDown(e) {
+		closeModal();
 	}
-	$: if ($quickQuery.length > 0) {
-		results = spells.filter((data) =>
-			data?.name.toLowerCase()?.includes($quickQuery.toLowerCase())
-		);
-	} else {
-		results = [];
-	}
+
 	onMount(() => {
-		if ($modalCall == 'lookup') {
-			quickInput.focus();
-			quickInput.value = $quickQuery;
-			// console.log($quickQuery)
-		}
 		for (let i = 0; i < levelList.length; i++) {
-			console.log(levelList[i]);
 			if (!levelList[i].querySelector('ul').children.length) {
 				levelList[i].style.display = 'none';
 			}
 		}
 	});
 
-	$: listLength = $savedSpellSheets.length;
 	$: console.log($modalCall);
-	var resultNumber = -1;
-	function handleKeyDown(e) {
-		if (e.key == 'ArrowDown' && results) {
-			e.preventDefault();
-			resultNumber++;
-			if (result[resultNumber]) {
-				result[resultNumber].focus();
-			} else {
-				resultNumber--;
-			}
-		}
-		if (e.key == 'ArrowUp' && results) {
-			e.preventDefault();
-			resultNumber--;
-			if (result[resultNumber]) {
-				result[resultNumber].focus();
-			} else {
-				quickInput.focus();
-				resultNumber = -1;
-			}
-		}
-		if (e.key == 'Escape') {
-			$modalCall = '';
-			$quickQuery = '';
-			$lookupSpell = '';
-		}
-	}
 
-	function handleLookup(i) {
-		$lookupSpell = results[i];
-		$modalCall = 'spell';
-
-		// setTimeout(() => {
-		// 	$modalCall = 'spell';
-		// }, 1);
-	}
-
-	async function handleSave(e) {
-		e.preventDefault;
-		if ($bookToEdit) {
-			overwriteId = $bookToEdit.id;
-		}
-		if (!saveName.value || !saveLevel.value || !saveClass.value) {
-			$notification = 'Please fill in all the fields.#alert';
-		} else {
-			loadingSave = 'loading';
-			if (overwriteId) {
-				const { error } = await supabaseClient.from('spellbooks').delete().eq('id', overwriteId);
-				if (error) {
-					console.log(error);
-				}
-			}
-			const { data, error } = await supabaseClient
-				.from('spellbooks')
-				.insert({
-					creator: $userNickname,
-					name: saveName.value,
-					class: saveClass.value,
-					level: saveLevel.value,
-					description: saveDescription.value,
-					list: $activeSpells,
-					user_id: $userId,
-					color: saveColor,
-					published: savePublish
-				})
-				.select();
-			if (error) {
-				console.log(error);
-				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-			} else if (data) {
-				console.log('test');
-				$notification = 'Spellbook saved.#info';
-
-				overwriteId = '';
-				$savePrompt = false;
-				$topmenuopen = false;
-				// loadSpellsheetsByUserId($userId);
-				$modalCall = '';
-				$modalCall = $modalCall;
-				if ($bookToEdit) {
-					loadSpellsheetsByUserId();
-				}
-				$bookToEdit = '';
-			}
-		}
-	}
-
-	async function handleClick(id) {
-		if ($modalCall == 'save') {
-			if (id === 'add') {
-				$savePrompt = true;
-			} else if (
-				id != 'add' &&
-				confirm(
-					'This will overwrite the spellbook in the selected slot. Do you want to continue?'
-				) == true
-			) {
-				overwriteId = id;
-				$savePrompt = true;
-			}
-		} else if ($modalCall == 'load') {
-			loadBook(id);
-		}
-	}
 	$: if ($profileUser) {
 		getUserProfile();
+	}
+
+	function transition(node, options) {
+		if ($modalCall != 'lookup') {
+			return options.fn(node, options);
+		}
 	}
 </script>
 
 <!-- {#if $modalCall == 'save'} -->
-{#if $modalCall}
-	<div class="modal_wrapper" bind:this={modal} transition:fade={{ duration: 100 }}>
-		<div class="modal {$modalCall}" transition:fly={{ duration: 200, y: 20, delay: 50 }}>
-			<button
-				class="close_modal"
+{#if showModal == true}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div
+		class="modal_wrapper"
+		bind:this={modal}
+		in:transition={{ fn: fly, duration: 100 }}
+		out:fade={{ duration: 100, delay: 0 }}
+		on:click|self={() => closeModal()}
+		role="button"
+	>
+		<div class="modal {$modalCall}" in:transition={{ fn: fly, duration: 200, y: 20, delay: 50 }}>
+			<Close
 				on:click={() => {
-					$modalCall = '';
-					$quickQuery = '';
+					closeModal();
 				}}
 			/>
-			{#if $modalCall !== 'lookup'}
-				<Close on:click={() => ($modalCall = '')} />
-			{/if}
 			{#if $modalCall == 'welcome'}
 				<div class="modal_inner">
-					<h2>Welcome!</h2>
-					<p>
-						I'm so glad you're here. Inky's Spellbook is a project I've been working on on and off
-						now for quite some time, and like any "let's see where it goes" project it got
-						completely out of hand and it turned into an ambitious plan for a web-app (the one
-						you're on now) and an app for mobile devices (next phase).
-					</p>
-					<p>
-						Have a look around, but be warned that there might be scary and dangerous bugs lurking
-						around! They bite. This app is currently very much in beta, and I would be very thankful
-						if you could report any issues or bugs you may encounter. Features requests or ideas are
-						also very welcome! You'll find buttons to report bugs and submit spells in the menu.
-					</p>
-					<p>Have fun!</p>
+					<Welcome />
 				</div>
 			{:else if $modalCall == 'save' || $modalCall == 'load' || $modalCall == 'edit'}
 				<div class="modal_inner">
-					{#if $modalCall !== 'edit'}
-						<div class="bookmark_decal"><i class="ri-bookmark-fill" /></div>
-						{#if $savePrompt === false}
-							{#if $modalCall == 'save'}
-								<h2>Save slots</h2>
-								<p>Select a slot to save your open spellbook in:</p>
-							{/if}
-							{#if $modalCall == 'load'}
-								<h2>Saved spellbooks</h2>
-								<p>Select which spellbook you would like to load:</p>
-							{/if}
-							{#if $savedSpellSheets.length > 0}
-								<div class="save_slots">
-									{#each $savedSpellSheets as spellsheet}
-										<SaveSlot data={spellsheet} on:click={() => handleClick(spellsheet.id)} />
-									{/each}
-								</div>
-							{:else}
-								<Loading />
-							{/if}
-						{/if}
-					{/if}
-					{#if $savePrompt === true || $modalCall === 'edit'}
-						<div transition:fly={{ duration: 150, y: 10 }} class="new_save">
-							<form on:submit={(e) => handleSave(e)} bind:this={form}>
-								<div class="grid name-color">
-									<div>
-										<label for="name">Spellbook name</label>
-										<input
-											bind:this={saveName}
-											value={$bookToEdit.name ? $bookToEdit.name : ''}
-											name="name"
-											type="text"
-											maxlength="40"
-										/>
-									</div>
-									<div>
-										<label for="name">Color</label>
-										<input
-											type="checkbox"
-											name="color"
-											style="background-color: {saveColor}"
-											on:click={() => (colorPicker = true)}
-										/>
-										<!-- <button name="color" style="background-color: {saveColor}" on:click={() => (colorPicker = true)} /> -->
-										{#if colorPicker}
-											<div style="position: relative">
-												<Colorpicker bind:selectedColor={saveColor} />
-											</div>
-										{/if}
-									</div>
-								</div>
-								<div class="grid">
-									<div>
-										<label for="class">Character class</label>
-										<!-- <select bind:this={saveClass} name="class"
-											>{@html classOptions}</select
-										> -->
-										<select bind:this={saveClass} name="class">
-											<option value="" disabled selected hidden>Select class</option>
-											{#each classes as dndclass}
-												{#if $bookToEdit.class == dndclass}
-													<option selected value={dndclass}>{dndclass}</option>
-												{:else}
-													<option value={dndclass}>{dndclass}</option>
-												{/if}
-											{/each}
-										</select>
-									</div>
-									<div>
-										<label for="level">Character level</label>
-										<input
-											bind:this={saveLevel}
-											name="level"
-											type="number"
-											min="1"
-											max="20"
-											value={$bookToEdit.level ? $bookToEdit.level : ''}
-										/>
-									</div>
-								</div>
-								<label for="description">Spellbook description</label>
-								<textarea
-									bind:this={saveDescription}
-									name="description"
-									style="width: 100%"
-									rows="6"
-									maxlength="300"
-									value={$bookToEdit.description ? $bookToEdit.description : ''}
-								/>
-								<input bind:checked={savePublish} name="publish" id="publish" type="checkbox" />
-								<label for="publish" style="display: inline"
-									>Publish this spellbook to the premade spellbooks database so others can find it
-									too.</label
-								><br /><br />
-
-								<button class="{loadingSave ? 'loading' : ''} button fill accent" type="submit"
-									><i class="ri-save-3-line" />Save
-									<div><i class="ri-loader-5-line" /></div></button
-								>
-								<Button
-									on:click={(e) => {
-										e.preventDefault;
-										if ($modalCall === 'edit') {
-											$modalCall = '';
-											$bookToEdit = '';
-											$savePrompt = false;
-										} else {
-											$savePrompt = false;
-										}
-									}}
-									text="Cancel"
-									type="fill"
-								/>
-							</form>
-						</div>
-					{/if}
+					<div class="bookmark_decal">
+						<i class="ri-bookmark-fill" style={$bookToEdit.color ? 'color: ' + saveColor : ''} />
+					</div>
+					<Saveloadedit />
 				</div>
 			{:else if $modalCall == 'terms'}
 				<div class="modal_inner">
@@ -390,133 +134,15 @@
 				</div>
 			{:else if $modalCall == 'resetpassword'}
 				<div class="modal_inner">
-					<h2>Password reset</h2>
-					<form on:submit|preventDefault={editPassword(email)}>
-						<label style="margin-bottom: .5rem; display: block" for="email">Email address</label>
-						<input bind:value={email} type="email" name="email" />
-						<button
-							on:click={() => (loading = true)}
-							class="{loading ? 'loading' : ''} button fill accent"
-							type="submit"
-							>Change password
-							<div><i class="ri-loader-5-line" /></div></button
-						>
-					</form>
+					<Passwordreset />
 				</div>
 			{:else if $modalCall == 'lookup'}
 				<div class="modal_inner">
-					<!-- svelte-ignore a11y-autofocus -->
-					<input
-						bind:this={quickInput}
-						bind:value={$quickQuery}
-						on:keydown={handleKeyDown}
-						on:click={() => (resultNumber = -1)}
-						type="text"
-						placeholder="Quick spell lookup..."
-					/>
-					{#if results}
-						<ul tabindex="-1">
-							{#each results as spell, i}
-								<li>
-									<button
-										on:click={() => handleLookup(i)}
-										on:keydown={handleKeyDown}
-										bind:this={result[i]}
-										tabindex="0"
-									>
-										<div>
-											<SchoolIcon school={spell.school} />
-										</div>
-										<div>
-											<h3>{spell.name}</h3>
-											<p>{spell.type}</p>
-										</div>
-									</button>
-								</li>
-							{/each}
-						</ul>
-					{/if}
+					<Lookup />
 				</div>
 			{:else if $modalCall == 'spell'}
-				<div class="modal_inner" on:keydown={handleKeyDown}>
-					<div
-						data-name={$lookupSpell.name}
-						class="card item"
-						data-castingtime={$lookupSpell.casting_time}
-						data-range={$lookupSpell.range}
-					>
-						<div class="card_inner">
-							<div class="block">
-								<h3>
-									<SchoolIcon school={$lookupSpell.school} />
-									<span style="margin-left: .3rem">{$lookupSpell.name}</span>
-								</h3>
-							</div>
-							<div class="block pills">
-								<Pill
-									label="Casting time"
-									text={$lookupSpell.casting_time}
-									size="large"
-									icon="ri-flashlight-line"
-								/>
-								<Pill
-									label="Range or target"
-									text={$lookupSpell.range}
-									size="large"
-									icon="ri-arrow-right-up-line"
-								/>
-								<Pill
-									label="Duration"
-									text={$lookupSpell.duration}
-									size="large"
-									icon="ri-time-line"
-								/>
-							</div>
-							<div class="block pills">
-								<Pill
-									label="School of magic"
-									text={$lookupSpell.school}
-									size="small"
-									icon="ri-book-2-line"
-								/>
-
-								{#if $lookupSpell.description.toLowerCase().includes('make a ranged spell attack')}
-									<Pill
-										label="Spell attack"
-										text="Ranged spell attack"
-										size="small"
-										icon="ri-sword-line"
-									/>
-								{:else if $lookupSpell.description
-									.toLowerCase()
-									.includes('make a melee spell attack')}
-									<Pill
-										label="Spell attack"
-										text="Melee spell attack"
-										size="small"
-										icon="ri-sword-line"
-									/>
-								{:else if $lookupSpell.description.toLowerCase().includes('make a spell attack')}
-									<Pill
-										label="Spell attack"
-										text="Spell attack"
-										size="small"
-										icon="ri-sword-line"
-									/>
-								{:else if $lookupSpell.save}
-									<Pill
-										label="Saving throw"
-										text={$lookupSpell.save}
-										size="small"
-										icon="ri-lifebuoy-line"
-									/>
-								{/if}
-							</div>
-							<div class="block description">
-								<p>{@html $lookupSpell.description}</p>
-							</div>
-						</div>
-					</div>
+				<div class="modal_inner">
+					<Spell />
 				</div>
 			{:else if $modalCall == 'submitspell'}
 				<div class="modal_inner">
@@ -525,17 +151,23 @@
 			{:else if $modalCall == 'profile'}
 				<div class="modal_inner">
 					{#if $userProfile}
-					<h2>{$userProfile[0].creator}</h2>
-					<h3 style="margin-bottom: 1rem">Published spellbooks</h3>
-					<div class="grid">
-						{#each $userProfile as spellbook}
-							<Saveslot on:click={() => {$lookupBook = spellbook, $modalCall = 'spellbook' }} type="large noedit" data={spellbook} />
-						{/each}
-					</div>
+						<h2>{$userProfile[0].creator}</h2>
+						<h3 style="margin-bottom: 1rem">Published spellbooks</h3>
+						<div class="grid">
+							{#each $userProfile as spellbook}
+								<Saveslot
+									on:click={() => {
+										($lookupBook = spellbook), ($modalCall = 'spellbook');
+									}}
+									type="large noedit"
+									data={spellbook}
+								/>
+							{/each}
+						</div>
 					{/if}
 				</div>
 			{:else if $modalCall == 'spellbook'}
-				<div class="modal_inner" on:keydown={handleKeyDown}>
+				<div class="modal_inner">
 					<div class="card">
 						<div class="card_inner">
 							<div class="block title">
@@ -545,17 +177,20 @@
 									{$lookupBook.name}
 								</h2>
 								<br />
-								<p style="color: {$lookupBook.color}">
-									created by <a
-										on:click|preventDefault={() => {
-											$modalCall = 'profile';
-											$quickQuery = '';
-											$profileUser = $lookupBook.user_id;
-										}}
-										style="color: {$lookupBook.color}"
-										href="/"><strong>{$lookupBook.creator}</strong></a
-									>
-								</p>
+								{#if $pagetitle != 'My account'}
+									<p style="color: {$lookupBook.color}">
+										created by <a
+											on:click|preventDefault={() => {
+												$modalCall = 'profile';
+												$quickQuery = '';
+												$lookupSpell = '';
+												$profileUser = $lookupBook.user_id;
+											}}
+											style="color: {$lookupBook.color}"
+											href="/"><strong>{$lookupBook.creator}</strong></a
+										>
+									</p>
+								{/if}
 							</div>
 							<div class="block pills">
 								<Pill
@@ -583,14 +218,54 @@
 									icon="ri-book-open-line"
 									type="fill accent"
 								/>
-								<!-- <Button
-									on:click={() => {
-										importBook($lookupBook);
-									}}
-									text="Import"
-									icon="ri-folder-download-line"
-									type="fill blue"
-								/> -->
+								{#if $pagetitle == 'My account'}
+									<Button
+										icon="ri-edit-line"
+										type="fill"
+										text="Edit details"
+										on:click={() => {
+											console.log($lookupBook);
+											$bookToEdit = $lookupBook;
+											editBook($lookupBook.id);
+										}}
+									/>
+									{#if $lookupBook.published === false}
+										<Button
+											icon="ri-upload-cloud-2-line"
+											type="fill blue"
+											text="Publish spellbook"
+											loading={publishloading}
+											on:click={() => {
+												publishBook($lookupBook.id);
+												publishloading = true;
+											}}
+										/>
+									{:else if $lookupBook.published === true}
+										<Button
+											icon="ri-lock-line"
+											type="outline blue"
+											text="Make private"
+											loading={unpublishloading}
+											on:click={() => {
+												unpublishBook($lookupBook.id);
+												unpublishloading = true;
+											}}
+										/>
+									{/if}
+									<Button
+										icon="ri-delete-bin-line"
+										type="outline alt"
+										text="Delete spellbook"
+										on:click={() => {
+											let promise = removeBook($lookupBook.id);
+											promise.then((value) => {
+												if (value) {
+													closeModal();
+												}
+											});
+										}}
+									/>
+								{/if}
 							</div>
 							<div class="block spells">
 								<h3>Spells</h3>
@@ -616,7 +291,6 @@
 		</div>
 	</div>
 {/if}
-
 <svelte:window on:keydown={(e) => (e.key == 'Escape' ? handleKeyDown(e) : '')} />
 
 <!-- {/if} -->
@@ -659,7 +333,6 @@
 			.modal_inner {
 				height: 100%;
 				padding: 2rem;
-				position: relative;
 				background-color: var(--spellbg);
 				border-radius: 6px;
 				max-height: 90vh;
@@ -678,125 +351,11 @@
 						color: var(--yellow);
 					}
 				}
-				.save_slots {
-					display: grid;
-					grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-					grid-gap: 0.5rem;
-					margin-top: 1rem;
-					position: relative;
-					z-index: 1;
-					// &.placeholder {
-					// 	position: absolute;
-					// 	left: 0;
-					// 	top: 0;
-					// 	width: 100%;
-					// 	height: 100%;
-					// 	pointer-events: none;
-					// 	margin-top: 0;
-					// }
-					// &.placeholder {
-					// 	margin: 0;
-					// 	position: absolute;
-					// 	height: 100%;
-					// 	width: 100%;
-					// 	top: 0;
-					// 	left: 0;
-					// 	z-index: -1;
-					// }
-				}
-				.new_save {
-					height: auto;
-					min-height: 100%;
-					width: 100%;
-					max-height: 100%;
-					padding: 2rem;
-					border-radius: 6px;
-					background-color: var(--spellbg);
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					z-index: 1;
-					@media only screen and (max-width: 1024px) {
-						padding: 2rem 0 0;
-					}
-					form {
-						max-width: 400px;
-						.grid {
-							display: grid;
-							grid-template-columns: 1fr 150px;
-							grid-gap: 1rem;
-							&.name-color {
-								grid-template-columns: 1fr 41.4px;
-								input[type='checkbox'] {
-									all: unset;
-									cursor: pointer;
-									height: 41.4px;
-									width: 41.4px;
-									padding: 0;
-									margin: 0;
-									border: none;
-									display: block;
-									border-radius: 6px;
-									// background-color: var(--purple);
-								}
-							}
-						}
-						label {
-							color: var(--white);
-							margin-bottom: 0.25rem;
-							display: inline-block;
-						}
-						input[type='checkbox'] {
-							width: auto;
-							display: inline;
-							margin: 0 0.3rem 0 0;
-						}
-						button[type='submit'] {
-							div {
-								position: absolute;
-								display: none;
-								animation-name: rotate;
-								animation-iteration-count: infinite;
-								animation-timing-function: linear;
-								animation-duration: 0.6s;
-								top: -3px;
-								width: 100%;
-								text-align: center;
-								left: 0;
-								i {
-									font-size: 2rem;
-									color: var(--bg);
-								}
-								@keyframes rotate {
-									0% {
-										transform: rotate(0deg);
-									}
-									100% {
-										transform: rotate(360deg);
-									}
-								}
-							}
-							&.loading {
-								color: var(--accent);
-								div {
-									display: block;
-								}
-							}
-						}
-					}
-				}
-			}
-			&.resetpassword {
-				.modal_inner {
-					form {
-						max-width: 400px;
-					}
-				}
 			}
 			&.profile {
 				.grid {
 					display: grid;
-					gap: .5rem;
+					gap: 0.5rem;
 					grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 				}
 			}
@@ -815,72 +374,20 @@
 					@media only screen and (max-width: 1024px) {
 						padding-bottom: 0.5rem;
 					}
-					input {
-						height: 55px;
-						margin: 0;
-					}
-					ul {
-						height: 100%;
-						width: 100%;
-						margin-top: 0.8rem;
-						overflow-x: hidden;
-						overflow-y: auto;
-						position: relative;
-						transition: 0.2s;
-						max-height: 60vh;
-						scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-						@media only screen and (max-width: 1024px) {
-							max-height: 100%;
-						}
-						// scrollbar-width:;
-
-						li {
-							border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-							cursor: pointer;
-							position: relative;
-							transition: 0.1s;
-							p {
-								font-weight: 400;
-							}
-							button {
-								all: unset;
-								padding: 0.35rem 0.8rem 0.5rem;
-								width: 100%;
-								height: 100%;
-								display: grid;
-								grid-template-columns: 40px 1fr;
-								align-items: center;
-								&:focus {
-									background-color: rgba(255, 255, 255, 0.15);
-								}
-							}
-							i {
-								position: absolute;
-								font-size: 1.5rem;
-								color: white;
-								right: 0;
-								top: 50%;
-								transform: translateY(-50%);
-								transition: 0.1s;
-								opacity: 0;
-								color: var(--translucent);
-							}
-							&:hover {
-								background-color: rgba(255, 255, 255, 0.15);
-							}
-							&.disabled {
-								button {
-									opacity: 0.3;
-								}
-							}
-						}
-					}
 				}
 			}
 			&.spell {
 				min-height: 0;
 				max-height: 100vh;
 				max-width: 600px;
+			}
+			&.spellbook {
+				h2 {
+					i {
+						vertical-align: sub;
+						font-size: 2rem;
+					}
+				}
 			}
 		}
 	}
@@ -899,6 +406,9 @@
 			pointer-events: unset;
 			.block {
 				pointer-events: unset;
+				&.pills {
+					margin-top: 0.5rem;
+				}
 				&.title {
 					h2 {
 						width: 100%;
@@ -939,38 +449,6 @@
 						}
 					}
 				}
-			}
-		}
-	}
-	button[type='submit'] {
-		div {
-			position: absolute;
-			display: none;
-			animation-name: rotate;
-			animation-iteration-count: infinite;
-			animation-timing-function: linear;
-			animation-duration: 0.6s;
-			top: -3px;
-			width: 100%;
-			text-align: center;
-			left: 0;
-			i {
-				font-size: 2rem;
-				color: var(--bg);
-			}
-			@keyframes rotate {
-				0% {
-					transform: rotate(0deg);
-				}
-				100% {
-					transform: rotate(360deg);
-				}
-			}
-		}
-		&.loading {
-			color: var(--accent);
-			div {
-				display: block;
 			}
 		}
 	}
