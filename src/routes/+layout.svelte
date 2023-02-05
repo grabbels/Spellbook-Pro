@@ -182,6 +182,7 @@
 	}
 	main {
 		min-height: 100vh;
+		height: 100%;
 	}
 
 	.main_wrapper {
