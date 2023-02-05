@@ -183,10 +183,11 @@
 	main {
 		min-height: 100vh;
 		height: 100%;
+		
 	}
 
 	.main_wrapper {
-		height: 100%;
+		height: auto;
 		width: 100%;
 		position: relative;
 		transition: transform 0.3s;
@@ -194,7 +195,7 @@
 
 		background: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
 		z-index: 1;
-		height: -webkit-fill-available;
+	
 		// overflow-y: auto;
 		&::after {
 			content: '';
