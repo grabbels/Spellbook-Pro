@@ -46,6 +46,20 @@
 	];
 	let siteUrl = 'http://localhost:5173';
 
+	export function addSpell(spell) {
+		let currentSpells = get(activeSpells)
+		notification.set('');
+		if (currentSpells.filter((e) => e.name === spell.name).length > 0) {
+			notification.set('This spell is already in your spellbook.#error');
+		} else {
+			spell.display = true;
+			currentSpells.push(spell);
+			notification.set('Spell added.#info');
+			activeSpells.set(currentSpells);
+		}
+		
+	}
+
 	export const moveItem = (array, to, from) => {
 		const item = array[from];
 		array.splice(from, 1);
@@ -222,7 +236,6 @@
 			if (error) {
 				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
 			} else {
-
 				savedSpellSheets.set(toBeRemovedFrom);
 				return 'deleted';
 			}

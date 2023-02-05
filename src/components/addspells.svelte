@@ -7,6 +7,7 @@
 	import { spells } from './data/spells';
 	import bg from '../img/menu-bg.png';
 	import Button from './button.svelte';
+	import { addSpell } from './functions/globalfunctions.svelte';
 	let results = [];
 	let result = [];
 	let searchField;
@@ -41,18 +42,7 @@
 	} else {
 		results = [];
 	}
-	const addSpell = (spell) => {
-		console.log($activeSpells);
-		$notification = '';
-		if ($activeSpells.filter((e) => e.name === spell.name).length > 0) {
-			$notification = 'This spell is already in your spellbook.#error';
-		} else {
-			spell.display = true;
-			$activeSpells.push(spell);
-			$notification = 'Spell added.#info';
-		}
-		$activeSpells = $activeSpells;
-	};
+	
 	var resultNumber = -1;
 	function handleKeyDown(e) {
 		if (e.key == 'ArrowDown' && results) {

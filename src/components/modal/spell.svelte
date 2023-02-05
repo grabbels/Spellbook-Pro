@@ -1,9 +1,9 @@
 <script>
+	import Button from "../button.svelte";
+	import { addSpell } from "../functions/globalfunctions.svelte";
 	import Pill from "../pill.svelte";
 	import Schoolicon from "../schoolicon.svelte";
-	import { lookupSpell } from "../stores/stores";
-
-
+	import { lookupSpell, modalCall } from "../stores/stores";
     
 </script>
 
@@ -51,6 +51,9 @@
 		</div>
 		<div class="block description">
 			<p>{@html $lookupSpell.description}</p>
+		</div>
+		<div class="block" style="margin-top: 1rem">
+			<Button text="Add spell" type="fill" icon="ri-add-line" on:click={()=>{addSpell($lookupSpell), $modalCall = '', $lookupSpell = ''}} />
 		</div>
 	</div>
 </div>
