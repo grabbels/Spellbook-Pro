@@ -262,8 +262,9 @@
 		display: grid;
 		grid-template-columns: 1fr minmax(auto, 600px);
 		grid-template-rows: 1fr;
-		min-height: 95vh;
+		min-height: 100vh;
 		align-items: center;
+		height: -webkit-fill-available;
 		@media only screen and (max-width: 1024px) {
 			display: flex;
 			flex-wrap: wrap;
@@ -275,8 +276,9 @@
 			justify-content: center;
 			align-items: center;
 			height: 600px;
-			margin-top: 2rem;
-			height: 85vh;
+			// margin-top: 2rem;
+			height: 100%;
+			height: -webkit-fill-available;
 			.panel_inner {
 				padding: 2rem;
 				max-width: 450px;

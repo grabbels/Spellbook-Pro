@@ -168,6 +168,9 @@
 				</div>
 			{:else if $modalCall == 'spellbook'}
 				<div class="modal_inner">
+					<div class="bookmark_decal">
+						<i class="ri-bookmark-fill" style={$lookupBook.color ? 'color: ' + $lookupBook.color : ''} />
+					</div>
 					<div class="card">
 						<div class="card_inner">
 							<div class="block title">

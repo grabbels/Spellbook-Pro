@@ -190,8 +190,10 @@
 		position: relative;
 		transition: transform 0.3s;
 		background: background 2s;
+
 		background: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
 		z-index: 1;
+		height: -webkit-fill-available;
 		// overflow-y: auto;
 		&::after {
 			content: '';
