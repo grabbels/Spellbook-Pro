@@ -27,7 +27,12 @@
 			vertical-align: middle;
 			line-height: 40px;
 		}
-
+		@media only screen and (max-width: 1024px) {
+			background-color: transparent;
+			top: 1rem;
+			right: 1rem;
+			z-index: 1;
+		}
 		&:hover {
 			i {
 				color: var(--white);

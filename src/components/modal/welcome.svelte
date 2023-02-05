@@ -1,9 +1,3 @@
-<script>
-
-	import { modalCall } from "../stores/stores";
-
-</script>
-<button on:click={()=> $modalCall = ''} class="close"><i class="ri-close-line" /></button>
 <h1>Welcome!</h1>
 <p>
 	I'm so glad you're here. Inky's Spellbook is a project I've been working on on and off now for
@@ -83,19 +77,21 @@
 		font-size: 2.5rem;
 	}
 	button.close {
-		z-index: 1;
 		all: unset;
 		cursor: pointer;
 		position: absolute;
+		top: 18px;
+		right: 26px;
 		// display: none;
 		pointer-events: all;
 		z-index: 10;
-		right: 1rem;
+		right: -40px;
+		background-color: var(--red);
 		height: 40px;
 		width: 40px;
-		z-index: 1;
+		z-index: -1;
 		border-radius: 0 6px 6px 0;
-		top: 1rem;
+		top: 39px;
 		text-align: center;
 		i {
 			font-size: 2rem;

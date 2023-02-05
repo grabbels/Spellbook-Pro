@@ -342,6 +342,7 @@
 				overflow-y: auto;
 				@media only screen and (max-width: 1024px) {
 					max-height: 100vh;
+					padding-top: 2.5rem;
 				}
 				.bookmark_decal {
 					transform: rotate(90deg);
