@@ -258,100 +258,64 @@
 
 <style lang="scss">
 	.grid {
-		width: 100%;
 		display: grid;
-		grid-template-columns: 1fr minmax(auto, 600px);
-		grid-template-rows: 1fr;
-		min-height: 100vh;
-		align-items: center;
-		height: -webkit-fill-available;
+		grid-template-columns: 1fr 1fr;
+		height: 100vh;
 		@media only screen and (max-width: 1024px) {
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: column-reverse;
+			grid-template-columns: 1fr;
 		}
 		.section {
-			width: 100%;
+			overflow: hidden;
+			opacity: .3;
+			pointer-events: none;
+			transition: opacity .2s;
 			display: flex;
-			justify-content: center;
 			align-items: center;
-			height: 600px;
-			// margin-top: 2rem;
-			height: 100%;
-			height: -webkit-fill-available;
+			justify-content: center;
+			&.show {
+				opacity: 1;
+				pointer-events: all;
+			}
 			.panel_inner {
-				padding: 2rem;
-				max-width: 450px;
-				// background-color: purple;
-				width: 100%;
-				@media only screen and (max-width: 1024px) {
-					max-width: none;
-					padding: 2rem 2vw;
-				}
 				h2 {
 					margin-bottom: 0.5rem;
 				}
 			}
 			&.register {
-				justify-content: flex-end;
-				padding-right: 4rem;
+				border-right: 1px solid var(--moretranslucent);
 				@media only screen and (max-width: 1024px) {
-					padding: 4rem 0 0;
-					display: none;
-					&.show {
-						display: block;
-					}
+					border: none;
+					display: flex;
+					align-items: center;
 				}
-				.panel_inner {
-					.register_form {
-						opacity: 0;
-						transform: translateX(40px);
-						transition: 0.3s;
-						button.inline {
-							all: unset;
-							display: inline-block;
-							cursor: pointer;
-							text-decoration: underline;
-						}
-					}
-				}
-				&.show {
-					.panel_inner {
-						.register_form {
-							opacity: 1;
-							transform: translateX(0);
-						}
-					}
-				}
+				// .panel_inner {
+				// 	.register_form {
+				// 		button.inline {
+				// 			all: unset;
+				// 			display: inline-block;
+				// 			cursor: pointer;
+				// 			text-decoration: underline;
+				// 		}
+				// 	}
+				// }
 			}
 			&.login {
 				border-left: 1px solid var(--moretranslucent);
 				@media only screen and (max-width: 1024px) {
 					border: none;
-					display: none;
-					&.show {
-						display: block;
-					}
 				}
-				.panel_inner {
-					max-width: 450px;
-					.login_form {
-						margin-top: 2rem;
-						opacity: 0.4;
-						pointer-events: none;
-						transition: 0.2s;
-					}
-				}
+			}
+			@media only screen and (max-width: 1024px) {
+				height: 0;
+				display: block;
 				&.show {
-					.login_form {
-						opacity: 1;
-						pointer-events: all;
-					}
+					height: auto;
 				}
 			}
 		}
 	}
 	form {
+		max-width: 400px;
 		input#termsconditions {
 			display: inline-block;
 			margin-right: 0.3rem;
@@ -412,5 +376,8 @@
 		font-weight: 400;
 		padding-left: 1rem;
 		margin-bottom: 1rem;
+		li {
+			line-height: 1.3;
+		}
 	}
 </style>
