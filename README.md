@@ -11,6 +11,8 @@ Have fun!
 
 **– Sem (a.k.a. Grabbels)**
 
+Production (beta) environment: [spellbook.semhak.dev](https://spellbook.semhak.dev), this is behind on the code in this git repository.
+
 Features
 --------
 
