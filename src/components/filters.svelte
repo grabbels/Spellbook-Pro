@@ -2,7 +2,7 @@
 <script>
 	import { fade, scale } from 'svelte/transition';
 	import { removeFilters } from './functions/globalfunctions.svelte';
-	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter, bookmarksOpen } from './stores/stores';
+	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter, bookmarksOpen, summaryOpen } from './stores/stores';
 	import { activeSpells } from './stores/stores-persist';
 	import { clickOutside } from './functions/clickOutside.js';
 	let actionFilterArray = [];
@@ -51,6 +51,7 @@
 	$: $activeSpells, filterSpells();
 
 	function filterSpells() {
+		$summaryOpen = false;
 		if (!$actionFilter && !$rangeFilter && !$searchFilter && !$saveFilter) {
 			$filters = false;
 			for (let i = 0; i < $activeSpells.length; i++) {
@@ -80,6 +81,7 @@
 <div
 	class:open={filtersOpen}
 	class="filters_wrapper panel"
+	class:active={$filters}
 	use:clickOutside
 	on:outsideclick={() => (filtersOpen = false)}
 >
@@ -189,11 +191,17 @@
 		display: flex;
 		flex-wrap: nowrap;
 		position: relative;
+		overflow-x: auto;
 		// top: 0.5rem;
 		gap: 1rem;
+		border: 2px solid transparent;
 		background-color: var(--translucentdark);
+		&.active {
+			border-color: var(--lightblue);
+		}
 		@media only screen and (max-width: 1024px) {
 			position: fixed;
+
 			left: 0;
 			right: 0;
 			bottom: 0;
@@ -253,6 +261,7 @@
 			}
 			input {
 				background-color: var(--moretranslucent);
+				min-width: 230px;
 				@media only screen and (max-width: 1024px) {
 					width: 100%;
 				}

@@ -52,9 +52,11 @@
 		<div class="block description">
 			<p>{@html $lookupSpell.description}</p>
 		</div>
+		{#if $modalCall.includes('fromquicksearch')}
 		<div class="block" style="margin-top: 1rem">
 			<Button text="Add spell" type="fill" icon="ri-add-line" on:click={()=>{addSpell($lookupSpell), $modalCall = '', $lookupSpell = ''}} />
 		</div>
+		{/if}
 	</div>
 </div>
 {/if}

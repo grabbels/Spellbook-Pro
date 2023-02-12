@@ -88,6 +88,7 @@
 			font-size: 1.3rem;
 			margin-right: .2rem;
 			vertical-align: -5px;
+			margin-left: -3px;
 		}
 	}
 </style>

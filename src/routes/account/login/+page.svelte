@@ -260,15 +260,16 @@
 	.grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		height: 100vh;
+		min-height: 100vh;
+		padding-top: 2rem;
 		@media only screen and (max-width: 1024px) {
 			grid-template-columns: 1fr;
 		}
 		.section {
 			overflow: hidden;
-			opacity: .3;
+			opacity: 0.3;
 			pointer-events: none;
-			transition: opacity .2s;
+			transition: opacity 0.2s;
 			display: flex;
 			align-items: center;
 			justify-content: center;

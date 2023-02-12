@@ -23,7 +23,7 @@
 		pagetitle,
 		lookupBook
 	} from '../stores/stores';
-	import { activeSpells, loggedIn } from '../stores/stores-persist';
+	import { activeSpells, activeTab, loggedIn, openSpellbooks } from '../stores/stores-persist';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
 	import { spells } from '../data/spells';
@@ -47,7 +47,7 @@
 	let siteUrl = 'http://localhost:5173';
 
 	export function addSpell(spell) {
-		let currentSpells = get(activeSpells)
+		let currentSpells = get(activeSpells);
 		notification.set('');
 		if (currentSpells.filter((e) => e.name === spell.name).length > 0) {
 			notification.set('This spell is already in your spellbook.#error');
@@ -56,8 +56,10 @@
 			currentSpells.push(spell);
 			notification.set('Spell added.#info');
 			activeSpells.set(currentSpells);
+			let currentTab = get(activeTab);
+			currentTab.list = currentSpells;
+			activeTab.set(currentTab);
 		}
-		
 	}
 
 	export const moveItem = (array, to, from) => {
@@ -68,7 +70,7 @@
 	};
 
 	activeSpells.subscribe((data) => {
-		if (data.length === 0) {
+		if (!data || data.length === 0) {
 			spellListEmpty.set(true);
 		} else {
 			spellListEmpty.set(false);
@@ -76,7 +78,7 @@
 	});
 
 	export const topMenuOpenClose = () => {
-		console.log('test');
+		console.log('topmenu');
 		if (get(topmenuopen) === false) {
 			topmenuopen.set(true);
 		} else {
@@ -142,7 +144,6 @@
 				.eq('user_id', id)
 				.order('created', { ascending: false });
 			if (data) {
-				console.log(data);
 				if (data.length < 1) {
 					savedSpellSheets.set('none');
 				} else {
@@ -253,26 +254,30 @@
 	}
 
 	export async function loadBook(id) {
-		if (
-			confirm(
-				'This will wipe your current spellbook, you can save your current spellbook before loading another one.'
-			) == true
-		) {
-			const { data, error } = await supabaseClient.from('spellbooks').select().eq('id', id);
-			if (error) {
-				console.log(error);
-				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-			} else if (data) {
+		const { data, error } = await supabaseClient.from('spellbooks').select().eq('id', id);
+		if (error) {
+			console.log(error);
+			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+		} else if (data) {
+			let newArray = get(openSpellbooks);
+			if (!get(openSpellbooks).filter((e) => e.id == data[0].id).length > 0) {
+				newArray.push(data[0]);
+				openSpellbooks.set(newArray);
 				activeSpells.set(data[0].list);
-				refreshList();
-				modalCall.set('');
-				// $modalCall = $modalCall;
-				topmenuopen.set(false);
-				goto('/');
+				activeTab.set(data[0]);
+			} else {
+				console.log('already open!');
+				activeTab.set(data[0]);
+				activeSpells.set(data[0].list);
+				console.log(get(activeTab));
 			}
-		} else {
-			console.log('nope');
-			modalCall.set('save');
+			console.log(get(openSpellbooks));
+
+			refreshList();
+			modalCall.set('');
+			// $modalCall = $modalCall;
+			topmenuopen.set(false);
+			goto('/');
 		}
 	}
 
@@ -321,7 +326,6 @@
 			redirectTo: siteUrl + '/account/update-password'
 		});
 		if (data) {
-			console.log(data);
 			notification.set(
 				'An email has been sent to your registered email address with instructions on how to change your password#info'
 			);
@@ -339,6 +343,64 @@
 			.eq('user_id', get(profileUser));
 		if (data) {
 			userProfile.set(data);
+		}
+	}
+
+	export function newBook() {
+		let tabsArray = get(openSpellbooks);
+		const d = new Date();
+		let time = d.getTime();
+		let emptyBook = {
+			id: 'temp' + time,
+			name: 'Untitled spellbook',
+			open_tab: true,
+			color: 'var(--white)',
+			unsaved: true
+		};
+		tabsArray.push(emptyBook);
+		openSpellbooks.set(tabsArray);
+		activeTab.set(emptyBook);
+		activeSpells.set([]);
+	}
+
+	export async function updateSpellsheet(id) {
+		let newList = get(activeTab).list;
+		console.log(newList);
+		notification.set('Saving spellsheet...#loading');
+		const { data, error } = await supabaseClient
+			.from('spellbooks')
+			.update({ list: newList })
+			.eq('id', id)
+			.select();
+		if (error) {
+			console.log(error);
+			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
+		} else if (data) {
+			console.log(data);
+			loadSpellsheetsByUserId(get(userId));
+			setTimeout(() => {
+				notification.set('Spellbook saved!#positive');
+			}, 500);
+		}
+	}
+
+	export function handleSave(id) {
+		if (!get(session)) {
+			notification.set('You need to <a href="/account/login">log in</a> to save spellbooks#alert');
+		} else {
+			if (get(activeTab).unsaved === true) {
+				modalCall.set('save');
+			} else {
+				updateSpellsheet(id);
+			}
+		}
+	}
+
+	export function handleLoad() {
+		if (get(session)) {
+			modalCall.set('load');
+		} else {
+			notification.set('You need to <a href="/account/login">log in</a> to open spellbooks#alert');
 		}
 	}
 </script>

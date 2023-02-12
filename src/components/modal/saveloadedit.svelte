@@ -3,6 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import Button from '../button.svelte';
 	import Colorpicker from '../colorpicker.svelte';
+
 	import {
 		classes,
 		loadBook,
@@ -22,21 +23,16 @@
 		topmenuopen,
 		userId
 	} from '../stores/stores';
-	import { activeSpells, userNickname } from '../stores/stores-persist';
+	import { activeSpells, userNickname, activeTab, openSpellbooks } from '../stores/stores-persist';
 	let saveColor = $bookToEdit ? $bookToEdit.color : 'var(--purple)';
-	let loadingSave;
-	let colorPicker;
-	let form;
-	let saveName;
-	let saveClass;
-	let saveLevel;
-	let saveDescription;
-	let savePublish;
-	let overwriteId;
+	let loadingSave, colorPicker, form, saveName, saveClass, saveLevel, saveDescription, savePublish, overwriteId, tempColor;
 	if ($bookToEdit.published == true) {
 		savePublish = true;
 	}
-	$: saveColor, (colorPicker = false), console.log(saveColor);
+	$: if (saveColor) {
+		colorPicker = false;
+		console.log(saveColor);
+	}
 	if ($modalCall == 'save' || 'load' || 'edit') {
 		if (!$userId || !$userNickname) {
 			if ($session) {
@@ -58,6 +54,7 @@
 			loadSpellsheetsByUserId($userId);
 		}
 	}
+	
 	async function handleSave() {
 		if ($bookToEdit) {
 			overwriteId = $bookToEdit.id;
@@ -90,22 +87,31 @@
 				console.log(error);
 				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
 			} else if (data) {
-				console.log(data)
-				$notification = 'Spellbook saved.#info';
+				for (let i = 0; i < $openSpellbooks.length; i++) {
+					if ($openSpellbooks[i].open_tab === true) {
+						$openSpellbooks.splice(i, 1);
+					}
+				}
+				console.log(data);
 				overwriteId = '';
 				$savePrompt = false;
 				$topmenuopen = false;
+				$openSpellbooks.push(data[0]);
+				$activeTab = data[0];
+				$openSpellbooks = $openSpellbooks;
 				// loadSpellsheetsByUserId($userId);
 				if ($bookToEdit) {
-					$lookupBook = data[0]
+					$lookupBook = data[0];
 					$bookToEdit = '';
-					$modalCall = 'spellbook'
+					$modalCall = 'spellbook';
 					loadSpellsheetsByUserId();
-					$savePrompt = false
+					$savePrompt = false;
 				} else {
-					$modalCall = ''
+					$modalCall = '';
 				}
 				// $modalCall = $modalCall;
+				$activeTab.unsaved = false;
+				$notification = 'Spellbook saved!#positive';
 			}
 		}
 	}
@@ -136,18 +142,7 @@
 		{/if}
 		{#if $modalCall == 'load'}
 			<h2>Open</h2>
-			<p>
-				Select which spellbook you would like to open. This will close your currently open
-				spellbook. Be sure to <button
-					class="inline"
-					on:click={() => {
-						$modalCall = '';
-						setTimeout(() => {
-							$modalCall = 'save';
-						}, 150);
-					}}>save</button
-				> it if you didn't do so yet!
-			</p>
+			<p>Select which spellbook you would like to open.</p>
 		{/if}
 		{#if $savedSpellSheets.length > 0}
 			<div class="save_slots">
@@ -182,12 +177,16 @@
 						type="checkbox"
 						name="color"
 						style="background-color: {saveColor}"
-						on:click={() => (colorPicker = true)}
+						on:click|stopPropagation={() => {
+							tempColor = saveColor;
+							saveColor = '';
+							colorPicker = true;
+						}}
 					/>
 					<!-- <button name="color" style="background-color: {saveColor}" on:click={() => (colorPicker = true)} /> -->
 					{#if colorPicker}
 						<div style="position: relative">
-							<Colorpicker bind:selectedColor={saveColor} />
+							<Colorpicker bind:selectedColor={saveColor} prevColor={tempColor} />
 						</div>
 					{/if}
 				</div>

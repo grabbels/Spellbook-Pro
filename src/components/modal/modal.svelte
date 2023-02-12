@@ -11,7 +11,7 @@
 		bookToEdit,
 		userId,
 		pagetitle
-	} from './stores/stores';
+	} from '../stores/stores';
 	import {
 		loadBook,
 		getUserProfile,
@@ -19,19 +19,20 @@
 		publishBook,
 		unpublishBook,
 		removeBook
-	} from './functions/globalfunctions.svelte';
-	import Pill from './pill.svelte';
-	import Button from './button.svelte';
-	import Close from './close.svelte';
-	import SchoolIcon from './schoolicon.svelte';
+	} from '../functions/globalfunctions.svelte';
+	import Pill from '../pill.svelte';
+	import Button from '../button.svelte';
+	import Close from '../close.svelte';
+	import SchoolIcon from '../schoolicon.svelte';
 	import PrivacyPolicy from './privacy-policy.svelte';
 	import Submitspells from './submitspells.svelte';
-	import Saveslot from './saveslot.svelte';
-	import Welcome from './modal/welcome.svelte';
-	import Saveloadedit from './modal/saveloadedit.svelte';
-	import Passwordreset from './modal/passwordreset.svelte';
-	import Lookup from './modal/lookup.svelte';
-	import Spell from './modal/spell.svelte';
+	import Saveslot from '../saveslot.svelte';
+	import Welcome from './welcome.svelte';
+	import Saveloadedit from './saveloadedit.svelte';
+	import Passwordreset from './passwordreset.svelte';
+	import Lookup from './lookup.svelte';
+	import Spell from './spell.svelte';
+	import Options from './options.svelte';
 	export let modal;
 	let levelList = [];
 	const levels = [
@@ -117,38 +118,38 @@
 					closeModal();
 				}}
 			/>
-			{#if $modalCall == 'welcome'}
+			{#if $modalCall.includes('welcome')}
 				<div class="modal_inner">
 					<Welcome />
 				</div>
-			{:else if $modalCall == 'save' || $modalCall == 'load' || $modalCall == 'edit'}
+			{:else if $modalCall.includes('save') || $modalCall.includes('load') || $modalCall.includes('edit')}
 				<div class="modal_inner">
 					<div class="bookmark_decal">
 						<i class="ri-bookmark-fill" style={$bookToEdit.color ? 'color: ' + saveColor : ''} />
 					</div>
 					<Saveloadedit />
 				</div>
-			{:else if $modalCall == 'terms'}
+			{:else if $modalCall.includes('terms')}
 				<div class="modal_inner">
 					<PrivacyPolicy />
 				</div>
-			{:else if $modalCall == 'resetpassword'}
+			{:else if $modalCall.includes('resetpassword')}
 				<div class="modal_inner">
 					<Passwordreset />
 				</div>
-			{:else if $modalCall == 'lookup'}
+			{:else if $modalCall.includes('lookup')}
 				<div class="modal_inner">
 					<Lookup />
 				</div>
-			{:else if $modalCall == 'spell'}
+			{:else if $modalCall == 'spell' || $modalCall.includes('fromquicksearch')}
 				<div class="modal_inner">
 					<Spell />
 				</div>
-			{:else if $modalCall == 'submitspell'}
+			{:else if $modalCall.includes('submitspell')}
 				<div class="modal_inner">
 					<Submitspells />
 				</div>
-			{:else if $modalCall == 'profile'}
+			{:else if $modalCall.includes('profile')}
 				<div class="modal_inner">
 					{#if $userProfile}
 						<h2>{$userProfile[0].creator}</h2>
@@ -166,10 +167,17 @@
 						</div>
 					{/if}
 				</div>
-			{:else if $modalCall == 'spellbook'}
+			{:else if $modalCall.includes('options')}
+				<div class="modal_inner">
+					<Options />
+				</div>
+			{:else if $modalCall.includes('spellbook')}
 				<div class="modal_inner">
 					<div class="bookmark_decal">
-						<i class="ri-bookmark-fill" style={$lookupBook.color ? 'color: ' + $lookupBook.color : ''} />
+						<i
+							class="ri-bookmark-fill"
+							style={$lookupBook.color ? 'color: ' + $lookupBook.color : ''}
+						/>
 					</div>
 					<div class="card">
 						<div class="card_inner">
@@ -312,7 +320,6 @@
 		align-items: center;
 		.modal {
 			height: auto;
-			// min-height: 350px;
 			max-height: 100vh;
 			width: 100%;
 			max-width: 800px;
@@ -376,7 +383,7 @@
 				.modal_inner {
 					// background-color: transparent;
 					@media only screen and (max-width: 1024px) {
-						padding-bottom: 0.5rem;
+						padding: 0.5rem;
 					}
 				}
 			}

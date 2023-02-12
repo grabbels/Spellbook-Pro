@@ -89,14 +89,18 @@
 
 <div class="sidemenu" style="background-image: url('{bg}')" class:open={$sidemenuopen}>
 	<div class="wrapper" on:keydown={handleKeyDown}>
-		<input
-			on:click={() => (resultNumber = -1)}
-			bind:value={query}
-			type="text"
-			id="spellsearch"
-			placeholder="Search for spells..."
-			bind:this={searchField}
-		/>
+		<form autocomplete="off">
+			<input
+			autocomplete="off"
+				on:click={() => (resultNumber = -1)}
+				bind:value={query}
+				type="text"
+				id="spellsearch"
+				placeholder="Search for spells..."
+				bind:this={searchField}
+				name="search"
+			/>
+		</form>
 		<button on:click={() => (query = '')} class="clear" class:show={query}
 			><i class="ri-close-circle-fill" /></button
 		>
@@ -110,7 +114,7 @@
 						<button
 							bind:this={result[i]}
 							on:click={(e) => {
-								addSpell(spell), touchFeedback(e);
+								addSpell(spell); touchFeedback(e); resultNumber -1; searchField.select() ;
 							}}
 							tabindex="0"
 						>

@@ -1,34 +1,60 @@
-
 <script>
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
-	import { pagetitle, session, modalCall, quickQuery } from './stores/stores';
-	import { loggedIn, userNickname } from './stores/stores-persist';
-	import { topMenuOpenClose, sideMenuOpenClose, handleLogOut } from './functions/globalfunctions.svelte';
+	import {
+		pagetitle,
+		session,
+		modalCall,
+		quickQuery,
+		spellListEmpty,
+		notification,
+		editingTitle
+	} from './stores/stores';
+	import { activeTab, loggedIn, userNickname, openSpellbooks } from './stores/stores-persist';
+	import {
+		topMenuOpenClose,
+		sideMenuOpenClose,
+		handleLogOut,
+		newBook,
+		handleSave,
+		handleLoad
+	} from './functions/globalfunctions.svelte';
+	let bookTitle;
+
+	function handleNew() {}
+
+	function editName() {
+		$editingTitle = true;
+		bookTitle.setAttribute('contenteditable', true);
+		bookTitle.focus();
+	}
 </script>
 
 <Section name="header">
 	<header>
-		{#if $pagetitle === 'Home'}
+		{#key $activeTab.name}
 			{#key $pagetitle}
-				<h1 in:fade={{ duration: 200 }}>
-					Inky's Spellbook <span style="margin-left: .2rem;font-size: 1.2rem; opacity: .3;"
-						>Beta / D&D 5E</span
-					>
-				</h1>
+				<div class="title_wrapper">
+					<h1 bind:this={bookTitle} class:editing={$editingTitle} in:fade={{ duration: 200 }}>
+						{#if $pagetitle !== 'Home'}
+							{$pagetitle}
+						{:else}
+							{$activeTab.name}
+						{/if}
+					</h1>
+					<button class:editing={$editingTitle} on:click={editName}
+						><i class="ri-edit-line" /><i class="ri-save-3-line" />
+					</button>
+				</div>
 			{/key}
-		{:else}
-			{#key $pagetitle}
-				<h1 in:fade={{ duration: 200 }}>
-					{$pagetitle}
-				</h1>
-			{/key}
-		{/if}
+		{/key}
+
 		<div class="header_inner">
 			<div class="header_left">
 				{#if $pagetitle === 'Home'}
 					<Button
+						disabled={$openSpellbooks.length < 1 ? true : false}
 						href=""
 						on:click={sideMenuOpenClose}
 						type="fill accent"
@@ -47,14 +73,32 @@
 						text="Log out"
 					/>
 				{/if}
-				{#if $pagetitle === 'Home' || $pagetitle === 'My account'}
-					<Button href="/browse" type="fill blue desktop" icon="ri-dashboard-fill" text="Premade" />
-				{/if}
 				{#if $pagetitle === 'Home'}
+					<Button
+						on:click={newBook}
+						href=""
+						type="fill desktop"
+						icon="ri-health-book-line"
+						text="New"
+					/>
+					<Button
+						on:click={handleLoad}
+						href=""
+						type="fill desktop"
+						icon="ri-folder-open-line"
+						text="Open"
+					/><Button
+						disabled={$spellListEmpty}
+						on:click={() => handleSave($activeTab.id)}
+						href=""
+						type="fill desktop"
+						icon="ri-save-3-line"
+						text="Save"
+					/>
 					<Button
 						href=""
 						on:click={() => topMenuOpenClose()}
-						type="fill"
+						type="outline"
 						icon="ri-menu-2-line"
 						text="menu"
 					/>
@@ -67,6 +111,7 @@
 					placeholder="Quick spell lookup..."
 					on:focus={() => ($modalCall = 'lookup')}
 				/>
+
 				{#if $session && $pagetitle !== 'My account'}
 					<Button
 						type="fill desktop"
@@ -89,6 +134,9 @@
 						text="Log in"
 					/>
 				{/if}
+				{#if $pagetitle === 'Home' || $pagetitle === 'My account'}
+					<Button href="/browse" type="fill blue desktop" icon="ri-dashboard-fill" text="Premade" />
+				{/if}
 				<!-- <Button type="fill dark-mode" icon="ri-moon-line" text="dark mode" /> -->
 			</div>
 		</div>
@@ -102,24 +150,88 @@
 		@media only screen and (max-width: 1024px) {
 			margin-top: 1rem;
 		}
-		h1 {
-			margin-bottom: 1rem;
-			@media only screen and (max-width: 1024px) {
-				span {
-					display: block;
-					width: 100%;
+		.title_wrapper {
+			position: relative;
+			display: inline-block;
+			button {
+				all: unset;
+				cursor: pointer;
+				display: none;
+				z-index: 2;
+				user-select: none;
+				vertical-align: 2px;
+				i {
+					color: var(--white);
+					font-size: 1.6rem;
+				}
+				.ri-save-3-line {
+					display: none;
+				}
+				&.editing {
+					display: inline-block;
+					.ri-save-3-line {
+						display: inline-block;
+					}
+					.ri-edit-line {
+						display: none;
+					}
+				}
+				&:hover {
+					i {
+						color: var(--accent);
+					}
+				}
+			}
+			&:hover {
+				button {
+					display: inline-block;
+				}
+			}
+			h1 {
+				display: inline-block;
+				margin-bottom: 1rem;
+				position: relative;
+				cursor: default;
+				@media only screen and (max-width: 1024px) {
+					span {
+						display: block;
+						width: 100%;
+					}
+				}
+				&:after {
+					display: none;
+					content: '';
+					position: absolute;
+					border-radius: 6px;
+					left: -0.3rem;
+					top: -0.3rem;
+					bottom: -0.3rem;
+					right: -0.3rem;
+					background-color: var(--moretranslucent);
+				}
+				&.editing {
+					cursor: text;
+					&:after {
+						display: block;
+					}
 				}
 			}
 		}
+
 		.header_inner {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
 			width: 100%;
 			align-items: flex-end;
-			.header_right {
+			.header_right,
+			.header_left {
 				display: flex;
-				gap: 0.4rem;
+				gap: 0.2rem;
+				flex-shrink: 0;
+			}
+			.header_middle {
+				flex-shrink: 1;
 			}
 			h1 {
 				margin-bottom: 1rem;

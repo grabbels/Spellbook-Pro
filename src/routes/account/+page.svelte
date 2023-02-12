@@ -155,7 +155,7 @@
 				{:else}
 					<div class="save_slots">
 						{#each $savedSpellSheets as spellsheet}
-							<SaveSlot data={spellsheet} type="large" on:click={()=> {$modalCall = 'spellbook', $lookupBook = spellsheet}} />
+							<SaveSlot data={spellsheet} type="large" on:click={()=> {$modalCall = 'spellbook'; $lookupBook = spellsheet}} />
 						{/each}
 					</div>
 				{/if}

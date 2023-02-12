@@ -25,3 +25,5 @@ export const bookmarksOpen = writable(false)
 export const lookupBook = writable('');
 export const profileUser = writable('');
 export const userProfile = writable('');
+export const summaryOpen = writable(false);
+export const editingTitle = writable(false);

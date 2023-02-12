@@ -1,6 +1,6 @@
 <script>
 	import { supabaseClient } from '$lib/supabaseClient';
-	import { modalCall, notification, userId } from './stores/stores';
+	import { modalCall, notification, userId } from '../stores/stores';
 	let name;
 	let level;
 	let school;

@@ -3,7 +3,7 @@
 	/** @type {import('./$types').LayoutData} */
 	export let data;
 	import { Body } from 'svelte-body';
-	import { fly, fade } from 'svelte/transition';
+	import { fly, fade, scale } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { supabaseClient } from '$lib/supabaseClient';
 	import { page } from '$app/stores';
@@ -26,13 +26,17 @@
 	import {
 		retrieveSession,
 		refreshSession,
-		setUserData
+		setUserData,
+		topMenuOpenClose
 	} from '../components/functions/globalfunctions.svelte';
-	import { loggedIn, firstVisit } from '../components/stores/stores-persist';
+	import { loggedIn, firstVisitA } from '../components/stores/stores-persist';
 
 	import '@fontsource/kanit';
-	import Modal from '../components/modal.svelte';
+	import Modal from '../components/modal/modal.svelte';
 	import Pdf from '../components/pdf.svelte';
+	import Tabs from '../components/tabs.svelte';
+	import Section from '../components/section.svelte';
+
 	let timeOut = 3000;
 	export const closeMenu = () => {
 		if ($sidemenuopen === true || $topmenuopen === true) {
@@ -40,15 +44,29 @@
 			topmenuopen.set(false);
 		}
 	};
-	$: if ($notification) {
-		$notification.split('#')[1].includes('info') ? (timeOut = 10000) : 10000;
-		setTimeout(() => {
-			$notification = '';
-		}, timeOut);
+	// $notification = 'Saving spellsheet...#loading';
+	// $notification = 'Spellsheet saved!#positive';
+	$: $notification, clearTimeout(), showNotification();
+
+	function showNotification() {
+		if ($notification) {
+			$notification.split('#')[1].includes('info')
+				? (timeOut = 10000)
+				: $notification.split('#')[1].includes('positive')
+				? 4000
+				: 8000;
+			const destroy = setTimeout(() => {
+				$notification = '';
+			}, timeOut);
+			
+		}
 	}
+
 	onMount(() => {
 		refreshSession();
 	});
+
+	$: $pagetitle, ($topmenuopen = false);
 
 	async function checkIfLoggedIn() {
 		// if ($loggedIn === null) {
@@ -75,13 +93,13 @@
 	} else {
 		// $userId = $session.user.id
 	}
-	console.log;
+
 	let body;
 	let scrollTop;
-	console.log($firstVisit);
-	if ($firstVisit == true) {
+	console.log($firstVisitA);
+	if ($firstVisitA == true) {
 		$modalCall = 'welcome';
-		$firstVisit = false;
+		$firstVisitA = false;
 	} else {
 		$modalCall = '';
 	}
@@ -124,48 +142,69 @@
 		{#key $pagetitle}
 			{#if $pagetitle != 'Login' && $pagetitle != 'Password reset'}
 				<div>
+					<!-- {#if $pagetitle == 'Home'}
+					<Section>
+						<Tabs />
+					</Section>
+					{/if} -->
+
 					<Header />
 				</div>
 			{/if}
 		{/key}
 		<!-- {#key $pagetitle} -->
 		<!-- <div in:fly={{ y: 10, duration: 300 }}> -->
+
 		<PageTransition pathname={data.pathname}><slot /></PageTransition>
 		<!-- {/key} -->
 	</main>
 
 	<div on:click={closeMenu} class="closemenu" />
+
+	<div
+		class="background {$pagetitle.toLowerCase().includes('premade')
+			? 'dark'
+			: $pagetitle.toLowerCase().includes('account')
+			? 'alt'
+			: ''}"
+	/>
 </div>
 
 {#if $notification}
-	<button
-		transition:fly={{ y: 10, duration: 300 }}
-		on:click={() => ($notification = '')}
-		class:show={$notification}
-		class="notification"
-	>
-		<div
-			class="{$notification.split('#')[1].includes('error')
-				? 'error'
-				: $notification.split('#')[1].includes('alert')
-				? 'alert'
-				: $notification.split('#')[1].includes('positive')
-				? 'positive'
-				: $notification.split('#')[1].includes('info')
-				? 'info'
-				: ''} notification_inner"
+	{#key $notification}
+		<button
+			in:fly={{ y: 10, duration: 300, delay: 100 }}
+			out:fly={{ y: 10, duration: 200 }}
+			on:click={() => ($notification = '')}
+			class:show={$notification}
+			class="notification"
 		>
-			<div>
-				<i class="ri-error-warning-fill" /><i class="ri-alert-fill" />
-				<i class="ri-checkbox-circle-line" /> <i class="ri-information-line" />
+			<div
+				class="{$notification.split('#')[1].includes('error')
+					? 'error'
+					: $notification.split('#')[1].includes('alert')
+					? 'alert'
+					: $notification.split('#')[1].includes('loading')
+					? 'loading'
+					: $notification.split('#')[1].includes('positive')
+					? 'positive'
+					: $notification.split('#')[1].includes('info')
+					? 'info'
+					: ''} notification_inner"
+			>
+				<div in:scale={{ duration: 200 }}>
+					<i class="ri-error-warning-fill" /><i class="ri-alert-fill" />
+					<i class="ri-checkbox-circle-line" /><i class="ri-information-line" />
+					<div class="loading"><i class="ri-loader-5-line" /></div>
+				</div>
+				<div>
+					<p>
+						{@html $notification.split('#')[0]}
+					</p>
+				</div>
 			</div>
-			<div>
-				<p>
-					{@html $notification.split('#')[0]}
-				</p>
-			</div>
-		</div>
-	</button>
+		</button>
+	{/key}
 {/if}
 
 {#if $modalCall}
@@ -183,7 +222,6 @@
 	main {
 		min-height: 100vh;
 		height: 100%;
-		
 	}
 
 	.main_wrapper {
@@ -191,35 +229,49 @@
 		width: 100%;
 		position: relative;
 		transition: transform 0.3s;
-		background: background 2s;
-
-		background: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
 		z-index: 1;
-	
+
 		// overflow-y: auto;
-		&::after {
-			content: '';
-			position: absolute;
+		// &::after {
+		// 	content: '';
+		// 	position: absolute;
+		// 	top: 0;
+		// 	left: 0;
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	background: linear-gradient(238deg, rgb(62, 35, 112) 0%, rgb(34, 18, 59) 100%);
+		// 	z-index: -1;
+		// 	transition: 0.5s;
+		// 	opacity: 0;
+		// }
+		// &::before {
+		// 	content: '';
+		// 	position: absolute;
+		// 	top: 0;
+		// 	left: 0;
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	background: linear-gradient(238deg, rgb(77, 35, 112) 0%, rgb(35, 14, 75) 100%);
+		// 	z-index: -1;
+		// 	transition: 0.5s;
+		// 	opacity: 0;
+		// }
+		.background {
+			background: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
+			transition: 0.3s;
 			top: 0;
 			left: 0;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(238deg, rgb(62, 35, 112) 0%, rgb(34, 18, 59) 100%);
-			z-index: -1;
-			transition: 0.5s;
-			opacity: 0;
-		}
-		&::before {
-			content: '';
+			right: 0;
+			bottom: 0;
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(238deg, rgb(77, 35, 112) 0%, rgb(35, 14, 75) 100%);
 			z-index: -1;
-			transition: 0.5s;
-			opacity: 0;
+			transform: scaleY(-1);
+			&.dark {
+				filter: brightness(0.7);
+			}
+			&.alt {
+				filter: hue-rotate(-7deg) brightness(0.9);
+			}
 		}
 		&.browse {
 			&::after {
@@ -278,7 +330,7 @@
 				display: flex;
 				align-items: center;
 			}
-			@media only screen and (max-width: 1024px) {
+			@media only screen and (max-width: 1023px) {
 				padding: 0.4rem 1rem;
 				margin: 0 0.5rem;
 			}
@@ -300,7 +352,7 @@
 				font-size: 1.5rem;
 				vertical-align: -6px;
 				// margin-right: .5rem;
-				@media only screen and (max-width: 1024px) {
+				@media only screen and (max-width: 1023px) {
 					float: left;
 				}
 			}
@@ -326,6 +378,31 @@
 				i.ri-checkbox-circle-line {
 					display: inline;
 					color: var(--lightgreen);
+				}
+			}
+			&.loading {
+				.loading {
+					// display: inline-flex;
+					// justify-content: center;
+					// align-items: center;
+					animation: loading 1s cubic-bezier(0.5, 0.15, 0.5, 0.85) infinite;
+					width: 35px;
+					height: 35px;
+					margin-left: -1rem;
+					@media only screen and (max-width: 1023px) {
+						margin-left: 0;
+					}
+					i {
+						color: var(--lightblue);
+						display: inline;
+						margin: auto;
+						margin-bottom: 2px;
+					}
+					@keyframes loading {
+						to {
+							transform: rotate(360deg);
+						}
+					}
 				}
 			}
 		}

@@ -57,8 +57,9 @@
 				<button
 					on:click={() => {
 						$lookupSpell = results[i];
-						$modalCall = 'spell';
 						$quickQuery = '';
+						$modalCall = 'spell fromquicksearch';
+						
 					}}
 					on:keydown={handleKeyDown}
 					bind:this={result[i]}

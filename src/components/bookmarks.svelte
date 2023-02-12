@@ -1,6 +1,7 @@
 <script>
-	import { activeLevels, bookmarksOpen } from './stores/stores';
+	import { activeLevels, bookmarksOpen, summaryOpen } from './stores/stores';
 	import { clickOutside } from './functions/clickOutside.js';
+	import { removeFilters } from './functions/globalfunctions.svelte';
 </script>
 
 {#if $activeLevels.length > 0}
@@ -19,6 +20,19 @@
 	<a on:click={() => ($bookmarksOpen = false)} href="#top" class="bookmark"
 		><div><i class="ri-bookmark-fill" /></div></a
 	>
+	{#if $activeLevels.length > 0}
+		<a
+			on:click={() => {
+				removeFilters();
+				setTimeout(() => {
+					$summaryOpen = true;
+					$bookmarksOpen = false;
+				}, 1);
+			}}
+			href="#summary"
+			class="bookmark"><div><i class="ri-list-check" /></div></a
+		>
+	{/if}
 	{#each $activeLevels as level}
 		<a on:click={() => ($bookmarksOpen = false)} href="#{level}" class="bookmark"
 			><div>{level}</div></a

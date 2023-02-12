@@ -6,12 +6,11 @@
 		spellListEmpty,
 		notification,
 		modalCall,
-		filters,
 		session,
 		topmenuopen,
 		pagetitle
 	} from './stores/stores';
-	import { topMenuOpenClose, removeFilters, refreshList, empty } from './functions/globalfunctions.svelte';
+	import { topMenuOpenClose, empty, newBook } from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
 	import Pdf from './pdf.svelte';
 	let exportpdf = false;
@@ -72,7 +71,7 @@
 				type="fill"
 				icon="ri-download-line"
 				text="Download"
-			/>
+			/>x
 			<Button
 				on:click={() => {
 					fileinput.click();
@@ -83,14 +82,28 @@
 				text="Import"
 			/> -->
 			<Button
+						on:click={()=>$modalCall = 'options'}
+						type="fill"
+						icon="ri-settings-line"
+						text="Options"
+					/>
+			<Button
+			<Button
+						on:click={newBook}
+						href=""
+						type="fill mobile"
+						icon="ri-health-book-line"
+						text="New"
+					/>
+			<Button
 				disabled={$spellListEmpty}
 				on:click={save}
 				href=""
-				type="fill"
+				type="fill mobile"
 				icon="ri-save-3-line"
 				text="Save"
 			/>
-			<Button on:click={load} href="" type="fill" icon="ri-folder-open-line" text="Load" />
+			<Button on:click={load} href="" type="fill mobile" icon="ri-folder-open-line" text="Open" />
 			<!-- <Button
 				on:click={() => {
 					fileinput.click();
@@ -125,7 +138,7 @@
 				text="Clear spellbook"
 			/>
 			<Button
-				on:click={()=> $modalCall = 'submitspell'}
+				on:click={() => ($modalCall = 'submitspell')}
 				href=""
 				type="fill blue"
 				icon="ri-file-search-line"
@@ -144,10 +157,22 @@
 				text="Theme"
 			/> -->
 			{#if $pagetitle === 'Home' || $pagetitle === 'My account'}
-				<Button href="/browse" type="fill blue mobile" icon="ri-dashboard-fill" text="Premade" on:click={topMenuOpenClose}/>
+				<Button
+					href="/browse"
+					type="fill blue mobile"
+					icon="ri-dashboard-fill"
+					text="Premade"
+					on:click={topMenuOpenClose}
+				/>
 			{/if}
 			{#if $session && $pagetitle !== 'My account'}
-				<Button type="fill mobile" icon="ri-contacts-book-2-line" text="Account" href="/account" on:click={topMenuOpenClose}/>
+				<Button
+					type="fill mobile"
+					icon="ri-contacts-book-2-line"
+					text="Account"
+					href="/account"
+					on:click={topMenuOpenClose}
+				/>
 			{:else if !$session}
 				<Button
 					type="fill mobile"
