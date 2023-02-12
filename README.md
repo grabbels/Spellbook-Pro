@@ -1,38 +1,55 @@
-# create-svelte
+Welcome!
+========
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+I'm so glad you're here. Inky's Spellbook is a project I've been working on on and off now for quite some time, and like any "let's see where it goes" project it got completely out of hand and it turned into an ambitious plan for a web-app (the one you're on now) and an app for mobile devices (next phase).
 
-## Creating a project
+DANGER: bugs up ahead
 
-If you're seeing this, you've probably already done this step. Congrats!
+Have a look around, but be warned that there might be scary and dangerous bugs lurking around! They bite. This app is currently very much in beta, and I would be very thankful if you could report any issues or bugs you may encounter. Features requests or ideas are also very welcome! You'll find buttons to report bugs and submit spells in the menu. I'd love to hear from you!
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Have fun!
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+**– Sem (a.k.a. Grabbels)**
 
-## Developing
+Features
+--------
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+*   ### Create and manage spellbooks
+    
+    Create your own spellbooks and save them to and load them from your account, making it possible to keep track of multiple spellbooks at a time
+    
+*   ### How did that spell work again?
+    
+    Just start typing! If you're on the spellbook page (home), just start typing (or type in the "Quick spell lookup" field) to look up a spell by name and immediately retrieve all information on the spell you're looking for.
+    
+*   ### Share your spellbooks
+    
+    When saving or editing a spellbook, you can choose to publish your spellbooks making them available to everyone in the community.
+    
+*   ### Filter your spellbook
+    
+    When on the spellbook page use the filters bar to quickly filter through your spellbook by duration, range, etc.
+    
 
-```bash
-npm run dev
+Upcoming
+--------
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+*   ### Bugfixes
+    
+    Let me know when you find them, and they'll be fixed asap!
+    
+*   ### Complete spell database
+    
+    Currently only spells from the 5E base-books are included (with some spells added manually during development). In the menu you can submit additional spells from other sources for me to review.
+    
+*   ### PDF export
+    
+    Export your spellbooks as printer-friendly PDF's, making your spellbooks available to you even if you're not connected to the internet.
+    
+*   ### Offline functionality
+    
+    Use the (web)app even when you're not connected to the internet, saving you valuable battery life and ensuring you have your spellbooks available everywhere, anytime.
+    
+*   ### Published spellbook filters
+    
+    Look for specific published spellbooks by creator nickname, character class or character level.
