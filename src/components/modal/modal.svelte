@@ -156,13 +156,15 @@
 						<h3 style="margin-bottom: 1rem">Published spellbooks</h3>
 						<div class="grid">
 							{#each $userProfile as spellbook}
-								<Saveslot
-									on:click={() => {
-										($lookupBook = spellbook), ($modalCall = 'spellbook');
-									}}
-									type="large noedit"
-									data={spellbook}
-								/>
+								{#if spellbook.published === true}
+									<Saveslot
+										on:click={() => {
+											($lookupBook = spellbook), ($modalCall = 'spellbook');
+										}}
+										type="large noedit"
+										data={spellbook}
+									/>
+								{/if}
 							{/each}
 						</div>
 					{/if}
