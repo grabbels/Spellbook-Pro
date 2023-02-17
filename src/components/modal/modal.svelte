@@ -33,6 +33,10 @@
 	import Lookup from './lookup.svelte';
 	import Spell from './spell.svelte';
 	import Options from './options.svelte';
+	import { pb } from '$lib/pocketbase';
+	import Prompt from './confirm-email-change.svelte';
+	import ConfirmEmailChange from './confirm-email-change.svelte';
+	import ConfirmPasswordReset from './confirm-password-reset.svelte';
 	export let modal;
 	let levelList = [];
 	const levels = [
@@ -57,7 +61,7 @@
 
 	$: $lookupBook, (publishloading = false), (unpublishloading = false);
 
-	$: $modalCall, showModalFunction();
+	$: $modalCall, showModalFunction(), console.log($modalCall);
 
 	function showModalFunction() {
 		if (showModal == false && $modalCall) {
@@ -89,6 +93,7 @@
 	});
 
 	$: console.log($modalCall);
+	$: console.log($lookupBook);
 
 	$: if ($profileUser) {
 		getUserProfile();
@@ -140,6 +145,14 @@
 			{:else if $modalCall.includes('lookup')}
 				<div class="modal_inner">
 					<Lookup />
+				</div>
+			{:else if $modalCall.includes('confirm-email-change')}
+				<div class="modal_inner">
+					<ConfirmEmailChange />
+				</div>
+			{:else if $modalCall.includes('confirm-password-reset')}
+				<div class="modal_inner">
+					<ConfirmPasswordReset />
 				</div>
 			{:else if $modalCall == 'spell' || $modalCall.includes('fromquicksearch')}
 				<div class="modal_inner">
@@ -432,9 +445,7 @@
 					p {
 						font-size: 1rem;
 					}
-					&:after {
-						display: none;
-					}
+					mask-image: none;
 				}
 				&.buttons {
 					margin-top: 1rem;

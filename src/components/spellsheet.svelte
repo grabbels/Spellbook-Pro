@@ -19,14 +19,14 @@
 		modalCall,
 		lookupSpell,
 		bookmarksOpen,
-		summaryOpen,
-		session
+		summaryOpen
 	} from './stores/stores';
 	import Button from './button.svelte';
 	import PlaceholderCard from './placeholdercard.svelte';
 	import Bookmarks from './bookmarks.svelte';
 	import Grid from './grid.svelte';
 	import Schoolicon from './schoolicon.svelte';
+	import { currentUser, pb } from '$lib/pocketbase';
 	let spellsheet;
 	let spellsOrderedInDom;
 	let orderedSpellsNames = [];
@@ -57,13 +57,17 @@
 	];
 	$: $activeSpells, setActiveLevels(), ($activeTab.list = $activeSpells);
 	function setActiveLevels() {
-		$activeLevels = [];
-		for (let spell of $activeSpells) {
-			if (spell.display === true && !$activeLevels.includes(parseInt(spell.level))) {
-				$activeLevels.push(parseInt(spell.level));
+		if ($activeSpells.length) {
+			$activeLevels = [];
+			for (let spell of $activeSpells) {
+				if (spell.display === true && !$activeLevels.includes(parseInt(spell.level))) {
+					$activeLevels.push(parseInt(spell.level));
+				}
 			}
+			$activeLevels.sort();
+		} else {
+			$activeLevels = [];
 		}
-		$activeLevels.sort();
 	}
 	function openClickedSpell(spell) {
 		openSpell === spell ? (openSpell = null) : (openSpell = spell);
@@ -85,10 +89,12 @@
 			for (let i = 0; i < spellsOrderedInDom.length; i++) {
 				orderedSpellsNames.push(spellsOrderedInDom[i].getAttribute('data-name'));
 			}
-			var sortedSpells = $activeSpells
-				.slice()
-				.sort((a, b) => orderedSpellsNames.indexOf(a.name) - orderedSpellsNames.indexOf(b.name));
-			$activeSpells = sortedSpells;
+			if ($activeSpells.length) {
+				var sortedSpells = $activeSpells
+					.slice()
+					.sort((a, b) => orderedSpellsNames.indexOf(a.name) - orderedSpellsNames.indexOf(b.name));
+				$activeSpells = sortedSpells;
+			}
 			// console.log($activeSpells)
 		}
 	}
@@ -328,7 +334,7 @@
 						<h3>The beginning of a new adventure!</h3>
 
 						<div class="panel">
-							{#if $session}
+							{#if $currentUser}
 								<Button
 									on:click={newBook}
 									type="blue fill"
@@ -342,7 +348,7 @@
 									icon="ri-folder-open-line"
 								/>
 							{:else}
-							<p>Without an account you won't be able to save your spellbooks.</p>
+								<p>Without an account you won't be able to save your spellbooks.</p>
 								<Button
 									on:click={newBook}
 									type="blue fill"
@@ -355,7 +361,7 @@
 									text="Register"
 									icon="ri-user-add-line"
 								/>
-								<br>
+								<br />
 								<p>Already have an account?</p>
 								<Button
 									href="/account/login"
@@ -562,9 +568,7 @@
 				cursor: auto;
 				.block.description {
 					opacity: 1;
-					&:after {
-						opacity: 0;
-					}
+					mask-image: none;
 				}
 			}
 			button.fold {

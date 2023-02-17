@@ -81,9 +81,7 @@
 					p {
 						font-size: 1rem;
 					}
-					&:after {
-						display: none;
-					}
+					mask-image: none;
 				}
 			}
 		}

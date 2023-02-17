@@ -1,8 +1,17 @@
-<svelte:options accessors={true}/>
+<svelte:options accessors={true} />
+
 <script>
 	import { fade, scale } from 'svelte/transition';
 	import { removeFilters } from './functions/globalfunctions.svelte';
-	import { filters, actionFilter, rangeFilter, searchFilter, saveFilter, bookmarksOpen, summaryOpen } from './stores/stores';
+	import {
+		filters,
+		actionFilter,
+		rangeFilter,
+		searchFilter,
+		saveFilter,
+		bookmarksOpen,
+		summaryOpen
+	} from './stores/stores';
 	import { activeSpells } from './stores/stores-persist';
 	import { clickOutside } from './functions/clickOutside.js';
 	let actionFilterArray = [];
@@ -60,22 +69,28 @@
 		} else {
 			$filters = true;
 		}
-		$activeSpells.filter((item) => {
-			if ($actionFilter || $rangeFilter || $searchFilter || $saveFilter) {
-				($actionFilter ? item.casting_time.toLowerCase().includes($actionFilter) : true) &&
-				($rangeFilter ? item.range.toLowerCase().includes($rangeFilter) : true) &&
-				($saveFilter ? item.save == $saveFilter : true) &&
-				($searchFilter ? item.name.toLowerCase().includes($searchFilter) : true)
-					? (item.display = true)
-					: (item.display = false);
-			}
-		});
+		console.log($activeSpells.length)
+		if ($activeSpells.length) {
+			$activeSpells.filter((item) => {
+				if ($actionFilter || $rangeFilter || $searchFilter || $saveFilter) {
+					($actionFilter ? item.casting_time.toLowerCase().includes($actionFilter) : true) &&
+					($rangeFilter ? item.range.toLowerCase().includes($rangeFilter) : true) &&
+					($saveFilter ? item.save == $saveFilter : true) &&
+					($searchFilter ? item.name.toLowerCase().includes($searchFilter) : true)
+						? (item.display = true)
+						: (item.display = false);
+				}
+			});
+		}
+
 		$activeSpells = $activeSpells;
 	}
 </script>
 
-<button class="filters_handle handle" class:open={$bookmarksOpen ? true : filtersOpen ? true : ''} on:click={() => (filtersOpen = true)}
-	><div><i class="ri-filter-2-fill" /></div></button
+<button
+	class="filters_handle handle"
+	class:open={$bookmarksOpen ? true : filtersOpen ? true : ''}
+	on:click={() => (filtersOpen = true)}><div><i class="ri-filter-2-fill" /></div></button
 >
 
 <div
@@ -90,7 +105,12 @@
 	>
 	<h3 class="button"><i class="ri-filter-2-line" /> Filters</h3>
 	<div class="filter" data-filter="search">
-		<input id="spellbooksearch" bind:value={$searchFilter} type="text" placeholder="Search spellbook..." />
+		<input
+			id="spellbooksearch"
+			bind:value={$searchFilter}
+			type="text"
+			placeholder="Search spellbook..."
+		/>
 	</div>
 	{#if actionFilterArray.length > 0}
 		<div class="filter castingtime" data-filter="castingtime">
@@ -223,7 +243,7 @@
 				top: 0.7rem;
 				right: 1rem;
 				i {
-					color: white;
+					color: var(--white);
 					font-size: 1.7rem;
 				}
 			}
@@ -237,7 +257,6 @@
 			padding-left: 0.5rem;
 			margin: 0;
 			white-space: nowrap;
-
 		}
 		.filter {
 			display: flex;

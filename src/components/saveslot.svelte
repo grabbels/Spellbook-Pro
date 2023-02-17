@@ -78,7 +78,7 @@
 			gap: .3rem;
 		}
 		.description {
-			color: white;
+			color: var(--white);
 			margin-top: 1rem;
 			font-size: 0.95rem;
 		}

@@ -55,7 +55,7 @@
 
 <style lang="scss">
 	i {
-		color: white;
+		color: var(--white);
 		font-size: 1.7rem;
 		vertical-align: -6px;
 		// margin-right: 0.5rem;

@@ -13,22 +13,23 @@
 		userNickname
 	} from '../../../components/stores/stores';
 	import { onMount } from 'svelte';
-	import { supabaseClient } from '$lib/supabaseClient';
-	let showRegister;
-	let showLogin;
-	let registerForm;
-	let newUrl;
-	let registerNickname;
-	let registerEmail;
-	let registerPassword;
-	let registerPasswordConfirm;
-	let loginEmail;
-	let loginPassword;
-	let loadingLogin;
-	let loadingRegister;
-	let registerPanel;
-	let loginPanel;
-	let windowHeight;
+	import { setUserData } from '../../../components/functions/globalfunctions.svelte';
+	import { currentUser, pb } from '$lib/pocketbase';
+	let showRegister,
+		showLogin,
+		registerForm,
+		newUrl,
+		registerNickname,
+		registerEmail,
+		registerPassword,
+		registerPasswordConfirm,
+		loginEmail,
+		loginPassword,
+		loadingLogin,
+		loadingRegister,
+		windowHeight,
+		registerPanel,
+		loginPanel;
 	$pagetitle = 'Login';
 	onMount(() => {
 		if ($page.url.searchParams.get('register')) {
@@ -66,51 +67,77 @@
 		if (registerPassword.length > 5) {
 			console.log(registerNickname);
 			if (registerPassword === registerPasswordConfirm) {
-				const { data, error } = await supabaseClient
-					.from('nicknames')
-					.insert([{ user_nickname: registerNickname }])
-					.select();
-				if (error) {
-					if (error.code == 23505) {
-						console.log(error);
-						$notification = 'The nickname is already in use, try another one!#error';
-						loadingRegister = false;
-					} else {
-						console.log(error);
-						$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-						loadingRegister = false;
+				const data = {
+					username: registerNickname,
+					email: registerEmail,
+					emailVisibility: true,
+					password: registerPassword,
+					passwordConfirm: registerPasswordConfirm
+				};
+				try {
+					const record = await pb.collection('users').create(data);
+					if (record) {
+						$notification =
+							'Succesfully registered. Check your email to confirm your email address.#info';
 					}
-				} else if (data) {
-					const { data, error } = await supabaseClient.auth.signUp({
-						email: registerEmail,
-						password: registerPassword,
-						options: {
-							data: {
-								nickname: registerNickname
-							}
-						}
-					});
-					if (error) {
-						console.log(error);
-						$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+				} catch (err) {
+					console.log(err.data);
+					if (err.data.data.username) {
+						$notification = 'The nickname is invalid or already in use, try another one!#alert';
 						loadingRegister = false;
-					} else if (data) {
-						console.log(data);
-						if (data.user === null) {
-							$notification =
-								"An account using your email address already exists. <a href='/account/update-reset'>Forgot password?</a>#error";
-							loadingRegister = false;
-						} else {
-							$notification =
-								"Registered succesfully! Please confirm your email address using the email you'll receive shortly. No email? Check your spam-folder or try again.#info";
-							registerForm.reset();
-							loadingRegister = false;
-							handleShowLogin();
-						}
-					} else {
-						console.log('nothing');
+					} else if (err.data.data.email) {
+						$notification = 'This email is invalid or already in use.#error';
+						loadingRegister = false;
+					} else if (err) {
+						$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
 					}
+					// console.log(err.data.data);
 				}
+				// const { data, error } = await supabaseClient
+				// 	.from('nicknames')
+				// 	.insert([{ user_nickname: registerNickname }])
+				// 	.select();
+				// if (error) {
+				// 	if (error.code == 23505) {
+				// 		console.log(error);
+				// 		$notification = 'The nickname is already in use, try another one!#error';
+				// 		loadingRegister = false;
+				// 	} else {
+				// 		console.log(error);
+				// 		$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+				// 		loadingRegister = false;
+				// 	}
+				// } else if (data) {
+				// 	const { data, error } = await supabaseClient.auth.signUp({
+				// 		email: registerEmail,
+				// 		password: registerPassword,
+				// 		options: {
+				// 			data: {
+				// 				nickname: registerNickname
+				// 			}
+				// 		}
+				// 	});
+				// 	if (error) {
+				// 		console.log(error);
+				// 		$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+				// 		loadingRegister = false;
+				// 	} else if (data) {
+				// 		console.log(data);
+				// 		if (data.user === null) {
+				// 			$notification =
+				// 				"An account using your email address already exists. <a href='/account/update-reset'>Forgot password?</a>#error";
+				// 			loadingRegister = false;
+				// 		} else {
+				// 			$notification =
+				// 				"Registered succesfully! Please confirm your email address using the email you'll receive shortly. No email? Check your spam-folder or try again.#info";
+				// 			registerForm.reset();
+				// 			loadingRegister = false;
+				// 			handleShowLogin();
+				// 		}
+				// 	} else {
+				// 		console.log('nothing');
+				// 	}
+				// }
 			} else {
 				$notification = 'The passwords do not match#error';
 				loadingRegister = false;
@@ -123,43 +150,32 @@
 
 	async function handleLogin() {
 		loadingLogin = true;
-		const { data, error } = await supabaseClient.auth.signInWithPassword({
-			email: loginEmail,
-			password: loginPassword
-		});
-		if (data) {
-			if (data.session === null) {
-				$notification =
-					'This email and/or password combination is not recognized. Try again?#alert';
-				loadingLogin = false;
-			} else if (data) {
-				$session = data.session;
-				$userId = $session.user.id;
-				$userNickname = $session.user.user_metadata.nickname;
-				$userEmail = $session.user.email;
-				checkUserNickname();
-				goto('/account');
-			} else if (error) {
-				console.log(error);
-				loadingLogin = false;
-				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-			}
+		try {
+			const user = await pb.collection('users').authWithPassword(loginEmail, loginPassword);
+			loadingLogin = false;
+			setUserData();
+			goto('/account');
+		} catch (err) {
+			$notification = 'Unknown email/password combination.#error';
+			console.log(err.data);
+			loadingLogin = false;
 		}
+		console.log(currentUser);
 	}
 	async function checkUserNickname() {
-		const { data, error } = await supabaseClient
-			.from('nicknames')
-			.select()
-			.eq('user_nickname', $userNickname);
-		if (data) {
-			console.log(data);
-			if (data.user_id != $userId) {
-				const {} = await supabaseClient
-					.from('nicknames')
-					.update({ user_id: $userId })
-					.eq('user_nickname', $userNickname);
-			}
-		}
+		// const { data, error } = await supabaseClient
+		// 	.from('nicknames')
+		// 	.select()
+		// 	.eq('user_nickname', $userNickname);
+		// if (data) {
+		// 	console.log(data);
+		// 	if (data.user_id != $userId) {
+		// 		const {} = await supabaseClient
+		// 			.from('nicknames')
+		// 			.update({ user_id: $userId })
+		// 			.eq('user_nickname', $userNickname);
+		// 	}
+		// }
 	}
 </script>
 

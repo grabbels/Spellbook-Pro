@@ -200,7 +200,7 @@
 		position: relative;
 		width: 210mm;
 		aspect-ratio: 1 / 1.414;
-		background-color: white;
+		background-color: var(--white);
 		padding: 8mm;
 		&:before {
 			position: absolute;
@@ -214,7 +214,7 @@
 		h2 {
 			font-size: 2rem;
 			background-color: black;
-			color: white;
+			color: var(--white);
 			opacity: 1;
 			padding: 0.2rem 0.8rem;
 			display: inline-block;

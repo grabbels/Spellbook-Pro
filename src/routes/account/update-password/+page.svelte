@@ -12,7 +12,6 @@
 		userId,
 		userNickname
 	} from '../../../components/stores/stores';
-	import { supabaseClient } from '$lib/supabaseClient';
 	$pagetitle = 'Password reset';
 	let loading = false;
 	let registerPassword;
@@ -23,22 +22,22 @@
 		if (registerPassword.length > 5) {
 			if (registerPassword === registerPasswordConfirm) {
 				loading = true;
-				const { data, error } = await supabaseClient.auth.updateUser({
-					password: registerPassword
-				});
-				if (data.user == null) {
-					loading = false;
-					$notification = 'This password reset link is invalid or has expired.#error';
-				} else if (data) {
-					loading = false;
-					$notification = 'Password changes succesfully#positive';
-					console.log(data);
-					goto('/account/login');
-				} else if (error) {
-					loading = false;
-					console.log(error);
-					$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-				}
+				// const { data, error } = await supabaseClient.auth.updateUser({
+				// 	password: registerPassword
+				// });
+				// if (data.user == null) {
+				// 	loading = false;
+				// 	$notification = 'This password reset link is invalid or has expired.#error';
+				// } else if (data) {
+				// 	loading = false;
+				// 	$notification = 'Password changes succesfully#positive';
+				// 	console.log(data);
+				// 	goto('/account/login');
+				// } else if (error) {
+				// 	loading = false;
+				// 	console.log(error);
+				// 	$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+				// }
 			} else {
 				loading = false;
 				$notification = 'The passwords do not match#error';

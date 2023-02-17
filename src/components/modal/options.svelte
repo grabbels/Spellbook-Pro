@@ -68,10 +68,11 @@
 			<p>Theme</p>
 			<label for="theme"
 				><select bind:value={theme} id="theme" name="theme">
-					<option value="Abyss">Abyss</option>
-					<option value="Void">Void</option>
-					<option value="Ethereal Plane">Ethereal Plane</option>
-					<option value="XP">XP</option>
+					<option value="abyss">Abyss</option>
+					<option value="void">Void</option>
+					<option value="astral-plane">Astral Plane</option>
+					<option value="ombre">Ombre</option>
+					<option value="xp">XP</option>
 				</select></label
 			>
 		</div>

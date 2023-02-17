@@ -1,5 +1,5 @@
 <script>
-	import { supabaseClient } from '$lib/supabaseClient';
+	import { currentUser, pb } from '$lib/pocketbase';
 	import { fly } from 'svelte/transition';
 	import Button from '../button.svelte';
 	import Colorpicker from '../colorpicker.svelte';
@@ -23,9 +23,19 @@
 		topmenuopen,
 		userId
 	} from '../stores/stores';
+
 	import { activeSpells, userNickname, activeTab, openSpellbooks } from '../stores/stores-persist';
 	let saveColor = $bookToEdit ? $bookToEdit.color : 'var(--purple)';
-	let loadingSave, colorPicker, form, saveName, saveClass, saveLevel, saveDescription, savePublish, overwriteId, tempColor;
+	let loadingSave,
+		colorPicker,
+		form,
+		saveName,
+		saveClass,
+		saveLevel,
+		saveDescription,
+		savePublish,
+		overwriteId,
+		tempColor;
 	if ($bookToEdit.published == true) {
 		savePublish = true;
 	}
@@ -33,28 +43,29 @@
 		colorPicker = false;
 		console.log(saveColor);
 	}
+	console.log($savedSpellSheets);
 	if ($modalCall == 'save' || 'load' || 'edit') {
-		if (!$userId || !$userNickname) {
-			if ($session) {
-				$userId = $session.user.id;
-				$userNickname = $session.user.user_metadata.nickname;
-				loadSpellsheetsByUserId($userId);
-			} else {
-				let promiseSession = retrieveSession();
-				promiseSession.then((value) => {
-					if (value) {
-						$session = value;
-						$userId = value.user.id;
-						$userNickname = value.user.user_metadata.nickname;
-						loadSpellsheetsByUserId($userId);
-					}
-				});
-			}
-		} else {
-			loadSpellsheetsByUserId($userId);
-		}
+		// if (!$userId || !$userNickname) {
+		// 	if ($session) {
+		// 		$userId = $session.user.id;
+		// 		$userNickname = $session.user.user_metadata.nickname;
+		// 		loadSpellsheetsByUserId($userId);
+		// 	} else {
+		// 		let promiseSession = retrieveSession();
+		// 		promiseSession.then((value) => {
+		// 			if (value) {
+		// 				$session = value;
+		// 				$userId = value.user.id;
+		// 				$userNickname = value.user.user_metadata.nickname;
+		// 				loadSpellsheetsByUserId($userId);
+		// 			}
+		// 		});
+		// 	}
+		// } else {
+		loadSpellsheetsByUserId($userId);
+		// }
 	}
-	
+
 	async function handleSave() {
 		if ($bookToEdit) {
 			overwriteId = $bookToEdit.id;
@@ -64,54 +75,72 @@
 		} else {
 			loadingSave = 'loading';
 			if (overwriteId) {
-				const { error } = await supabaseClient.from('spellbooks').delete().eq('id', overwriteId);
-				if (error) {
-					console.log(error);
-				}
+				// const { error } = await supabaseClient.from('spellbooks').delete().eq('id', overwriteId);
+				// if (error) {
+				// 	console.log(error);
+				// }
 			}
-			const { data, error } = await supabaseClient
-				.from('spellbooks')
-				.insert({
-					creator: $userNickname,
-					name: saveName.value,
-					class: saveClass.value,
-					level: saveLevel.value,
-					description: saveDescription.value,
-					list: $activeSpells,
-					user_id: $userId,
-					color: saveColor,
-					published: savePublish
-				})
-				.select();
-			if (error) {
-				console.log(error);
-				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-			} else if (data) {
-				for (let i = 0; i < $openSpellbooks.length; i++) {
-					if ($openSpellbooks[i].open_tab === true) {
-						$openSpellbooks.splice(i, 1);
+			const data = {
+				name: saveName.value,
+				class: saveClass.value,
+				level: saveLevel.value,
+				description: saveDescription.value,
+				list: $activeSpells,
+				user_id: $userId,
+				color: saveColor,
+				published: savePublish
+			};
+			if (overwriteId) {
+				try {
+					const record = await pb.collection('spellbooks').update(overwriteId, data);
+					if (record) {
+						// for (let i = 0; i < $openSpellbooks.length; i++) {
+						// 	if ($openSpellbooks[i].open_tab === true) {
+						// 		$openSpellbooks.splice(i, 1);
+						// 	}
+						// }
+						overwriteId = '';
+						loadSpellsheetsByUserId();
+						$modalCall = '';
+						$savePrompt = false;
+						loadingSave = '';
 					}
+				} catch (err) {
+					console.log(err.data);
+					$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
 				}
-				console.log(data);
-				overwriteId = '';
-				$savePrompt = false;
-				$topmenuopen = false;
-				$openSpellbooks.push(data[0]);
-				$activeTab = data[0];
-				$openSpellbooks = $openSpellbooks;
-				// loadSpellsheetsByUserId($userId);
-				if ($bookToEdit) {
-					$lookupBook = data[0];
-					$bookToEdit = '';
-					$modalCall = 'spellbook';
-					loadSpellsheetsByUserId();
-					$savePrompt = false;
-				} else {
-					$modalCall = '';
+			} else {
+				try {
+					const record = await pb.collection('spellbooks').create(data);
+					if (record) {
+						for (let i = 0; i < $openSpellbooks.length; i++) {
+							if ($openSpellbooks[i].open_tab === true) {
+								$openSpellbooks.splice(i, 1);
+							}
+						}
+						console.log(record);
+						overwriteId = '';
+						$savePrompt = false;
+						$topmenuopen = false;
+						$openSpellbooks.push(record);
+						$activeTab = record;
+						$openSpellbooks = $openSpellbooks;
+						if ($bookToEdit) {
+							$lookupBook = record;
+							$bookToEdit = '';
+							$modalCall = 'spellbook';
+							$savePrompt = false;
+						} else {
+							$modalCall = '';
+						}
+						$activeTab.unsaved = false;
+						$notification = 'Spellbook saved!#positive';
+						loadSpellsheetsByUserId();
+					}
+				} catch (err) {
+					console.log(err.data);
+					$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
 				}
-				// $modalCall = $modalCall;
-				$activeTab.unsaved = false;
-				$notification = 'Spellbook saved!#positive';
 			}
 		}
 	}
@@ -146,9 +175,13 @@
 		{/if}
 		{#if $savedSpellSheets.length > 0}
 			<div class="save_slots">
-				{#each $savedSpellSheets as spellsheet}
-					<SaveSlot data={spellsheet} on:click={() => handleClick(spellsheet.id)} />
-				{/each}
+				{#if $modalCall === 'load' && $savedSpellSheets[0].id === 'add'}
+				<p>You have no saved spellbooks.</p>
+				{:else}
+					{#each $savedSpellSheets as spellsheet}
+						<SaveSlot data={spellsheet} on:click={() => handleClick(spellsheet.id)} />
+					{/each}
+				{/if}
 			</div>
 		{:else}
 			<Loading />

@@ -85,9 +85,9 @@
 		}
 		&.print {
 			background-color: black!important;
-			color: white!important;
+			color: var(--white)!important;
 			i {
-				color: white!important;
+				color: var(--white)!important;
 			}
 		}
 	}

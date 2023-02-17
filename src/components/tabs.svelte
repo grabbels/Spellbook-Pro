@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import Close from './close.svelte';
-	import { loadSpellsheetsByUserId, newBook, handleLoad } from './functions/globalfunctions.svelte';
+	import { loadSpellsheetsByUserId, newBook, handleLoad, closeTab } from './functions/globalfunctions.svelte';
 	import Spell from './modal/spell.svelte';
 	import { modalCall, savedSpellSheets, userId } from './stores/stores';
 	import { activeSpells, openSpellbooks, activeTab, tabs } from './stores/stores-persist';
@@ -16,6 +16,7 @@
 		// }
 		// console.log($tabs[0]);
 	});
+	
 	function handleDrop(e) {
 		dragOver = null;
 		console.log(window.tabIndex);
@@ -45,6 +46,7 @@
 	<div role="button" class="button label" on:click={handleLoad}>
 		<div><i class="ri-book-open-line" /></div>
 	</div>
+	{#key $openSpellbooks}
 	{#each $openSpellbooks as spellbook, index}
 		{#if spellbook.name != undefined}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -71,6 +73,8 @@
 				data-active={spellbook.open_tab}
 				bind:this={$tabs[index]}
 				on:click={() => {
+					console.log($activeTab)
+					console.log($openSpellbooks)
 					if ($tabs[index].getAttribute('data-id') !== $activeTab.id) {
 						$activeTab = spellbook;
 						for (let i = 0; i < $openSpellbooks.length; i++) {
@@ -95,38 +99,24 @@
 					class="close"
 					on:click={() => {
 						console.log($openSpellbooks[index]);
-						if ($openSpellbooks[index].id.toString().includes('temp') && $activeSpells.length > 0) {
+						if ($openSpellbooks[index].id.toString().includes('temp') && $openSpellbooks[index].list.length > 0) {
 							// $modalCall = 'prompt unsaved'
 							if (
 								confirm(
-									'This spellbook is unsavad and you will lose its contents when you close this tab. Are you sure you want to close this tab?'
+									'This spellbook is unsaved and you will lose its contents when you close this tab. Are you sure you want to close this tab?'
 								) == true
 							) {
-								closeTab();
+								closeTab(index);
 							}
 						} else {
-							closeTab();
-						}
-						function closeTab() {
-							$openSpellbooks.splice(index, 1);
-							if ($openSpellbooks[index - 1]) {
-								$activeTab = $openSpellbooks[index - 1];
-								if ($openSpellbooks[index - 1].list) {
-									$activeSpells = $openSpellbooks[index - 1].list;
-								} else {
-									$activeSpells = [];
-								}
-								$openSpellbooks[index - 1].open_tab = true;
-							} else {
-								$activeSpells = [];
-							}
-							$openSpellbooks = $openSpellbooks;
+							closeTab(index);
 						}
 					}}><i class="ri-close-circle-fill" /></button
 				>
 			</div>
 		{/if}
 	{/each}
+	{/key}
 </div>
 
 <svelte:window
@@ -191,7 +181,6 @@
 				}
 				i {
 					margin: 0;
-					
 				}
 			}
 			// &:after,

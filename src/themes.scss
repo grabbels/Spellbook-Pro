@@ -1,0 +1,268 @@
+.void {
+    --pagebg: #061d24;
+    --black: #001d24;
+    --white: #cbc8be;
+    --accent: rgb(202, 76, 22);
+    --accentrgb: 202, 76, 22;
+    --primary: #6c71c4;
+    --secondary: #cb4b16;
+    --bg: #001d24;
+    --bg-translucent: rgba(14, 6, 32, 0.7);
+    --grey: #808080;
+    --translucent: rgba(255, 255, 255, 0.3);
+    --moretranslucent: rgba(255, 255, 255, 0.082);
+    --lesstranslucent: rgba(255, 255, 255, 0.6);
+    --translucentdark: rgba(0, 0, 0, 0.2);
+    --translucentdarker: rgba(0, 0, 0, 0.6);
+    --red: #cb4b16;
+    --purple: #834eb9;
+    --lightgreen: #859900;
+    --lightblue: #2aa198;
+    --yellow: #b58900;
+    --darkblue: #268bd2;
+    --darkgreen: #6c71c4;
+    --pink: #ca3cc7;
+    --spellbg: #01171e;
+    background-color: var(--black);
+}
+
+.ombre {
+    --pagebg: #000;
+    --black: #000;
+    --white: #cbc8be;
+    --accent: rgb(194, 194, 194);
+    --accentrgb: 194,
+        194,
+        194;
+    --primary: #315bce;
+    --secondary: #7c0d0d;
+    --bg: #000;
+    --bg-translucent: rgba(14, 6, 32, 0.7);
+    --grey: #808080;
+    --translucent: rgba(255, 255, 255, 0.3);
+    --moretranslucent: rgba(255, 255, 255, 0.082);
+    --lesstranslucent: rgba(255, 255, 255, 0.6);
+    --translucentdark: rgba(255, 255, 255, 0.08);
+    --translucentdarker: rgba(255, 255, 255, 0.1);
+    --red: #7c0d0d;
+    --purple: #7d7d7d;
+    --lightgreen: #7d7d7d;
+    --lightblue: #7d7d7d;
+    --yellow: #7d7d7d;
+    --darkblue: #7d7d7d;
+    --darkgreen: #7d7d7d;
+    --pink: #7d7d7d;
+    --spellbg: #000;
+    background-color: var(--black);
+    .pill.large {
+        background-color: #7d7d7d!important;
+    }
+    .topmenu, .sidemenu {
+        background-image: none!important;
+        background-color: #181818!important;
+    }
+}
+
+.astral-plane {
+    --black: #CED6E7;
+    --white: #171832;
+    --accent: rgb(219, 221, 217);
+    --accentrgb: 219,
+        221,
+        217;
+    --primary: #d8c1f0;
+    --secondary: #d36f68;
+    --bg: #210e4f;
+    --bg-translucent: rgba(14, 6, 32, 0.7);
+    --grey: #808080;
+    --translucent: rgba(255, 255, 255, 0.3);
+    --moretranslucent: rgba(255, 255, 255, 0.15);
+    --lesstranslucent: rgba(255, 255, 255, 0.6);
+    --translucentdark: rgba(19, 46, 92, 0.2);
+    --translucentdarker: rgba(19,
+            46,
+            92, 0.6);
+    --red: #d36f68;
+    --purple: #d8c1f0;
+    --lightgreen: #00cc9d;
+    --lightblue: #96DEFC;
+    --yellow: #ffd760;
+    --darkblue: #434be4;
+    --darkgreen: #0f8183;
+    --pink: #ca3cc7;
+    --spellbg: #20264f;
+    --pagebg: linear-gradient(180deg, rgba(231, 226, 206, 1) 0%, rgba(206, 214, 231, 1) 38%, rgba(206, 214, 231, 1) 49%, rgba(136,
+                151,
+                185, 1) 93%, rgb(136, 151, 185) 100%);
+    background-color: var(--black);
+
+    .sidemenu {
+        background-image: url('/src/img/menu-bg-astral.jpg') !important;
+
+        &:before {
+            opacity: .2;
+            transform-origin: right;
+            transform: scaleX(.35);
+        }
+    }
+
+    .topmenu {
+        background-image: url('/src/img/menu-bg-astral.jpg') !important;
+
+        &:before {
+            opacity: .2;
+            transform-origin: bottom;
+            transform: scaleY(.35);
+        }
+    }
+
+    .card {
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--black);
+        }
+
+        .pill.small {
+            color: var(--black);
+        }
+
+    }
+
+    .modal {
+        --accent: #f5dd94;
+        label i.ri-checkbox-circle-fill {
+            color: var(--lightgreen)!important;
+        }
+        .modal_inner {
+            background-color: var(--black) !important;
+
+            .card {
+                .card_inner {
+                    background-color: var(--black) !important;
+                }
+
+                .pill.small {
+                    color: var(--white);
+                }
+
+                p,
+                h1,
+                h2,
+                h3,
+                h4 {
+                    color: var(--white);
+                }
+            }
+        }
+    }
+}
+
+.xp {
+    --pagebg: #fff;
+    --black: #fff;
+    --white: #000;
+    --accent: rgb(255, 140, 0);
+    --accentrgb: 202, 76, 22;
+    --primary: #6c71c4;
+    --secondary: #E74A21;
+    --bg: #001d24;
+    --bg-translucent: rgba(14, 6, 32, 0.7);
+    --grey: #808080;
+    --translucent: rgb(255, 255, 255);
+    --moretranslucent: rgba(255, 255, 255, 0.22);
+    --lesstranslucent: rgb(255, 255, 255);
+    --translucentdark: #A8C4F3;
+    --translucentdarker: #A8C4F3;
+    --red: #E74A21;
+    --purple: #834eb9;
+    --lightgreen: #179900;
+    --lightblue: #a1e1ff;
+    --yellow: #ffbf00;
+    --darkblue: #325EE0;
+    --darkgreen: #6c71c4;
+    --pink: #ca3cc7;
+    --spellbg: #fff;
+    background-color: transparent;
+    background-image: url('/src/img/xp-bg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+
+    .background {
+        background-color: transparent !important;
+    }
+
+    .card {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        p {
+            color: var(--white);
+        }
+
+        .pill.small {
+            background-color: #EFEFDE;
+            color: var(--white);
+        }
+    }
+
+    .tabs_wrapper {
+        background-color: #005AF7 !important;
+
+        * {
+            color: var(--black) !important;
+        }
+    }
+
+    .topmenu,
+    .sidemenu {
+        background-image: none !important;
+        background-color: #EFEFDE!important;
+    }
+
+    .sidemenu {
+        &:before {
+            opacity: .2;
+            transform-origin: right;
+            transform: scaleX(.35);
+        }
+    }
+
+    .topmenu {
+        &:before {
+            opacity: .2;
+            transform-origin: bottom;
+            transform: scaleY(.35);
+        }
+    }
+
+    // .tabs {
+    //     * {
+    //         color: var(--black)!important;
+    //     }
+    // }
+    .filters,
+    .bookmarks {
+        * {
+            color: #3d3b40 !important;
+        }
+    }
+
+    .modal {
+        .modal_inner {
+            background-color: #EFEFDE !important;
+
+            .card {
+                .card_inner {
+                    background-color: #EFEFDE;
+                }
+            }
+        }
+    }
+}

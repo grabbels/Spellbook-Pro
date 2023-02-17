@@ -1,5 +1,4 @@
 <script context="module">
-	import { supabaseClient } from '$lib/supabaseClient';
 	import {
 		topmenuopen,
 		sidemenuopen,
@@ -27,6 +26,8 @@
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
 	import { spells } from '../data/spells';
+	import { currentUser, pb } from '$lib/pocketbase';
+
 	export let classOptions =
 		'<option value="" disabled selected hidden>Select class</option><option value="Artificer">Artificer</option><option value="Barbarian">Barbarian</option><option value="Bard">Bard</option><option value="Cleric">Cleric</option><option value="Druid">Druid</option><option value="Fighter">Fighter</option><option value="Monk">Monk</option><option value="Paladin">Paladin</option><option value="Ranger">Ranger</option><option value="Rogue">Rogue</option><option value="Sorcerer">Sorcerer</option><option value="Warlock">Warlock</option><option value="Wizard">Wizard</option>';
 	export let classes = [
@@ -94,100 +95,47 @@
 		}
 	};
 
-	export async function getUserId() {
-		const {
-			data: { user }
-		} = await supabaseClient.auth.getUser();
-		if (user) {
-			console.log(user.id);
-			return user.id;
-		}
-	}
+	export async function getUserId() {}
 
 	export async function handleLogOut() {
-		const { error } = await supabaseClient.auth.signOut();
-		if (error) {
-			console.log(error);
-		} else {
-			session.set('');
-			userEmail.set('');
-			userId.set('');
-			userNickname.set('');
-			goto('/');
-			notification.set("You've been logged out.#info");
-		}
+		currentUser.set('');
 	}
 
-	export async function retrieveSession() {
-		const {
-			data: { session }
-		} = await supabaseClient.auth.getSession();
-		return session;
-	}
+	export async function retrieveSession() {}
 
 	export async function loadSpellsheetsByUserId(id) {
-		if (!id) {
-			const {
-				data: { user }
-			} = await supabaseClient.auth.getUser();
-			if (user) {
-				id = user.id;
-				handleLoad();
-			}
-		} else {
-			handleLoad();
-		}
-		async function handleLoad() {
-			const { data, error } = await supabaseClient
-				.from('spellbooks')
-				.select()
-				.eq('user_id', id)
-				.order('created', { ascending: false });
-			if (data) {
-				if (data.length < 1) {
-					savedSpellSheets.set('none');
-				} else {
-					let placeholderSlots = 7 - data.length;
-					let retrievedSaves = data;
-					retrievedSaves.push({ id: 'add' });
-					for (let i = 0; i < placeholderSlots; i++) {
-						retrievedSaves.push({});
-					}
-					savedSpellSheets.set(retrievedSaves);
-				}
-
-				console.log('getting saved books');
-			} else if (error) {
-				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-			}
-		}
-	}
-
-	export async function refreshSession() {
-		() => {
-			const {
-				data: { subscription }
-			} = supabaseClient.auth.onAuthStateChange(() => {
-				invalidate('supabase:auth');
+		id = get(userId);
+		try {
+			const records = await pb.collection('spellbooks').getFullList(200 /* batch size */, {
+				sort: '-created',
+				filter: `user_id = "${id}"`
 			});
+			if (records) {
+				// console.log(records);
 
-			return () => {
-				subscription.unsubscribe();
-			};
-		};
-		setUserData();
+				let placeholderSlots = 7 - records.length;
+				let retrievedSaves = records;
+				retrievedSaves.push({ id: 'add' });
+				for (let i = 0; i < placeholderSlots; i++) {
+					retrievedSaves.push({});
+				}
+				savedSpellSheets.set(retrievedSaves);
+				// console.log(get(savedSpellSheets));
+			}
+		} catch (err) {
+			console.log(err.data);
+		}
 	}
+
+	export async function refreshSession() {}
 
 	export async function setUserData() {
-		let promiseSession = retrieveSession();
-		promiseSession.then((value) => {
-			if (value) {
-				session.set(value);
-				userId.set(value.user.id);
-				userNickname.set(value.user.user_metadata.nickname);
-				userEmail.set(value.user.email);
-			}
-		});
+		let user = get(currentUser);
+		if (user) {
+			userId.set(user.id);
+			userNickname.set(user.username);
+			userEmail.set(user.email);
+		}
 	}
 
 	export function removeFilters() {
@@ -219,65 +167,86 @@
 		}
 	}
 
+	export function closeTab(index) {
+		console.log(index)
+		console.log(get(openSpellbooks));
+		let allTabs = get(openSpellbooks)
+		let currentTab = get(activeTab)
+		if (currentTab == allTabs[index]) {
+			if (allTabs[index + 1]) {
+				activeTab.set(allTabs[index + 1])
+				activeSpells.set(allTabs[index + 1].list)
+			} else if (allTabs[index - 1]) {
+				activeTab.set(allTabs[index - 1])
+				activeSpells.set(allTabs[index - 1].list)
+			}
+		} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
+			activeSpells.set([])
+		}
+		let openSpellbooksSplice = get(openSpellbooks);
+		openSpellbooksSplice.splice(index, 1);
+		openSpellbooks.set(openSpellbooksSplice);
+	}
+
 	export async function removeBook(id) {
-		let toBeRemovedFrom = get(savedSpellSheets);
+		// let toBeRemovedFrom = get(savedSpellSheets);
 		if (confirm('Are you sure you want to delete this spellbook?') == true) {
-			const { error } = await supabaseClient
-				.from('spellbooks')
-				.delete()
-				.eq('id', id)
-				.then(
-					toBeRemovedFrom.splice(
-						toBeRemovedFrom.findIndex(function (i) {
-							return i.id === id;
-						}),
-						1
-					)
-				);
-			if (error) {
-				notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-			} else {
-				savedSpellSheets.set(toBeRemovedFrom);
-				return 'deleted';
+			try {
+				await pb.collection('spellbooks').delete(id);
+				let spellbooks = get(openSpellbooks);
+				for (let index = 0; index < spellbooks.length; index++) {
+					if (spellbooks[index].id == id) {
+						closeTab(index);
+					}
+				}
+				modalCall.set('');
+
+				loadSpellsheetsByUserId(get(userId));
+			} catch (err) {
+				console.log(err.data);
+				notification.set(err.data.message + '#error');
 			}
 		}
 	}
 	export async function editBook(id) {
-		const { data, error } = await supabaseClient.from('spellbooks').select().eq('id', id);
-		if (error) {
-			console.log(error);
-			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-		} else if (data) {
-			bookToEdit.set(data[0]);
-			modalCall.set('edit');
+		try {
+			const record = await pb.collection('spellbooks').getOne(id, {});
+			if (record) {
+				bookToEdit.set(record);
+				modalCall.set('edit');
+			}
+		} catch (err) {
+			console.log(err.data);
+			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
 		}
 	}
 
 	export async function loadBook(id) {
-		const { data, error } = await supabaseClient.from('spellbooks').select().eq('id', id);
-		if (error) {
-			console.log(error);
-			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-		} else if (data) {
-			let newArray = get(openSpellbooks);
-			if (!get(openSpellbooks).filter((e) => e.id == data[0].id).length > 0) {
-				newArray.push(data[0]);
-				openSpellbooks.set(newArray);
-				activeSpells.set(data[0].list);
-				activeTab.set(data[0]);
-			} else {
-				console.log('already open!');
-				activeTab.set(data[0]);
-				activeSpells.set(data[0].list);
-				console.log(get(activeTab));
+		try {
+			const record = await pb.collection('spellbooks').getOne(id, {});
+			if (record) {
+				let newArray = get(openSpellbooks);
+				if (!get(openSpellbooks).filter((e) => e.id == record.id).length > 0) {
+					newArray.push(record);
+					openSpellbooks.set(newArray);
+					activeSpells.set(record.list);
+					activeTab.set(record);
+				} else {
+					console.log('already open!');
+					activeTab.set(record);
+					activeSpells.set(record.list);
+					console.log(get(activeTab));
+				}
+				// console.log(get(openSpellbooks));
+				refreshList();
+				modalCall.set('');
+				// $modalCall = $modalCall;
+				topmenuopen.set(false);
+				goto('/');
 			}
-			console.log(get(openSpellbooks));
-
-			refreshList();
-			modalCall.set('');
-			// $modalCall = $modalCall;
-			topmenuopen.set(false);
-			goto('/');
+		} catch (err) {
+			console.log(err);
+			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
 		}
 	}
 
@@ -287,63 +256,68 @@
 	}
 
 	export async function publishBook(id) {
-		const { error } = await supabaseClient
-			.from('spellbooks')
-			.update({ published: true })
-			.eq('id', id);
-		if (error) {
-			console.log(error);
-			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-		} else {
-			if (get(pagetitle) == 'My account') {
-				loadSpellsheetsByUserId(get(userId));
-				var setPublishedBook = get(lookupBook);
-				setPublishedBook.published = true;
-				lookupBook.set(setPublishedBook);
-				notification.set('Spellbook published!#positive');
+		const data = {
+			published: true
+		};
+		try {
+			const record = await pb.collection('spellbooks').update(id, data);
+			if (record) {
+				if (get(pagetitle) == 'My account') {
+					loadSpellsheetsByUserId(get(userId));
+					var setPublishedBook = get(lookupBook);
+					setPublishedBook.published = true;
+					lookupBook.set(setPublishedBook);
+					notification.set('Spellbook published!#positive');
+				}
 			}
+		} catch (err) {
+			console.log(err.data);
+			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
 		}
 	}
 
 	export async function unpublishBook(id) {
-		const { error } = await supabaseClient
-			.from('spellbooks')
-			.update({ published: false })
-			.eq('id', id);
-		if (error) {
-			console.log(error);
-			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-		} else {
-			loadSpellsheetsByUserId(get(userId));
-			var setUnpublishedBook = get(lookupBook);
-			setUnpublishedBook.published = false;
-			lookupBook.set(setUnpublishedBook);
-			notification.set('Spellbook made private.#info');
+		const data = {
+			published: false
+		};
+		try {
+			const record = await pb.collection('spellbooks').update(id, data);
+			if (record) {
+				loadSpellsheetsByUserId(get(userId));
+				var setUnpublishedBook = get(lookupBook);
+				setUnpublishedBook.published = false;
+				lookupBook.set(setUnpublishedBook);
+				notification.set('Spellbook made private.#info');
+			}
+		} catch (err) {
+			console.log(err.data);
+			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
 		}
 	}
 	export async function editPassword(email) {
-		const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-			redirectTo: siteUrl + '/account/update-password'
-		});
-		if (data) {
-			notification.set(
-				'An email has been sent to your registered email address with instructions on how to change your password#info'
-			);
-			modalCall.set('');
-		} else if (error) {
-			console.log(error);
-			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-		}
+		await pb.collection('users').requestPasswordReset(email);
+		notification.set(
+			'An email has been sent to your registered email address with instructions on how to change your password#info'
+		);
 	}
 
 	export async function getUserProfile() {
-		const { data, error } = await supabaseClient
-			.from('spellbooks')
-			.select()
-			.eq('user_id', get(profileUser));
-		if (data) {
-			userProfile.set(data);
+		try {
+			const records = await pb.collection('spellbooks').getFullList(200 /* batch size */, {
+				filter: `user_id = "${get(profileUser)}"`,
+				published: true
+			});
+			if (records) {
+				userProfile.set(records);
+			}
+		} catch (err) {
+			console.log(err);
 		}
+	}
+
+	async function getUsername() {
+		const record = await pb.collection('users').getOne(get(profileUser), {});
+		console.log(record);
 	}
 
 	export function newBook() {
@@ -363,41 +337,61 @@
 		activeSpells.set([]);
 	}
 
-	export async function updateSpellsheet(id) {
-		let newList = get(activeTab).list;
-		console.log(newList);
-		notification.set('Saving spellsheet...#loading');
-		const { data, error } = await supabaseClient
-			.from('spellbooks')
-			.update({ list: newList })
-			.eq('id', id)
-			.select();
-		if (error) {
-			console.log(error);
-			notification.set('Oops, an error occurred. Error code: ' + error.code + '#error');
-		} else if (data) {
-			console.log(data);
-			loadSpellsheetsByUserId(get(userId));
-			setTimeout(() => {
-				notification.set('Spellbook saved!#positive');
-			}, 500);
+	export async function updateBook(id, type, newname) {
+		const data = {};
+		if (type == 'list') {
+			let newList = get(activeTab).list;
+			notification.set('Saving spellsheet...#loading');
+			data.list = newList;
+		} else if (type == 'name') {
+			if (get(activeTab).unsaved === false) {
+				notification.set('Saving spellsheet...#loading');
+			}
+			data.name = newname;
+			let currentOpenTabs = get(openSpellbooks);
+			let toEditActiveTab = get(activeTab);
+			toEditActiveTab.name = newname;
+			activeTab.set(toEditActiveTab);
+			for (let i = 0; i < currentOpenTabs.length; i++) {
+				if (currentOpenTabs[i].id == id) {
+					currentOpenTabs[i].name = newname;
+					openSpellbooks.set(currentOpenTabs);
+				}
+			}
+		}
+		if (get(activeTab).unsaved === false) {
+			try {
+				const record = await pb.collection('spellbooks').update(id, data);
+				if (record) {
+					console.log(record);
+					loadSpellsheetsByUserId(get(userId));
+
+					setTimeout(() => {
+						notification.set('Spellbook saved!#positive');
+						return 'done';
+					}, 500);
+				}
+			} catch (err) {
+				console.log(err.data);
+				notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
+			}
 		}
 	}
 
 	export function handleSave(id) {
-		if (!get(session)) {
+		if (!get(currentUser)) {
 			notification.set('You need to <a href="/account/login">log in</a> to save spellbooks#alert');
 		} else {
 			if (get(activeTab).unsaved === true) {
 				modalCall.set('save');
 			} else {
-				updateSpellsheet(id);
+				updateBook(id, 'list');
 			}
 		}
 	}
 
 	export function handleLoad() {
-		if (get(session)) {
+		if (get(currentUser)) {
 			modalCall.set('load');
 		} else {
 			notification.set('You need to <a href="/account/login">log in</a> to open spellbooks#alert');

@@ -18,16 +18,29 @@
 		handleLogOut,
 		newBook,
 		handleSave,
-		handleLoad
+		handleLoad,
+		updateBook
 	} from './functions/globalfunctions.svelte';
-	let bookTitle;
-
+	import { currentUser } from '$lib/pocketbase';
+	import { is_function } from 'svelte/internal';
+	let bookTitle, titleInput;
 	function handleNew() {}
-
-	function editName() {
-		$editingTitle = true;
-		bookTitle.setAttribute('contenteditable', true);
-		bookTitle.focus();
+	async function editName() {
+		if ($editingTitle === true) {
+			let updateDone = await updateBook($activeTab.id, 'name', titleInput.value);
+			if (updateDone) {
+				console.log(updateDone);
+			}
+			bookTitle.text = titleInput.value;
+			$editingTitle = false;
+		} else {
+			$editingTitle = true;
+			setTimeout(() => {
+				titleInput.focus();
+				titleInput.select();
+			}, 1);
+			console.log(titleInput);
+		}
 	}
 </script>
 
@@ -35,17 +48,28 @@
 	<header>
 		{#key $activeTab.name}
 			{#key $pagetitle}
-				<div class="title_wrapper">
+				<div class="title_wrapper" class:editing={$editingTitle}>
 					<h1 bind:this={bookTitle} class:editing={$editingTitle} in:fade={{ duration: 200 }}>
 						{#if $pagetitle !== 'Home'}
 							{$pagetitle}
+						{:else if $openSpellbooks.length < 1}
+							Spellbook Pro
 						{:else}
-							{$activeTab.name}
+							{$activeTab.name ? $activeTab.name : 'Untitled spellbook'}
 						{/if}
 					</h1>
+					<input
+						bind:this={titleInput}
+						class:editing={$editingTitle}
+						on:keydown={(e) => e.key == 'Enter' ? editName() : ''}
+						type="text"
+						value={$activeTab.name}
+					/>
+					{#if $pagetitle == 'Home' && $openSpellbooks.length > 0}
 					<button class:editing={$editingTitle} on:click={editName}
 						><i class="ri-edit-line" /><i class="ri-save-3-line" />
 					</button>
+					{/if}
 				</div>
 			{/key}
 		{/key}
@@ -65,7 +89,7 @@
 				{#if $pagetitle === 'Premade spellbooks' || $pagetitle === 'My account'}
 					<Button text="Spellbook" href="/" type="fill accent" icon="ri-arrow-left-s-line" />
 				{/if}
-				{#if $pagetitle == 'My account' && $session}
+				{#if $pagetitle == 'My account' && $currentUser}
 					<Button
 						on:click={handleLogOut}
 						type="fill mobile"
@@ -112,21 +136,21 @@
 					on:focus={() => ($modalCall = 'lookup')}
 				/>
 
-				{#if $session && $pagetitle !== 'My account'}
+				{#if $currentUser && $pagetitle !== 'My account'}
 					<Button
 						type="fill desktop"
 						icon="ri-contacts-book-2-line"
 						text="Account"
 						href="/account"
 					/>
-				{:else if $pagetitle == 'My account' && $session}
+				{:else if $pagetitle == 'My account' && $currentUser}
 					<Button
 						on:click={handleLogOut}
 						type="fill desktop"
 						icon="ri-logout-circle-r-line"
 						text="Log out"
 					/>
-				{:else if !$session}
+				{:else if !$currentUser}
 					<Button
 						type="fill desktop"
 						href="/account/login"
@@ -153,6 +177,10 @@
 		.title_wrapper {
 			position: relative;
 			display: inline-block;
+			&.editing {
+				display: grid;
+				grid-template-columns: 1fr 35px;
+			}
 			button {
 				all: unset;
 				cursor: pointer;
@@ -169,6 +197,9 @@
 				}
 				&.editing {
 					display: inline-block;
+					margin-left: 0.5rem;
+					vertical-align: -1px;
+					margin-bottom: 1rem;
 					.ri-save-3-line {
 						display: inline-block;
 					}
@@ -184,6 +215,13 @@
 			}
 			&:hover {
 				button {
+					display: inline-block;
+				}
+			}
+			input {
+				display: none;
+				width: auto;
+				&.editing {
 					display: inline-block;
 				}
 			}
@@ -210,10 +248,7 @@
 					background-color: var(--moretranslucent);
 				}
 				&.editing {
-					cursor: text;
-					&:after {
-						display: block;
-					}
+					display: none;
 				}
 			}
 		}

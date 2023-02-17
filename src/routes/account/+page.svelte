@@ -24,7 +24,7 @@
 	import SaveSlot from '../../components/saveslot.svelte';
 	import { onMount } from 'svelte';
 	import Loading from '../../components/loading.svelte';
-	import { supabaseClient }from '$lib/supabaseClient';
+	import { currentUser, pb } from '$lib/pocketbase';
 	// let savedSpellSheets = [];
 	let openCard = null;
 	// let userId;
@@ -32,7 +32,7 @@
 	let editing = false;
 	let loading = false;
 	onMount(() => {
-		// if ($session) {
+		// if ($currentUser) {
 		loadSpellsheetsByUserId($userId);
 		// }
 	});
@@ -60,33 +60,33 @@
 			newNickname.charAt(newNickname.length - 1) != '-'
 		) {
 			loading = true;
-			const { error, data } = await supabaseClient
-				.from('nicknames')
-				.update({ user_nickname: newNickname })
-				.eq('user_id', $userId)
-				.select();
-			if (data) {
-				const { data, error } = await supabaseClient.auth.updateUser({
-					data: { nickname: newNickname }
-				});
-				if (error) {
-					$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-					console.log(error);
-					loading = false;
-				} else if (data) {
-					$notification = 'Nickname succesfully changed.#positive';
-					loading = false;
-					editingNickname = false;
-					setUserData();
-				}
-			} else if (error.code == 23505) {
-				$notification = 'The nickname is already in use, try another one!#error';
-				loading = false;
-			} else if (error) {
-				$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-				console.log(error);
-				loading = false;
-			}
+			// const { error, data } = await supabaseClient
+			// 	.from('nicknames')
+			// 	.update({ user_nickname: newNickname })
+			// 	.eq('user_id', $userId)
+			// 	.select();
+			// if (data) {
+			// 	const { data, error } = await supabaseClient.auth.updateUser({
+			// 		data: { nickname: newNickname }
+			// 	});
+			// 	if (error) {
+			// 		$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+			// 		console.log(error);
+			// 		loading = false;
+			// 	} else if (data) {
+			// 		$notification = 'Nickname succesfully changed.#positive';
+			// 		loading = false;
+			// 		editingNickname = false;
+			// 		setUserData();
+			// 	}
+			// } else if (error.code == 23505) {
+			// 	$notification = 'The nickname is already in use, try another one!#error';
+			// 	loading = false;
+			// } else if (error) {
+			// 	$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+			// 	console.log(error);
+			// 	loading = false;
+			// }
 		} else {
 			$notification =
 				'Your nickname may only contain letters, numbers and at most one hypen (not at the start or end).#alert';
@@ -94,17 +94,17 @@
 	}
 	let editingEmail = false;
 	let newEmail;
-	async function saveEmail() {
+	async function changeEmail() {
 		loading = true;
-		const { data, error } = await supabaseClient.auth.updateUser({ email: newEmail });
-		if (data) {
+		try {
+			await pb.collection('users').requestEmailChange(newEmail);
 			$notification =
 				'Please confirm your email address change using the link that has just been emailed to you.#info';
 			loading = false;
 			editingEmail = false;
-		} else if (error) {
-			$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-			console.log(error);
+		} catch (err) {
+			$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
+			console.log(err);
 			loading = false;
 		}
 	}
@@ -137,7 +137,7 @@
 </script>
 
 <Section name="my-account">
-	{#if $session}
+	{#if $currentUser}
 		<div class="panel">
 			<h2>My Account</h2>
 			{#if $userNickname}
@@ -152,11 +152,22 @@
 					<Loading />
 				{:else if $savedSpellSheets == 'none'}
 					<p>You have no saved spellbooks yet!</p>
+				{:else if !$savedSpellSheets[0].list}
+					<p>You have no saved spellbooks yet!</p>
 				{:else}
 					<div class="save_slots">
-						{#each $savedSpellSheets as spellsheet}
-							<SaveSlot data={spellsheet} type="large" on:click={()=> {$modalCall = 'spellbook'; $lookupBook = spellsheet}} />
-						{/each}
+						{#key $savedSpellSheets}
+							{#each $savedSpellSheets as spellsheet}
+								<SaveSlot
+									data={spellsheet}
+									type="large"
+									on:click={() => {
+										$modalCall = 'spellbook';
+										$lookupBook = spellsheet;
+									}}
+								/>
+							{/each}
+						{/key}
 					</div>
 				{/if}
 				<!-- {/key} -->
@@ -206,7 +217,7 @@
 					<div style="margin-bottom: 1rem">
 						<form
 							on:submit|preventDefault={() => {
-								saveEmail();
+								changeEmail();
 							}}
 						>
 							<label for="email">Email address</label>
@@ -289,7 +300,7 @@
 				div {
 					position: relative;
 					label {
-						color: white;
+						color: var(--white);
 					}
 					input {
 						transition: 0.1s;
@@ -304,7 +315,7 @@
 						top: 22px;
 
 						i {
-							color: white;
+							color: var(--white);
 						}
 						&:hover {
 							i {

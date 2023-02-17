@@ -5,9 +5,7 @@
 	import { Body } from 'svelte-body';
 	import { fly, fade, scale } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { supabaseClient } from '$lib/supabaseClient';
 	import { page } from '$app/stores';
-	import { invalidate } from '$app/navigation';
 	import Header from '../components/header.svelte';
 	import AddSpells from '../components/addspells.svelte';
 	import TopMenu from '../components/topmenu.svelte';
@@ -18,24 +16,51 @@
 		pagetitle,
 		session,
 		modalCall,
-		quickQuery,
-		userId,
-		userEmail,
-		userNickname
+		userNickname,
+		editingTitle
 	} from '../components/stores/stores';
 	import {
 		retrieveSession,
 		refreshSession,
 		setUserData,
-		topMenuOpenClose
 	} from '../components/functions/globalfunctions.svelte';
-	import { loggedIn, firstVisitA } from '../components/stores/stores-persist';
+	import { loggedIn, firstVisitA, userPrefs } from '../components/stores/stores-persist';
 
 	import '@fontsource/kanit';
 	import Modal from '../components/modal/modal.svelte';
 	import Pdf from '../components/pdf.svelte';
-	import Tabs from '../components/tabs.svelte';
-	import Section from '../components/section.svelte';
+	import { pb } from '$lib/pocketbase';
+	// refreshSession()
+	if ($page.url.searchParams) {
+		let urlParams = $page.url.searchParams
+		if (urlParams.has('confirm-verification')) {
+			const token = $page.url.searchParams.get('confirm-verification');
+			verifyEmail(token);
+		}
+		if (urlParams.has('confirm-password-reset')) {	
+			$modalCall = 'confirm-password-reset'
+		}
+		console.log(urlParams)
+		if (urlParams.has('confirm-email-change')) {
+			$modalCall = 'confirm-email-change';
+		}
+	}
+	const token = $page.url.searchParams.get('confirm-verification');
+	setUserData();
+	if (token) {
+		verifyEmail(token);
+	}
+	async function verifyEmail(token) {
+		try {
+			await pb.collection('users').confirmVerification(token);
+		} catch (err) {
+			console.log(err);
+			$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+		} finally {
+			$notification =
+				'Your email has been succesfully verified. You can now <a href="/account/login">log in</a>!#positive';
+		}
+	}
 
 	let timeOut = 3000;
 	export const closeMenu = () => {
@@ -58,7 +83,6 @@
 			const destroy = setTimeout(() => {
 				$notification = '';
 			}, timeOut);
-			
 		}
 	}
 
@@ -100,8 +124,6 @@
 	if ($firstVisitA == true) {
 		$modalCall = 'welcome';
 		$firstVisitA = false;
-	} else {
-		$modalCall = '';
 	}
 	function handleKeyDown(e) {
 		if (
@@ -111,6 +133,7 @@
 			$pagetitle == 'Home' &&
 			!$sidemenuopen &&
 			!$topmenuopen &&
+			!$editingTitle &&
 			!$modalCall &&
 			document.activeElement.id != 'spellbooksearch'
 		) {
@@ -124,7 +147,7 @@
 
 <Body
 	bind:this={body}
-	class={$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''}
+	class="{$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''} {$userPrefs.theme}"
 />
 
 <TopMenu />
@@ -218,6 +241,7 @@
 	:global {
 		@import '../../static/reset';
 		@import '../global.scss';
+		@import '../themes.scss';
 	}
 	main {
 		min-height: 100vh;
@@ -257,7 +281,7 @@
 		// 	opacity: 0;
 		// }
 		.background {
-			background: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
+			background: var(--pagebg);
 			transition: 0.3s;
 			top: 0;
 			left: 0;

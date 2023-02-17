@@ -121,13 +121,13 @@
 					animation-duration: 2s;
 					@keyframes glowing {
 						0% {
-							filter: drop-shadow(0 0 15px rgba(0, 204, 157, 0));
+							filter: drop-shadow(0 0 15px rgba(var(--accentrgb), 0));
 						}
 						50% {
-							filter: drop-shadow(0 0 15px rgba(0, 204, 157, 1));
+							filter: drop-shadow(0 0 15px rgba(var(--accentrgb), 1));
 						}
 						100% {
-							filter: drop-shadow(0 0 15px rgba(0, 204, 157, 0));
+							filter: drop-shadow(0 0 15px rgba(var(--accentrgb), 0));
 						}
 					}
 					&:hover {
@@ -137,7 +137,7 @@
 				&:hover {
 					background-color: var(--accent);
 					border-color: var(--accent);
-					filter: drop-shadow(0 0 5px rgba(0, 204, 157, 0.8));
+					filter: drop-shadow(0 0 5px rgba(var(--accentrgb), 0.8));
 				}
 			}
 			&.blue {
@@ -189,9 +189,9 @@
 		&.subtle {
 			background-color: var(--moretranslucent);
 			border-color: var(--moretranslucent);
-			color: white;
+			color: var(--white);
 			&:hover {
-				background-color: var(--purple);
+				background-color: var(--primary);
 			}
 		}
 		&.outline {
@@ -204,7 +204,7 @@
 			}
 			&.alt {
 				border-color: var(--secondary);
-				color: white;
+				color: var(--white);
 				&:hover {
 					background-color: var(--secondary);
 					color: var(--white);
@@ -286,7 +286,7 @@
 			}
 		}
 		&.loading {
-			color: transparent!important;
+			color: transparent !important;
 			div.loader {
 				display: block;
 			}

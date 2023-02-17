@@ -297,7 +297,7 @@
 			i {
 				position: absolute;
 				font-size: 1.5rem;
-				color: white;
+				color: var(--white);
 				right: 0;
 				top: 50%;
 				transform: translateY(-50%);

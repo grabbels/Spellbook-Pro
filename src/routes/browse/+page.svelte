@@ -8,8 +8,6 @@
 	} from '../../components/stores/stores.js';
 	import { getUserId } from '../../components/functions/globalfunctions.svelte';
 	import { activeSpells, userNickname } from '../../components/stores/stores-persist.js';
-	import { supabaseClient } from '$lib/supabaseClient';
-	import { createClient } from '@supabase/supabase-js';
 	import Section from '../../components/section.svelte';
 	import { fade } from 'svelte/transition';
 	import Close from '../../components/close.svelte';
@@ -18,6 +16,7 @@
 	import Filters from '../../components/filters.svelte';
 	import Pill from '../../components/pill.svelte';
 	import Loading from '../../components/loading.svelte';
+	import { pb } from '$lib/pocketbase.js';
 
 	$pagetitle = 'Premade spellbooks';
 	let openBook = null;
@@ -27,13 +26,24 @@
 		loadPremades();
 	});
 	async function loadPremades() {
-		const { data, error } = await supabaseClient.from('spellbooks').select().eq('published', true);
-		if (data) {
-			console.log(data);
-			publishedBooks = data;
-		} else if (error) {
-			console.log(error);
-			$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+		// const { data, error } = await supabaseClient.from('spellbooks').select().eq('published', true);
+		// if (data) {
+		// 	console.log(data);
+		// 	publishedBooks = data;
+		// } else if (error) {
+		// 	console.log(error);
+		// 	$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+		// }
+
+		try {
+			const records = await pb.collection('spellbooks').getFullList(200 /* batch size */, {
+				// filter: 'published=true'
+			});
+			if (records) {
+				publishedBooks = records;
+			}
+		} catch (err) {
+			console.log(err.data);
 		}
 	}
 </script>

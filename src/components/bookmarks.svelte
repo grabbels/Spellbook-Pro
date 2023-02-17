@@ -63,7 +63,7 @@
 			text-decoration: none;
 			width: 100%;
 			height: 60px;
-			color: white;
+			color: var(--white);
 			display: flex;
 			justify-content: center;
 			align-items: center;

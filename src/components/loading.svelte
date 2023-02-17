@@ -26,7 +26,7 @@
 			animation-duration: 2s;
 			animation-iteration-count: infinite;
 			i {
-				color: white;
+				color: var(--white);
 				font-size: 3rem;
 			}
 		}
