@@ -211,8 +211,8 @@
 						name="color"
 						style="background-color: {saveColor}"
 						on:click|stopPropagation={() => {
-							tempColor = saveColor;
-							saveColor = '';
+							// tempColor = saveColor;
+							// saveColor = '';
 							colorPicker = true;
 						}}
 					/>
