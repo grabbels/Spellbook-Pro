@@ -3,7 +3,7 @@ import { writable } from 'svelte-local-storage-store';
 export const activeSpells = writable('activeSpells', []);
 export const loggedIn = writable('loggedIn', false);
 export const userNickname = writable('userNickname', null);
-export const firstVisitA = writable('firstVisit', true);
+export const firstVisitB = writable('firstVisitB', true);
 export const openTabs = writable('openTabs', []);
 export const openSpellbooks = writable('openSpellbooks', []);
 export const tabs = writable('tabs', []);

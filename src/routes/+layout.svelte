@@ -24,7 +24,7 @@
 		refreshSession,
 		setUserData,
 	} from '../components/functions/globalfunctions.svelte';
-	import { loggedIn, firstVisitA, userPrefs } from '../components/stores/stores-persist';
+	import { loggedIn, firstVisitB, userPrefs } from '../components/stores/stores-persist';
 
 	import '@fontsource/kanit';
 	import Modal from '../components/modal/modal.svelte';
@@ -120,10 +120,10 @@
 
 	let body;
 	let scrollTop;
-	console.log($firstVisitA);
-	if ($firstVisitA == true) {
+	console.log($firstVisitB);
+	if ($firstVisitB == true) {
 		$modalCall = 'welcome';
-		$firstVisitA = false;
+		$firstVisitB = false;
 	}
 	function handleKeyDown(e) {
 		if (
