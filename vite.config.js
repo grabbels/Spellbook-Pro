@@ -10,9 +10,6 @@ const config = {
 		// adapter: adapter()
 
 		vite: {
-			optimizeDeps: {
-				entries: []
-			},
 			define: {
 				'process.env': process.env
 			}
