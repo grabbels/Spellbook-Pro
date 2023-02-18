@@ -24,6 +24,9 @@
 		userId
 	} from '../stores/stores';
 
+	import Filter from 'bad-words';
+	let filter = new Filter();
+
 	import { activeSpells, userNickname, activeTab, openSpellbooks } from '../stores/stores-persist';
 	let saveColor = $bookToEdit ? $bookToEdit.color : 'var(--purple)';
 	let loadingSave,
@@ -72,7 +75,10 @@
 		}
 		if (!saveName.value || !saveLevel.value || !saveClass.value) {
 			$notification = 'Please fill in all the fields.#alert';
-		} else {
+		} else if (
+			!filter.clean(saveName.value).includes('*') &&
+			!filter.clean(saveDescription.value).includes('*')
+		) {
 			loadingSave = 'loading';
 			if (overwriteId) {
 				// const { error } = await supabaseClient.from('spellbooks').delete().eq('id', overwriteId);
@@ -87,6 +93,7 @@
 				description: saveDescription.value,
 				list: $activeSpells,
 				user_id: $userId,
+				creator: $userNickname,
 				color: saveColor,
 				published: savePublish
 			};
@@ -107,7 +114,7 @@
 					}
 				} catch (err) {
 					console.log(err.data);
-					$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
+					$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
 				}
 			} else {
 				try {
@@ -139,9 +146,12 @@
 					}
 				} catch (err) {
 					console.log(err.data);
-					$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
+					$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
 				}
 			}
+		} else {
+			$notification =
+				'Your spellbook name or description contains profanity. Please correct these instances and try again.#alert';
 		}
 	}
 	async function handleClick(id) {
@@ -165,18 +175,20 @@
 
 {#if $modalCall !== 'edit'}
 	{#if $savePrompt === false}
-		{#if $modalCall == 'save'}
-			<h2>Save</h2>
-			<p>Select a slot to save your open spellbook in:</p>
-		{/if}
-		{#if $modalCall == 'load'}
-			<h2>Open</h2>
-			<p>Select which spellbook you would like to open.</p>
-		{/if}
+		<div style="min-height: 68px">
+			{#if $modalCall == 'save'}
+				<h2>Save</h2>
+				<p>Select a slot to save your open spellbook in:</p>
+			{/if}
+			{#if $modalCall == 'load'}
+				<h2>Open</h2>
+				<p>Select which spellbook you would like to open.</p>
+			{/if}
+		</div>
 		{#if $savedSpellSheets.length > 0}
 			<div class="save_slots">
 				{#if $modalCall === 'load' && $savedSpellSheets[0].id === 'add'}
-				<p>You have no saved spellbooks.</p>
+					<p>You have no saved spellbooks.</p>
 				{:else}
 					{#each $savedSpellSheets as spellsheet}
 						<SaveSlot data={spellsheet} on:click={() => handleClick(spellsheet.id)} />

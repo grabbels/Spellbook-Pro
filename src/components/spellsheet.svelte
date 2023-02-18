@@ -11,7 +11,7 @@
 	import SchoolIcon from './schoolicon.svelte';
 	import Pill from './pill.svelte';
 	import { onMount } from 'svelte';
-	import { moveItem, newBook, removeFilters } from './functions/globalfunctions.svelte';
+	import { moveItem, newBook, removeFilters, setUnsaved } from './functions/globalfunctions.svelte';
 	import Close from './close.svelte';
 	import {
 		filters,
@@ -110,12 +110,14 @@
 
 	function removeSpell(spell) {
 		$activeSpells = $activeSpells.filter((a) => a !== spell);
+		setUnsaved();
 	}
 	function moveUpSpell(spell) {
 		for (let i = 0; i < $activeSpells.length; i++) {
 			if ($activeSpells[i] === spell) {
 				if ($activeSpells[i - 1]) {
 					$activeSpells = moveItem($activeSpells, i - 1, i);
+					setUnsaved();
 					promise = Promise.resolve();
 					return;
 				}
@@ -130,6 +132,7 @@
 			if ($activeSpells[i] === spell) {
 				if ($activeSpells[i + 1]) {
 					$activeSpells = moveItem($activeSpells, i + 1, i);
+					setUnsaved();
 					promise = Promise.resolve();
 					return;
 				}
@@ -139,6 +142,8 @@
 			orderSpells();
 		});
 	}
+
+	
 </script>
 
 <div
@@ -237,7 +242,7 @@
 												/>
 											{/if}
 										</div>
-										<div class="block pills">
+										<div class="block pills" style="margin-top: .1rem">
 											{#if $userPrefs.school != false}
 												<Pill
 													label="School of magic"

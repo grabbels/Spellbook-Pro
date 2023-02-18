@@ -230,8 +230,10 @@
 				border-radius: 6px;
 				max-height: 90vh;
 				overflow-y: auto;
-				@media only screen and (max-width: 1024px) {
+				@media only screen and (max-width: 1023px) {
 					max-height: 100vh;
+					width: 100%;
+					padding: 5vw;
 					padding-top: 2.5rem;
 				}
 				.bookmark_decal {
@@ -265,7 +267,7 @@
 				}
 				.modal_inner {
 					// background-color: transparent;
-					@media only screen and (max-width: 1024px) {
+					@media only screen and (max-width: 1023px) {
 						padding: 0.5rem;
 					}
 				}
@@ -274,6 +276,9 @@
 				min-height: 0;
 				max-height: 100vh;
 				max-width: 600px;
+				@media only screen and (max-width: 1024px) {
+					max-width: none;
+				}
 			}
 			&.spellbook {
 				h2 {
@@ -284,62 +289,65 @@
 				}
 			}
 		}
-	}
-	.card {
-		width: 100%;
-		cursor: auto;
-		&:hover {
-			.card_inner {
-				border-color: var(--accent) !important;
+		.card {
+			width: 100%;
+			cursor: auto;
+			&:hover {
+				.card_inner {
+					border-color: var(--accent) !important;
+				}
 			}
-		}
-		* {
-			pointer-events: all;
-		}
-		.card_inner {
-			padding: 0;
-			box-shadow: none;
-			border-width: 0px;
-			pointer-events: unset;
-			.block {
+			* {
+				pointer-events: all;
+			}
+			.card_inner {
+				padding: 0;
+				box-shadow: none;
+				border-width: 0px;
 				pointer-events: unset;
-				&.pills {
-					margin-top: 0.5rem;
+				@media only screen and (max-width: 1023px) {
+					padding: 0 !important;
 				}
-				&.title {
-					h2 {
-						width: 100%;
+				.block {
+					pointer-events: unset;
+					&.pills {
+						margin-top: 0.5rem;
 					}
-				}
-				&.description {
-					height: auto;
-					p {
-						font-size: 1rem;
+					&.title {
+						h2 {
+							width: 100%;
+						}
 					}
-					mask-image: none;
-				}
-				&.buttons {
-					margin-top: 1rem;
-					display: flex;
-					gap: 0.3rem;
-				}
-				&.spells {
-					display: block;
-					h3 {
+					&.description {
+						height: auto;
+						p {
+							font-size: 1rem;
+						}
+						mask-image: none !important;
+					}
+					&.buttons {
 						margin-top: 1rem;
-						margin-bottom: -1rem;
+						display: flex;
+						gap: 0.3rem;
 					}
-					p.level {
-						margin-top: 1rem;
-					}
-					ul {
-						display: grid;
-						grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-						gap: 0 1rem;
-						li {
-							p {
-								font-size: 0.9rem;
-								margin-bottom: 0;
+					&.spells {
+						display: block;
+						h3 {
+							margin-top: 1rem;
+							margin-bottom: -1rem;
+						}
+						p.level {
+							margin-top: 1rem;
+						}
+						ul {
+							display: grid;
+							grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+							gap: 0 1rem;
+							li {
+								p {
+									font-size: 0.9rem;
+									margin-bottom: 0;
+								}
 							}
 						}
 					}

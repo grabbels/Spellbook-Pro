@@ -1,7 +1,19 @@
 <script>
 	import { onMount } from 'svelte';
 	import { userPrefs } from '../stores/stores-persist';
-	let filters, bookmarks, tabs, quicksearch, theme, castingTime, range, duration, school, icon, save, attack, description;
+	let filters,
+		bookmarks,
+		tabs,
+		quicksearch,
+		theme,
+		castingTime,
+		range,
+		duration,
+		school,
+		icon,
+		save,
+		attack,
+		description;
 	onMount(() => {
 		filters = $userPrefs.filters;
 		bookmarks = $userPrefs.bookmarks;
@@ -140,6 +152,9 @@
 		grid-template-columns: 1fr 1fr;
 		display: grid;
 		grid-gap: 0.5rem;
+		@media only screen and (max-width: 1023px) {
+			grid-template-columns: 1fr;
+		}
 		.panel {
 			background-color: var(--moretranslucent);
 			border-radius: 6px;

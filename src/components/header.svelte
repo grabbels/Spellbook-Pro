@@ -2,6 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
+	import Icon from '$lib/favicon.png';
 	import {
 		pagetitle,
 		session,
@@ -27,12 +28,14 @@
 	function handleNew() {}
 	async function editName() {
 		if ($editingTitle === true) {
-			let updateDone = await updateBook($activeTab.id, 'name', titleInput.value);
-			if (updateDone) {
-				console.log(updateDone);
-			}
 			bookTitle.text = titleInput.value;
 			$editingTitle = false;
+			if (!$activeTab.unsaved === true) {
+				let updateDone = await updateBook($activeTab.id, 'name', titleInput.value);
+				if (updateDone) {
+					console.log(updateDone);
+				}
+			}
 		} else {
 			$editingTitle = true;
 			setTimeout(() => {
@@ -49,6 +52,8 @@
 		{#key $activeTab.name}
 			{#key $pagetitle}
 				<div class="title_wrapper" class:editing={$editingTitle}>
+					<img src={Icon} alt="" />
+					<h2><span>Spellbook Pro</span> – D&D 5E</h2>
 					<h1 bind:this={bookTitle} class:editing={$editingTitle} in:fade={{ duration: 200 }}>
 						{#if $pagetitle !== 'Home'}
 							{$pagetitle}
@@ -61,14 +66,14 @@
 					<input
 						bind:this={titleInput}
 						class:editing={$editingTitle}
-						on:keydown={(e) => e.key == 'Enter' ? editName() : ''}
+						on:keydown={(e) => (e.key == 'Enter' ? editName() : '')}
 						type="text"
 						value={$activeTab.name}
 					/>
 					{#if $pagetitle == 'Home' && $openSpellbooks.length > 0}
-					<button class:editing={$editingTitle} on:click={editName}
-						><i class="ri-edit-line" /><i class="ri-save-3-line" />
-					</button>
+						<button class:editing={$editingTitle} on:click={editName}
+							><i class="ri-edit-line" /><i class="ri-save-3-line" />
+						</button>
 					{/if}
 				</div>
 			{/key}
@@ -177,9 +182,36 @@
 		.title_wrapper {
 			position: relative;
 			display: inline-block;
+			width: 100%;
+			img {
+				width: 35px;
+				float: left;
+				margin-right: 0.5rem;
+			}
+			h2 {
+				// margin-bottom: 1rem;
+
+				margin-top: 0;
+				color: var(--white);
+				margin-left: 0.2rem;
+				font-size: 1.3rem;
+				opacity: 0.3;
+				font-weight: 400;
+				grid-column-start: 2;
+				margin-top: 0;
+				margin-bottom: 0.5rem;
+				// margin-top: .1rem;
+				span {
+					font-size: 1.4rem;
+				}
+			}
+			h1 {
+				grid-column: span 2;
+			}
 			&.editing {
 				display: grid;
-				grid-template-columns: 1fr 35px;
+				grid-template-columns: 35px 1fr 35px;
+				grid-template-rows: 1fr 1fr;
 			}
 			button {
 				all: unset;
@@ -221,6 +253,8 @@
 			input {
 				display: none;
 				width: auto;
+				grid-column-start: 1;
+				grid-column: span 2;
 				&.editing {
 					display: inline-block;
 				}

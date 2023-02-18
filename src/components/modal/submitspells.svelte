@@ -1,24 +1,25 @@
 <script>
-	
+	import { pb } from '$lib/pocketbase';
+	import { topMenuOpenClose } from '../functions/globalfunctions.svelte';
 	import { modalCall, notification, userId } from '../stores/stores';
-	let name;
-	let level;
-	let school;
-	let casting_time;
-	let duration;
-	let range;
-	let description;
-	let higher_levels;
-	let save;
-	let attack;
-	let ritual;
-	let classes;
-	let verbal;
-	let somatic;
-	let materials;
-	let material;
-	let sources;
-	let email;
+	let name,
+		level,
+		school,
+		casting_time,
+		duration,
+		range,
+		description,
+		higher_levels,
+		save,
+		attack,
+		ritual,
+		classes,
+		verbal,
+		somatic,
+		materials,
+		material,
+		sources,
+		email;
 	let loading = false;
 	async function submitSpell() {
 		loading = true;
@@ -105,24 +106,44 @@
 		}
 
 		console.log(spell);
-		const { data, error } = await supabaseClient
-			.from('submittedspells')
-			.insert({
-				spell: { spell },
-				user_id: $userId,
-				user_email: email,
-				sources: sources
-			})
-			.select();
-		if (error) {
-			console.log(error);
-			$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-		} else if (data) {
-			$notification = 'Spell succesfully submitted. Thank you!#positive';
-			loading = false;
-			$modalCall = '';
-			$modalCall = $modalCall;
+
+		const data = {
+			spell: { spell },
+			user_id: $userId,
+			user_email: email,
+			sources: sources
+		};
+
+		try {
+			const record = await pb.collection('submitted_spells').create(data);
+			if (record) {
+				$notification = 'Spell succesfully submitted and will be reviewed. Thank you!#positive';
+				loading = false;
+				$modalCall = '';
+			}
+		} catch (err) {
+			console.log(err.data);
+			$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
 		}
+
+		// const { data, error } = await supabaseClient
+		// 	.from('submittedspells')
+		// 	.insert({
+		// 		spell: { spell },
+		// 		user_id: $userId,
+		// 		user_email: email,
+		// 		sources: sources
+		// 	})
+		// 	.select();
+		// if (error) {
+		// 	console.log(error);
+		// 	$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
+		// } else if (data) {
+		// 	$notification = 'Spell succesfully submitted. Thank you!#positive';
+		// 	loading = false;
+		// 	$modalCall = '';
+		// 	$modalCall = $modalCall;
+		// }
 	}
 </script>
 

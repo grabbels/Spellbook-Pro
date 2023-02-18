@@ -54,12 +54,15 @@
     --pink: #7d7d7d;
     --spellbg: #000;
     background-color: var(--black);
+
     .pill.large {
-        background-color: #7d7d7d!important;
+        background-color: #7d7d7d !important;
     }
-    .topmenu, .sidemenu {
-        background-image: none!important;
-        background-color: #181818!important;
+
+    .topmenu,
+    .sidemenu {
+        background-image: none !important;
+        background-color: #181818 !important;
     }
 }
 
@@ -95,6 +98,12 @@
                 151,
                 185, 1) 93%, rgb(136, 151, 185) 100%);
     background-color: var(--black);
+
+    .panel.summary {
+        p {
+            color: var(--black);
+        }
+    }
 
     .sidemenu {
         background-image: url('/src/img/menu-bg-astral.jpg') !important;
@@ -134,9 +143,11 @@
 
     .modal {
         --accent: #f5dd94;
+
         label i.ri-checkbox-circle-fill {
-            color: var(--lightgreen)!important;
+            color: var(--lightgreen) !important;
         }
+
         .modal_inner {
             background-color: var(--black) !important;
 
@@ -195,6 +206,12 @@
         background-color: transparent !important;
     }
 
+    .panel.summary {
+        .close i {
+            color: var(--white)!important;
+        }
+    }
+
     .card {
 
         h1,
@@ -223,7 +240,7 @@
     .topmenu,
     .sidemenu {
         background-image: none !important;
-        background-color: #EFEFDE!important;
+        background-color: #EFEFDE !important;
     }
 
     .sidemenu {

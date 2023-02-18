@@ -1,7 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
 	import Close from './close.svelte';
-	import { loadSpellsheetsByUserId, newBook, handleLoad, closeTab } from './functions/globalfunctions.svelte';
+	import {
+		loadSpellsheetsByUserId,
+		newBook,
+		handleLoad,
+		closeTab
+	} from './functions/globalfunctions.svelte';
 	import Spell from './modal/spell.svelte';
 	import { modalCall, savedSpellSheets, userId } from './stores/stores';
 	import { activeSpells, openSpellbooks, activeTab, tabs } from './stores/stores-persist';
@@ -16,7 +21,7 @@
 		// }
 		// console.log($tabs[0]);
 	});
-	
+
 	function handleDrop(e) {
 		dragOver = null;
 		console.log(window.tabIndex);
@@ -47,75 +52,66 @@
 		<div><i class="ri-book-open-line" /></div>
 	</div>
 	{#key $openSpellbooks}
-	{#each $openSpellbooks as spellbook, index}
-		{#if spellbook.name != undefined}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div
-				role="button"
-				class="button"
-				draggable="true"
-				on:dragstart={(e) => {
-					console.log(e);
-					window.tabIndex = index;
-				}}
-				on:dragexit={(e) => {
-					if (e.target.closest('.button')) {
-						dragOver = null;
-					}
-				}}
-				on:dragenter={(e) => {
-					if (e.target.closest('.button')) {
-						dragOver = spellbook;
-					}
-				}}
-				class:dragover={dragOver == spellbook ? true : false}
-				data-id={spellbook.id}
-				data-active={spellbook.open_tab}
-				bind:this={$tabs[index]}
-				on:click={() => {
-					console.log($activeTab)
-					console.log($openSpellbooks)
-					if ($tabs[index].getAttribute('data-id') !== $activeTab.id) {
-						$activeTab = spellbook;
-						for (let i = 0; i < $openSpellbooks.length; i++) {
-							$openSpellbooks[i].open_tab = false;
+		{#each $openSpellbooks as spellbook, index}
+			{#if spellbook.name != undefined}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<div
+					role="button"
+					class="button"
+					draggable="true"
+					on:dragstart={(e) => {
+						console.log(e);
+						window.tabIndex = index;
+					}}
+					on:dragexit={(e) => {
+						if (e.target.closest('.button')) {
+							dragOver = null;
 						}
-						$openSpellbooks[index].open_tab = true;
-						if (spellbook.list) {
-							$activeSpells = spellbook.list;
-						} else {
-							$activeSpells = [];
+					}}
+					on:dragenter={(e) => {
+						if (e.target.closest('.button')) {
+							dragOver = spellbook;
 						}
-					}
-				}}
-				class:active={$activeTab.id === spellbook.id}
-				style="--bookcolor: {spellbook.color}"
-			>
-				<div bind:this={tabName[index]}>
-					<span style="color: {spellbook.color}">●</span>
-					{spellbook.name}
-				</div>
-				<button
-					class="close"
+					}}
+					class:dragover={dragOver == spellbook ? true : false}
+					data-id={spellbook.id}
+					data-active={spellbook.open_tab}
+					bind:this={$tabs[index]}
 					on:click={() => {
-						console.log($openSpellbooks[index]);
-						if ($openSpellbooks[index].id.toString().includes('temp') && $openSpellbooks[index].list.length > 0) {
-							// $modalCall = 'prompt unsaved'
-							if (
-								confirm(
-									'This spellbook is unsaved and you will lose its contents when you close this tab. Are you sure you want to close this tab?'
-								) == true
-							) {
-								closeTab(index);
+						console.log($activeTab);
+						console.log($openSpellbooks);
+						if ($tabs[index].getAttribute('data-id') !== $activeTab.id) {
+							$activeTab = spellbook;
+							for (let i = 0; i < $openSpellbooks.length; i++) {
+								$openSpellbooks[i].open_tab = false;
 							}
-						} else {
-							closeTab(index);
+							$openSpellbooks[index].open_tab = true;
+							if (spellbook.list) {
+								$activeSpells = spellbook.list;
+							} else {
+								$activeSpells = [];
+							}
 						}
-					}}><i class="ri-close-circle-fill" /></button
+					}}
+					class:active={$activeTab.id === spellbook.id}
+					style="--bookcolor: {spellbook.color}"
 				>
-			</div>
-		{/if}
-	{/each}
+					<div bind:this={tabName[index]}>
+						{#if spellbook.unsaved === true}
+							<span style="color: {spellbook.color}">●</span>
+						{/if}
+						{spellbook.name}
+					</div>
+					<button
+						class="close"
+						on:click|stopPropagation={() => {
+							console.log($openSpellbooks[index]);
+							closeTab(index);
+						}}><i class="ri-close-circle-fill" /></button
+					>
+				</div>
+			{/if}
+		{/each}
 	{/key}
 </div>
 

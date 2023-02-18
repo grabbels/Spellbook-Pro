@@ -89,7 +89,7 @@
 						$notification = 'This email is invalid or already in use.#error';
 						loadingRegister = false;
 					} else if (err) {
-						$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
+						$notification = err.data.message + ' Error code: ' + err.data.code + '#error'
 					}
 					// console.log(err.data.data);
 				}

@@ -1,5 +1,6 @@
 <script>
 	import Button from '../button.svelte';
+	import { modalCall } from '../stores/stores';
 </script>
 
 <h1>Welcome!</h1>
@@ -100,8 +101,7 @@
 		</li>
 	</ul>
 </div>
-
-<div style="margin-top: 2rem"><Button text="Let's go!" icon="ri-heart-line" type="fill accent" /></div>
+<div style="margin-top: 2rem"><Button text="Let's go!" icon="ri-heart-line" on:click={() => $modalCall = ''} type="fill accent" /></div>
 
 <style lang="scss">
 	h3 {

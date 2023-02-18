@@ -22,7 +22,12 @@
 			<Pill text={data.class} size="small" icon="ri-contacts-line" />
 			<Pill text="Level {data.level}" size="small" icon="ri-user-star-line" />
 		</div>
-		{#if $pagetitle == 'My account'}<div class="edithover"><i class="ri-edit-line" /></div>{/if} 
+		{#if $pagetitle == 'My account'}<div class="edithover"><i class="ri-edit-line" /></div>{/if}
+		{#if type.includes('account')}
+			<div class="bookmark_decal">
+				<i class="ri-bookmark-fill" style="color: {data.color}" />
+			</div>
+		{/if}
 	</button>
 {:else if data.id === 'add' && $modalCall === 'save'}
 	<button class="slot" on:click>
@@ -48,7 +53,7 @@
 		}
 		&.noedit {
 			border: 2px solid transparent;
-			aspect-ratio: unset!important;
+			aspect-ratio: unset !important;
 			&:hover {
 				cursor: pointer;
 				border: 2px solid var(--accent);
@@ -75,7 +80,7 @@
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: center;
-			gap: .3rem;
+			gap: 0.3rem;
 		}
 		.description {
 			color: var(--white);
@@ -94,29 +99,41 @@
 		}
 		&.large {
 			aspect-ratio: unset;
+			
 		}
 		&.account {
+			background-color: var(--spellbg) !important;
 			aspect-ratio: unset;
 			cursor: pointer !important;
+			position: relative;
 			.edithover {
 				position: absolute;
 				right: 0.3rem;
 				top: 0.3rem;
 				height: 40px;
 				width: 40px;
-				opacity: .5;
+				opacity: 0.5;
 				text-align: right;
-				transition: .15s;
+				transition: 0.15s;
 				i {
 					color: var(--lesstranslucent);
 					font-size: 1.8rem;
 					display: inline;
-					
 				}
+			}
+			.bookmark_decal {
+				position: absolute;
+				left: 2rem;
+				bottom: -0.3rem;
+				z-index: -1;
+				transition: .1s;
 			}
 			&:hover {
 				.edithover {
 					opacity: 1;
+				}
+				.bookmark_decal {
+					transform: translateY(.5rem);
 				}
 			}
 		}

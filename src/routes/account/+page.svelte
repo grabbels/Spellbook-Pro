@@ -25,6 +25,8 @@
 	import { onMount } from 'svelte';
 	import Loading from '../../components/loading.svelte';
 	import { currentUser, pb } from '$lib/pocketbase';
+	import Filter from 'bad-words';
+	let filter = new Filter();
 	// let savedSpellSheets = [];
 	let openCard = null;
 	// let userId;
@@ -54,42 +56,51 @@
 	let newNickname;
 	let allowed = /^[a-zA-Z0-9]*-?[a-zA-Z0-9]*$/;
 	async function saveNickname() {
-		if (
-			allowed.test(newNickname) &&
-			newNickname.indexOf('-') != 0 &&
-			newNickname.charAt(newNickname.length - 1) != '-'
-		) {
-			loading = true;
-			// const { error, data } = await supabaseClient
-			// 	.from('nicknames')
-			// 	.update({ user_nickname: newNickname })
-			// 	.eq('user_id', $userId)
-			// 	.select();
-			// if (data) {
-			// 	const { data, error } = await supabaseClient.auth.updateUser({
-			// 		data: { nickname: newNickname }
-			// 	});
-			// 	if (error) {
-			// 		$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-			// 		console.log(error);
-			// 		loading = false;
-			// 	} else if (data) {
-			// 		$notification = 'Nickname succesfully changed.#positive';
-			// 		loading = false;
-			// 		editingNickname = false;
-			// 		setUserData();
-			// 	}
-			// } else if (error.code == 23505) {
-			// 	$notification = 'The nickname is already in use, try another one!#error';
-			// 	loading = false;
-			// } else if (error) {
-			// 	$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
-			// 	console.log(error);
-			// 	loading = false;
-			// }
+		if (!filter.clean(newNickname).includes('*')) {
+			if (
+				allowed.test(newNickname) &&
+				newNickname.indexOf('-') != 0 &&
+				newNickname.charAt(newNickname.length - 1) != '-' &&
+				newNickname.length > 3
+			) {
+				loading = true;
+				const data = {
+					username: newNickname
+				};
+				try {
+					const record = await pb.collection('users').update($userId, data);
+					setUserData();
+				} catch (err) {
+					loading = false;
+					console.log(err.data);
+					$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
+				}
+
+				for (let i = 0; i < $savedSpellSheets.length; i++) {
+					if ($savedSpellSheets[i].id && $savedSpellSheets[i].id != 'add') {
+						const data = {
+							creator: newNickname
+						};
+						try {
+							const record = await pb
+								.collection('spellbooks')
+								.update($savedSpellSheets[i].id, data);
+							console.log(record);
+						} catch (err) {
+							console.log(err.data);
+							$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
+						}
+					}
+				}
+				$notification = 'Nickname succesfully changed.#positive';
+				loading = false;
+				editingNickname = false;
+			} else {
+				$notification =
+					'Your nickname may only contain letters, numbers and at most one hypen (not at the start or end) and should be at least 4 characters long.#alert';
+			}
 		} else {
-			$notification =
-				'Your nickname may only contain letters, numbers and at most one hypen (not at the start or end).#alert';
+			$notification = 'Your nickname contains profanity. Please choose a different nickname.#alert';
 		}
 	}
 	let editingEmail = false;
@@ -103,7 +114,7 @@
 			loading = false;
 			editingEmail = false;
 		} catch (err) {
-			$notification = 'Oops, an error occurred. Error code: ' + err.code + '#error';
+			$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
 			console.log(err);
 			loading = false;
 		}
@@ -160,7 +171,7 @@
 							{#each $savedSpellSheets as spellsheet}
 								<SaveSlot
 									data={spellsheet}
-									type="large"
+									type="large account"
 									on:click={() => {
 										$modalCall = 'spellbook';
 										$lookupBook = spellsheet;
@@ -172,7 +183,7 @@
 				{/if}
 				<!-- {/key} -->
 			</div>
-			<div class="panel details">
+			<div class="panel details dark">
 				<h2>Acccount information</h2>
 				{#if $userNickname}
 					<div>

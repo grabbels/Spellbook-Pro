@@ -45,7 +45,7 @@
 		'Warlock',
 		'Wizard'
 	];
-	let siteUrl = 'http://localhost:5173';
+	let siteUrl = 'https://spellbook.pro';
 
 	export function addSpell(spell) {
 		let currentSpells = get(activeSpells);
@@ -58,8 +58,18 @@
 			notification.set('Spell added.#info');
 			activeSpells.set(currentSpells);
 			let currentTab = get(activeTab);
+			let openBooks = get(openSpellbooks);
+			for (let i = 0; i < openBooks.length; i++) {
+				if (currentTab.id == openBooks[i].id) {
+					console.log('test');
+					openBooks[i].unsaved = true;
+				}
+			}
 			currentTab.list = currentSpells;
+			currentTab.unsaved = true;
 			activeTab.set(currentTab);
+			console.log(get(openSpellbooks));
+			console.log(get(activeTab));
 		}
 	}
 
@@ -163,29 +173,62 @@
 			removeFilters();
 			topMenuOpenClose();
 			notification.set('Spellbook has been cleared#alert');
+			setUnsaved();
 			// $notification = 'Spellbook has been cleared';
 		}
 	}
 
-	export function closeTab(index) {
-		console.log(index)
-		console.log(get(openSpellbooks));
-		let allTabs = get(openSpellbooks)
-		let currentTab = get(activeTab)
-		if (currentTab == allTabs[index]) {
-			if (allTabs[index + 1]) {
-				activeTab.set(allTabs[index + 1])
-				activeSpells.set(allTabs[index + 1].list)
-			} else if (allTabs[index - 1]) {
-				activeTab.set(allTabs[index - 1])
-				activeSpells.set(allTabs[index - 1].list)
+	export function setUnsaved() {
+		console.log('test');
+		let currentTab = get(activeTab);
+		currentTab.unsaved = true;
+		activeTab.set(currentTab);
+		let openBooks = get(openSpellbooks);
+		for (let i = 0; i < openBooks.length; i++) {
+			if (currentTab.id == openBooks[i].id) {
+				openBooks[i].unsaved = true;
+				openSpellbooks.set(openBooks);
 			}
-		} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
-			activeSpells.set([])
 		}
-		let openSpellbooksSplice = get(openSpellbooks);
-		openSpellbooksSplice.splice(index, 1);
-		openSpellbooks.set(openSpellbooksSplice);
+	}
+
+	export function closeTab(index) {
+		console.log(index);
+		console.log(get(openSpellbooks));
+		let allTabs = get(openSpellbooks);
+		let currentTab = get(activeTab);
+		if (allTabs[index].unsaved === true && allTabs[index].list && allTabs[index].list.length > 0) {
+			if (
+				confirm('This spellbook has unsaved changes. Are you sure you want to close this book?') ==
+				true
+			) {
+				close();
+			}
+		} else {
+			close();
+		}
+		function close() {
+			if (currentTab.id == allTabs[index].id) {
+				if (allTabs[index + 1]) {
+					console.log('Selecting one tab up boss')
+					activeTab.set(allTabs[index + 1]);
+					activeSpells.set(allTabs[index + 1].list);
+				} else if (allTabs[index - 1]) {
+					console.log('Selecting one tab down boss')
+					activeTab.set(allTabs[index - 1]);
+					activeSpells.set(allTabs[index - 1].list);
+				}
+			} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
+				console.log('that was the last one boss')
+				activeSpells.set([]);
+			}
+			let openSpellbooksSplice = get(openSpellbooks);
+			openSpellbooksSplice.splice(index, 1);
+			openSpellbooks.set(openSpellbooksSplice);
+			if (openSpellbooksSplice.length < 1) {
+				activeSpells.set([]);
+			}
+		}
 	}
 
 	export async function removeBook(id) {
@@ -217,7 +260,7 @@
 			}
 		} catch (err) {
 			console.log(err.data);
-			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
+			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 
@@ -226,11 +269,14 @@
 			const record = await pb.collection('spellbooks').getOne(id, {});
 			if (record) {
 				let newArray = get(openSpellbooks);
+				let openedBook = record;
 				if (!get(openSpellbooks).filter((e) => e.id == record.id).length > 0) {
-					newArray.push(record);
+					openedBook.from_load = true;
+					console.log(openedBook);
+					newArray.push(openedBook);
 					openSpellbooks.set(newArray);
-					activeSpells.set(record.list);
-					activeTab.set(record);
+					activeSpells.set(openedBook.list);
+					activeTab.set(openedBook);
 				} else {
 					console.log('already open!');
 					activeTab.set(record);
@@ -246,7 +292,7 @@
 			}
 		} catch (err) {
 			console.log(err);
-			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
+			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 
@@ -272,7 +318,7 @@
 			}
 		} catch (err) {
 			console.log(err.data);
-			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
+			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 
@@ -291,7 +337,7 @@
 			}
 		} catch (err) {
 			console.log(err.data);
-			notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
+			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 	export async function editPassword(email) {
@@ -328,8 +374,8 @@
 			id: 'temp' + time,
 			name: 'Untitled spellbook',
 			open_tab: true,
-			color: 'var(--white)',
-			unsaved: true
+			unsaved: true,
+			color: 'var(--white)'
 		};
 		tabsArray.push(emptyBook);
 		openSpellbooks.set(tabsArray);
@@ -359,22 +405,20 @@
 				}
 			}
 		}
-		if (get(activeTab).unsaved === false) {
-			try {
-				const record = await pb.collection('spellbooks').update(id, data);
-				if (record) {
-					console.log(record);
-					loadSpellsheetsByUserId(get(userId));
 
-					setTimeout(() => {
-						notification.set('Spellbook saved!#positive');
-						return 'done';
-					}, 500);
-				}
-			} catch (err) {
-				console.log(err.data);
-				notification.set('Oops, an error occurred. Error code: ' + err.code + '#error');
+		try {
+			const record = await pb.collection('spellbooks').update(id, data);
+			if (record) {
+				console.log(record);
+				loadSpellsheetsByUserId(get(userId));
+				setTimeout(() => {
+					notification.set('Spellbook saved!#positive');
+					return 'done';
+				}, 500);
 			}
+		} catch (err) {
+			console.log(err.data);
+			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 
@@ -382,10 +426,10 @@
 		if (!get(currentUser)) {
 			notification.set('You need to <a href="/account/login">log in</a> to save spellbooks#alert');
 		} else {
-			if (get(activeTab).unsaved === true) {
-				modalCall.set('save');
-			} else {
+			if (get(activeTab).from_load === true) {
 				updateBook(id, 'list');
+			} else {
+				modalCall.set('save');
 			}
 		}
 	}

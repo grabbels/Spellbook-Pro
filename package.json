@@ -49,6 +49,7 @@
 		"@sveltejs/adapter-static": "^1.0.5",
 		"@sveltejs/adapter-vercel": "^1.0.6",
 		"autoprefixer": "^10.4.13",
+		"bad-words": "^3.0.4",
 		"maxlength-contenteditable": "^1.0.1",
 		"pocketbase": "^0.10.1",
 		"remixicon": "^2.5.0",

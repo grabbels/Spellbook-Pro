@@ -1,5 +1,5 @@
 <script>
-	import PageTransition from '../components/PageTransition.svelte';
+	import PageTransition from '../components/functions/PageTransition.svelte';
 	/** @type {import('./$types').LayoutData} */
 	export let data;
 	import { Body } from 'svelte-body';
@@ -24,12 +24,13 @@
 		refreshSession,
 		setUserData,
 	} from '../components/functions/globalfunctions.svelte';
-	import { loggedIn, firstVisitB, userPrefs } from '../components/stores/stores-persist';
+	import { loggedIn, firstVisitB, userPrefs, activeTab } from '../components/stores/stores-persist';
 
 	import '@fontsource/kanit';
 	import Modal from '../components/modal/modal.svelte';
 	import Pdf from '../components/pdf.svelte';
 	import { pb } from '$lib/pocketbase';
+	import Section from '../components/section.svelte';
 	// refreshSession()
 	if ($page.url.searchParams) {
 		let urlParams = $page.url.searchParams
@@ -45,6 +46,8 @@
 			$modalCall = 'confirm-email-change';
 		}
 	}
+	$: console.log($activeTab)
+
 	const token = $page.url.searchParams.get('confirm-verification');
 	setUserData();
 	if (token) {
@@ -55,7 +58,7 @@
 			await pb.collection('users').confirmVerification(token);
 		} catch (err) {
 			console.log(err);
-			$notification = 'Oops, an error occurred. Error code: ' + error.code + '#error';
+			$notification = err.data.message + ' Error code: ' + err.data.code + '#error'
 		} finally {
 			$notification =
 				'Your email has been succesfully verified. You can now <a href="/account/login">log in</a>!#positive';
@@ -75,11 +78,7 @@
 
 	function showNotification() {
 		if ($notification) {
-			$notification.split('#')[1].includes('info')
-				? (timeOut = 10000)
-				: $notification.split('#')[1].includes('positive')
-				? 4000
-				: 8000;
+			$notification.length > 120 ? (timeOut = 8000) : $notification.length > 80 ? (timeOut = 6500) : $notification.length > 60 ? (timeOut = 5000) : (timeOut = 4000)
 			const destroy = setTimeout(() => {
 				$notification = '';
 			}, timeOut);
@@ -121,7 +120,7 @@
 	let body;
 	let scrollTop;
 	console.log($firstVisitB);
-	if ($firstVisitB == true) {
+	if ($firstVisitB === true) {
 		$modalCall = 'welcome';
 		$firstVisitB = false;
 	}
@@ -141,6 +140,8 @@
 				$modalCall = 'lookup';
 				// $quickQuery = e.key;
 			}
+		} else if (e.key == 'Escape') {
+			$notification = ''
 		}
 	}
 </script>
@@ -191,6 +192,11 @@
 			? 'alt'
 			: ''}"
 	/>
+	<Section name="footer">
+		<p style="text-align:center; font-size: .9rem">Created by <a target="_blank" rel="noreferrer" href="https://semhak.com">Sem Hak</a>. <button class="naked" style="padding: 0; text-decoration: underline" on:click={()=> $modalCall = 'terms'}>Terms and conditions</button></p>
+		<p style="text-align:center; font-size: .9rem; opacity: .7">Spells and related content originating from the official D&D handbooks are the intellectual property of Wizards of the Coast LLC.</p>
+		<p style="text-align:center; font-size: .9rem; opacity: .7">Check out the source code of this website on <a target="_blank" rel="noreferrer" href="https://github.com/grabbels/Spellbook-Pro">GitHub</a>.</p>
+	</Section>
 </div>
 
 {#if $notification}

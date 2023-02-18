@@ -2,17 +2,11 @@
 	import Button from './button.svelte';
 	import Section from './section.svelte';
 	import { activeSpells } from './stores/stores-persist';
-	import {
-		spellListEmpty,
-		notification,
-		modalCall,
-		session,
-		topmenuopen,
-		pagetitle
-	} from './stores/stores';
+	import { spellListEmpty, notification, modalCall, topmenuopen, pagetitle } from './stores/stores';
 	import { topMenuOpenClose, empty, newBook } from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
 	import Pdf from './pdf.svelte';
+	import { currentUser } from '$lib/pocketbase';
 	let exportpdf = false;
 	let fileinput;
 
@@ -40,7 +34,7 @@
 		$modalCall = 'save';
 	}
 	function load() {
-		if ($session) {
+		if ($currentUser) {
 			$modalCall = 'load';
 		} else {
 			$notification = 'You need to <a href="/account/login">log in</a> to load spellbooks#alert';
@@ -82,22 +76,22 @@
 				text="Import"
 			/> -->
 			<Button
-						on:click={()=>$modalCall = 'options'}
-						type="fill"
-						icon="ri-settings-line"
-						text="Options"
-					/>
+				on:click={() => ($modalCall = 'options', topMenuOpenClose())}
+				type="fill"
+				icon="ri-settings-line"
+				text="Options"
+			/>
 			<Button
-			<Button
-						on:click={newBook}
-						href=""
-						type="fill mobile"
-						icon="ri-health-book-line"
-						text="New"
-					/>
+				<Button
+				on:click={() => newBook(), topMenuOpenClose()}
+				href=""
+				type="fill mobile"
+				icon="ri-health-book-line"
+				text="New"
+			/>
 			<Button
 				disabled={$spellListEmpty}
-				on:click={save}
+				on:click={() => save(), topMenuOpenClose()}
 				href=""
 				type="fill mobile"
 				icon="ri-save-3-line"
@@ -113,14 +107,14 @@
 				icon="ri-upload-line"
 				text="Import"
 			/> -->
-			<input
+			<!-- <input
 				type="file"
 				id="input-file"
 				style="display: none"
 				accept=".json"
 				on:change={(e) => onFileSelected(e)}
 				bind:this={fileinput}
-			/>
+			/> -->
 			<!-- <Button
 				disabled={$spellListEmpty}
 				href=""
@@ -131,14 +125,14 @@
 			/> -->
 			<Button
 				disabled={$spellListEmpty}
-				on:click={empty}
+				on:click={(() => empty(), topMenuOpenClose())}
 				href=""
 				type="outline alt"
 				icon="ri-delete-bin-line"
 				text="Clear spellbook"
 			/>
 			<Button
-				on:click={() => ($modalCall = 'submitspell')}
+				on:click={() => (($modalCall = 'submitspell'), topMenuOpenClose())}
 				href=""
 				type="fill blue"
 				icon="ri-file-search-line"
@@ -149,6 +143,7 @@
 				type="fill alt"
 				icon="ri-bug-line"
 				text="Bug/suggestion"
+				on:click={() => topMenuOpenClose()}
 			/>
 			<!-- <Button
 				href=""
@@ -162,24 +157,24 @@
 					type="fill blue mobile"
 					icon="ri-dashboard-fill"
 					text="Premade"
-					on:click={topMenuOpenClose}
+					on:click={() => topMenuOpenClose()}
 				/>
 			{/if}
-			{#if $session && $pagetitle !== 'My account'}
+			{#if $currentUser && $pagetitle !== 'My account'}
 				<Button
 					type="fill mobile"
 					icon="ri-contacts-book-2-line"
 					text="Account"
 					href="/account"
-					on:click={topMenuOpenClose}
+					on:click={() => topMenuOpenClose()}
 				/>
-			{:else if !$session}
+			{:else if !$currentUser}
 				<Button
 					type="fill mobile"
 					href="/account/login"
 					icon="ri-login-circle-line"
 					text="Log in"
-					on:click={topMenuOpenClose}
+					on:click={() => topMenuOpenClose()}
 				/>
 			{/if}
 		</div>
@@ -192,7 +187,7 @@
 				icon="ri-refresh-line"
 				text="Refresh list"
 			/> -->
-			<Button on:click={topMenuOpenClose} type="outline alt" icon="ri-close-line" text="close" />
+			<Button on:click={()=> topMenuOpenClose()} type="outline alt" icon="ri-close-line" text="close" />
 		</div>
 	</div>
 </div>
