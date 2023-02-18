@@ -20,7 +20,9 @@
 		profileUser,
 		userProfile,
 		pagetitle,
-		lookupBook
+		lookupBook,
+		loadingScreen,
+		shareBookId
 	} from '../stores/stores';
 	import { activeSpells, activeTab, loggedIn, openSpellbooks } from '../stores/stores-persist';
 	import { get } from 'svelte/store';
@@ -137,6 +139,8 @@
 		}
 	}
 
+	export const reverseString = (str) => [...str].reverse().join('');
+
 	export async function refreshSession() {}
 
 	export async function setUserData() {
@@ -197,7 +201,12 @@
 		console.log(get(openSpellbooks));
 		let allTabs = get(openSpellbooks);
 		let currentTab = get(activeTab);
-		if (allTabs[index].unsaved === true && allTabs[index].list && allTabs[index].list.length > 0) {
+		if (
+			allTabs[index] &&
+			allTabs[index].unsaved === true &&
+			allTabs[index].list &&
+			allTabs[index].list.length > 0
+		) {
 			if (
 				confirm('This spellbook has unsaved changes. Are you sure you want to close this book?') ==
 				true
@@ -210,16 +219,16 @@
 		function close() {
 			if (currentTab.id == allTabs[index].id) {
 				if (allTabs[index + 1]) {
-					console.log('Selecting one tab up boss')
+					console.log('Selecting one tab up boss');
 					activeTab.set(allTabs[index + 1]);
 					activeSpells.set(allTabs[index + 1].list);
 				} else if (allTabs[index - 1]) {
-					console.log('Selecting one tab down boss')
+					console.log('Selecting one tab down boss');
 					activeTab.set(allTabs[index - 1]);
 					activeSpells.set(allTabs[index - 1].list);
 				}
 			} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
-				console.log('that was the last one boss')
+				console.log('that was the last one boss');
 				activeSpells.set([]);
 			}
 			let openSpellbooksSplice = get(openSpellbooks);
@@ -266,12 +275,17 @@
 
 	export async function loadBook(id) {
 		try {
-			const record = await pb.collection('spellbooks').getOne(id, {});
+			const record = await pb.collection('spellbooks').getOne(id);
 			if (record) {
 				let newArray = get(openSpellbooks);
 				let openedBook = record;
 				if (!get(openSpellbooks).filter((e) => e.id == record.id).length > 0) {
-					openedBook.from_load = true;
+					if (!openedBook.share === true) {
+						openedBook.from_load = true;
+					} else {
+						openedBook.unsaved = true;
+						openedBook.share = false;
+					}
 					console.log(openedBook);
 					newArray.push(openedBook);
 					openSpellbooks.set(newArray);
@@ -292,7 +306,7 @@
 			}
 		} catch (err) {
 			console.log(err);
-			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
+			// notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 
@@ -439,6 +453,40 @@
 			modalCall.set('load');
 		} else {
 			notification.set('You need to <a href="/account/login">log in</a> to open spellbooks#alert');
+		}
+	}
+
+	export async function shareBook() {
+		
+		if (get(activeTab).unsaved === true) {
+			loadingScreen.set(true);
+			console.log(
+				"We're going to save this spellbook as a shareable book with minimal info which does not appear in the user's profile like a regular saved spellbook"
+			);
+			const data = {
+				name: get(activeTab).name,
+				list: get(activeSpells),
+				user_id: 'share',
+				share: true
+			};
+			try {
+				const record = await pb.collection('spellbooks').create(data);
+				if (record) {
+					console.log(record.id);
+					loadingScreen.set(false);
+					shareBookId.set(record.id);
+					modalCall.set('share');
+				}
+			} catch (err) {
+				console.log(err);
+				notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
+			}
+		} else {
+			console.log(
+				"We can simply share the saved spellbook's ID because it is already in the system"
+			);
+			shareBookId.set(get(activeTab).id);
+			modalCall.set('share');
 		}
 	}
 </script>

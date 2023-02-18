@@ -8,32 +8,12 @@
 	import bg from '../img/menu-bg.png';
 	import Button from './button.svelte';
 	import { addSpell } from './functions/globalfunctions.svelte';
+	// console.log(spells)
 	let results = [];
 	let result = [];
 	let searchField;
 	let clear;
 	let resultsList;
-	// spellssave();
-	// function spellssave() {
-	// 	for (let i = 0; i < spells.length; i++) {
-	// 		let spellDescription = spells[i].description.toLowerCase();
-	// 		spellDescription.includes('strength sav')
-	// 			? (spells[i].save = 'str')
-	// 			: spellDescription.includes('dexterity sav')
-	// 			? (spells[i].save = 'dex')
-	// 			: spellDescription.includes('constitution sav')
-	// 			? (spells[i].save = 'con')
-	// 			: spellDescription.includes('intelligence sav')
-	// 			? (spells[i].save = 'int')
-	// 			: spellDescription.includes('wisdom sav')
-	// 			? (spells[i].save = 'wis')
-	// 			: spellDescription.includes('charisma sav')
-	// 			? (spells[i].save = 'cha')
-	// 			: '';
-	// 	}
-	// 	console.log(spells)
-	// }
-
 	$: if ($sidemenuopen === true) {
 		searchField.focus();
 	}
@@ -42,7 +22,7 @@
 	} else {
 		results = [];
 	}
-	
+
 	var resultNumber = -1;
 	function handleKeyDown(e) {
 		if (e.key == 'ArrowDown' && results) {
@@ -91,7 +71,7 @@
 	<div class="wrapper" on:keydown={handleKeyDown}>
 		<form autocomplete="off">
 			<input
-			autocomplete="off"
+				autocomplete="off"
 				on:click={() => (resultNumber = -1)}
 				bind:value={query}
 				type="text"
@@ -114,7 +94,10 @@
 						<button
 							bind:this={result[i]}
 							on:click={(e) => {
-								addSpell(spell); touchFeedback(e); resultNumber -1; searchField.select() ;
+								addSpell(spell);
+								touchFeedback(e);
+								resultNumber - 1;
+								searchField.select();
 							}}
 							tabindex="0"
 						>
@@ -144,7 +127,14 @@
 				</li>
 			{/if}
 		</ul>
-		<div class="close_button"><Button on:click={() => $sidemenuopen = false} type="outline alt" text="close" icon="ri-close-line" /></div>
+		<div class="close_button">
+			<Button
+				on:click={() => ($sidemenuopen = false)}
+				type="outline alt"
+				text="close"
+				icon="ri-close-line"
+			/>
+		</div>
 	</div>
 </div>
 

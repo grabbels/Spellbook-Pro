@@ -157,7 +157,8 @@
 		</div>
 		<div class="grid">
 			<div class="panel spellsheets">
-				<h2>Saved spellbooks</h2>
+				<h2 style="margin-bottom: 0">Saved spellbooks</h2>
+				<p style="margin-left: .2rem; opacity: .5">click to view and edit</p>
 				<!-- {#key $savedSpellSheets} -->
 				{#if $savedSpellSheets.length < 1}
 					<Loading />

@@ -17,12 +17,15 @@
 		session,
 		modalCall,
 		userNickname,
-		editingTitle
+		editingTitle,
+		loadingScreen
 	} from '../components/stores/stores';
 	import {
 		retrieveSession,
 		refreshSession,
 		setUserData,
+		reverseString,
+		loadBook
 	} from '../components/functions/globalfunctions.svelte';
 	import { loggedIn, firstVisitB, userPrefs, activeTab } from '../components/stores/stores-persist';
 
@@ -31,22 +34,23 @@
 	import Pdf from '../components/pdf.svelte';
 	import { pb } from '$lib/pocketbase';
 	import Section from '../components/section.svelte';
+	import Loadingscreen from '../components/loadingscreen.svelte';
 	// refreshSession()
 	if ($page.url.searchParams) {
-		let urlParams = $page.url.searchParams
+		let urlParams = $page.url.searchParams;
 		if (urlParams.has('confirm-verification')) {
-			const token = $page.url.searchParams.get('confirm-verification');
+			const token = urlParams.get('confirm-verification');
 			verifyEmail(token);
-		}
-		if (urlParams.has('confirm-password-reset')) {	
-			$modalCall = 'confirm-password-reset'
-		}
-		console.log(urlParams)
-		if (urlParams.has('confirm-email-change')) {
+		} else if (urlParams.has('confirm-password-reset')) {
+			$modalCall = 'confirm-password-reset';
+		} else if (urlParams.has('confirm-email-change')) {
 			$modalCall = 'confirm-email-change';
+		} else if (urlParams.has('book')) {
+			const bookId = urlParams.get('book');
+			console.log(bookId);
+			loadBook(bookId);
 		}
 	}
-	$: console.log($activeTab)
 
 	const token = $page.url.searchParams.get('confirm-verification');
 	setUserData();
@@ -58,7 +62,7 @@
 			await pb.collection('users').confirmVerification(token);
 		} catch (err) {
 			console.log(err);
-			$notification = err.data.message + ' Error code: ' + err.data.code + '#error'
+			$notification = err.data.message + ' Error code: ' + err.data.code + '#error';
 		} finally {
 			$notification =
 				'Your email has been succesfully verified. You can now <a href="/account/login">log in</a>!#positive';
@@ -72,19 +76,23 @@
 			topmenuopen.set(false);
 		}
 	};
-	// $notification = 'Saving spellsheet...#loading';
-	// $notification = 'Spellsheet saved!#positive';
+
 	$: $notification, clearTimeout(), showNotification();
 
 	function showNotification() {
 		if ($notification) {
-			$notification.length > 120 ? (timeOut = 8000) : $notification.length > 80 ? (timeOut = 6500) : $notification.length > 60 ? (timeOut = 5000) : (timeOut = 4000)
+			$notification.length > 120
+				? (timeOut = 8000)
+				: $notification.length > 80
+				? (timeOut = 6500)
+				: $notification.length > 60
+				? (timeOut = 5000)
+				: (timeOut = 4000);
 			const destroy = setTimeout(() => {
 				$notification = '';
 			}, timeOut);
 		}
 	}
-
 	onMount(() => {
 		refreshSession();
 	});
@@ -119,7 +127,6 @@
 
 	let body;
 	let scrollTop;
-	console.log($firstVisitB);
 	if ($firstVisitB === true) {
 		$modalCall = 'welcome';
 		$firstVisitB = false;
@@ -141,14 +148,20 @@
 				// $quickQuery = e.key;
 			}
 		} else if (e.key == 'Escape') {
-			$notification = ''
+			$notification = '';
 		}
 	}
 </script>
 
 <Body
 	bind:this={body}
-	class="{$topmenuopen ? 'noscroll' : $sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''} {$userPrefs.theme}"
+	class="{$topmenuopen
+		? 'noscroll'
+		: $sidemenuopen
+		? 'noscroll'
+		: $modalCall
+		? 'noscroll'
+		: ''} {$userPrefs.theme}"
 />
 
 <TopMenu />
@@ -193,9 +206,25 @@
 			: ''}"
 	/>
 	<Section name="footer">
-		<p style="text-align:center; font-size: .9rem">Created by <a target="_blank" rel="noreferrer" href="https://semhak.com">Sem Hak</a>. <button class="naked" style="padding: 0; text-decoration: underline" on:click={()=> $modalCall = 'terms'}>Terms and conditions</button></p>
-		<p style="text-align:center; font-size: .9rem; opacity: .7">Spells and related content originating from the official D&D handbooks are the intellectual property of Wizards of the Coast LLC.</p>
-		<p style="text-align:center; font-size: .9rem; opacity: .7">Check out the source code of this website on <a target="_blank" rel="noreferrer" href="https://github.com/grabbels/Spellbook-Pro">GitHub</a>.</p>
+		<p style="text-align:center; font-size: .9rem">
+			Created by <a target="_blank" rel="noreferrer" href="https://semhak.com">Sem Hak</a>.
+			<button
+				class="naked"
+				style="padding: 0; text-decoration: underline"
+				on:click={() => ($modalCall = 'terms')}>Terms and conditions</button
+			>
+		</p>
+		<p style="text-align:center; font-size: .9rem; opacity: .7">
+			Spells and related content originating from the official D&D handbooks are the intellectual
+			property of Wizards of the Coast LLC.
+		</p>
+		<p style="text-align:center; font-size: .9rem; opacity: .7">
+			Check out the source code of this website on <a
+				target="_blank"
+				rel="noreferrer"
+				href="https://github.com/grabbels/Spellbook-Pro">GitHub</a
+			>.
+		</p>
 	</Section>
 </div>
 
@@ -240,6 +269,9 @@
 	<Modal />
 {/if}
 
+{#if $loadingScreen}
+	<Loadingscreen />
+{/if}
 <svelte:window on:keydown={(e) => handleKeyDown(e)} />
 
 <style lang="scss">

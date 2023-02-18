@@ -20,7 +20,8 @@
 		newBook,
 		handleSave,
 		handleLoad,
-		updateBook
+		updateBook,
+		shareBook
 	} from './functions/globalfunctions.svelte';
 	import { currentUser } from '$lib/pocketbase';
 	import { is_function } from 'svelte/internal';
@@ -34,6 +35,14 @@
 				let updateDone = await updateBook($activeTab.id, 'name', titleInput.value);
 				if (updateDone) {
 					console.log(updateDone);
+				}
+			} else {
+				$activeTab.name = titleInput.value
+				for (let i = 0; i < $openSpellbooks.length; i++) {
+					if ($openSpellbooks[i].id == $activeTab.id) {
+						$openSpellbooks[i].name = titleInput.value
+					}
+					
 				}
 			}
 		} else {
@@ -105,27 +114,29 @@
 				{#if $pagetitle === 'Home'}
 					<Button
 						on:click={newBook}
-						href=""
 						type="fill desktop"
 						icon="ri-health-book-line"
 						text="New"
 					/>
 					<Button
 						on:click={handleLoad}
-						href=""
 						type="fill desktop"
 						icon="ri-folder-open-line"
 						text="Open"
 					/><Button
 						disabled={$spellListEmpty}
 						on:click={() => handleSave($activeTab.id)}
-						href=""
 						type="fill desktop"
 						icon="ri-save-3-line"
 						text="Save"
+					/><Button
+						disabled={$spellListEmpty}
+						on:click={() => shareBook()}
+						type="fill desktop"
+						icon="ri-share-line"
+						text="Share"
 					/>
 					<Button
-						href=""
 						on:click={() => topMenuOpenClose()}
 						type="outline"
 						icon="ri-menu-2-line"

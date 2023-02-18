@@ -76,16 +76,11 @@
 		if (!saveName.value || !saveLevel.value || !saveClass.value) {
 			$notification = 'Please fill in all the fields.#alert';
 		} else if (
-			!filter.clean(saveName.value).includes('*') &&
-			!filter.clean(saveDescription.value).includes('*')
+			(!saveDescription.value && !filter.clean(saveName.value).includes('*')) ||
+			(!filter.clean(saveName.value).includes('*') &&
+				!filter.clean(saveDescription.value).includes('*'))
 		) {
 			loadingSave = 'loading';
-			if (overwriteId) {
-				// const { error } = await supabaseClient.from('spellbooks').delete().eq('id', overwriteId);
-				// if (error) {
-				// 	console.log(error);
-				// }
-			}
 			const data = {
 				name: saveName.value,
 				class: saveClass.value,
@@ -101,11 +96,6 @@
 				try {
 					const record = await pb.collection('spellbooks').update(overwriteId, data);
 					if (record) {
-						// for (let i = 0; i < $openSpellbooks.length; i++) {
-						// 	if ($openSpellbooks[i].open_tab === true) {
-						// 		$openSpellbooks.splice(i, 1);
-						// 	}
-						// }
 						overwriteId = '';
 						loadSpellsheetsByUserId();
 						$modalCall = '';
@@ -125,15 +115,16 @@
 								$openSpellbooks.splice(i, 1);
 							}
 						}
-						console.log(record);
+						let createdBook = record;
+						createdBook.from_load = true;
 						overwriteId = '';
 						$savePrompt = false;
 						$topmenuopen = false;
-						$openSpellbooks.push(record);
-						$activeTab = record;
+						$openSpellbooks.push(createdBook);
+						$activeTab = createdBook;
 						$openSpellbooks = $openSpellbooks;
 						if ($bookToEdit) {
-							$lookupBook = record;
+							$lookupBook = createdBook;
 							$bookToEdit = '';
 							$modalCall = 'spellbook';
 							$savePrompt = false;
@@ -210,7 +201,7 @@
 					<label for="name">Spellbook name</label>
 					<input
 						bind:this={saveName}
-						value={$bookToEdit.name ? $bookToEdit.name : ''}
+						value={$bookToEdit.name ? $bookToEdit.name : $activeTab.name && $activeTab.name != 'Untitled spellbook' ? $activeTab.name : ''}
 						name="name"
 						type="text"
 						maxlength="40"

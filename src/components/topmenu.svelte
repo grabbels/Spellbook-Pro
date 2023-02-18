@@ -3,13 +3,12 @@
 	import Section from './section.svelte';
 	import { activeSpells } from './stores/stores-persist';
 	import { spellListEmpty, notification, modalCall, topmenuopen, pagetitle } from './stores/stores';
-	import { topMenuOpenClose, empty, newBook } from './functions/globalfunctions.svelte';
+	import { topMenuOpenClose, empty, newBook, shareBook } from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
 	import Pdf from './pdf.svelte';
 	import { currentUser } from '$lib/pocketbase';
 	let exportpdf = false;
 	let fileinput;
-
 	function download() {
 		var activeSpellsSave = JSON.stringify($activeSpells);
 		// var favoriteSpellsSave = localStorage.favoriteSpells.split(',');
@@ -76,14 +75,21 @@
 				text="Import"
 			/> -->
 			<Button
-				on:click={() => ($modalCall = 'options', topMenuOpenClose())}
+				on:click={() => (($modalCall = 'options'), topMenuOpenClose())}
 				type="fill"
 				icon="ri-settings-line"
 				text="Options"
 			/>
 			<Button
+				disabled={$spellListEmpty}
+				on:click={() => shareBook()}
+				type="fill mobile"
+				icon="ri-share-line"
+				text="Share"
+			/>
+			<Button
 				<Button
-				on:click={() => newBook(), topMenuOpenClose()}
+				on:click={(() => newBook(), topMenuOpenClose())}
 				href=""
 				type="fill mobile"
 				icon="ri-health-book-line"
@@ -91,7 +97,7 @@
 			/>
 			<Button
 				disabled={$spellListEmpty}
-				on:click={() => save(), topMenuOpenClose()}
+				on:click={(() => save(), topMenuOpenClose())}
 				href=""
 				type="fill mobile"
 				icon="ri-save-3-line"
@@ -187,7 +193,12 @@
 				icon="ri-refresh-line"
 				text="Refresh list"
 			/> -->
-			<Button on:click={()=> topMenuOpenClose()} type="outline alt" icon="ri-close-line" text="close" />
+			<Button
+				on:click={() => topMenuOpenClose()}
+				type="outline alt"
+				icon="ri-close-line"
+				text="close"
+			/>
 		</div>
 	</div>
 </div>

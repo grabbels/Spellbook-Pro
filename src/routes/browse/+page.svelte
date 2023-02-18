@@ -37,7 +37,7 @@
 
 		try {
 			const records = await pb.collection('spellbooks').getFullList(200 /* batch size */, {
-				// filter: 'published=true'
+				filter: `published = true`
 			});
 			if (records) {
 				publishedBooks = records;

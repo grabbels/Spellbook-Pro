@@ -27,3 +27,5 @@ export const profileUser = writable('');
 export const userProfile = writable('');
 export const summaryOpen = writable(false);
 export const editingTitle = writable(false);
+export const loadingScreen = writable(false);
+export const shareBookId = writable('');

@@ -69,7 +69,6 @@
 		} else {
 			$filters = true;
 		}
-		console.log($activeSpells.length)
 		if ($activeSpells.length) {
 			$activeSpells.filter((item) => {
 				if ($actionFilter || $rangeFilter || $searchFilter || $saveFilter) {

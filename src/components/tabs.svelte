@@ -94,11 +94,11 @@
 						}
 					}}
 					class:active={$activeTab.id === spellbook.id}
-					style="--bookcolor: {spellbook.color}"
+					style="--bookcolor: {spellbook.color ? spellbook.color : 'var(--white)'}"
 				>
 					<div bind:this={tabName[index]}>
 						{#if spellbook.unsaved === true}
-							<span style="color: {spellbook.color}">●</span>
+							<span style="color: {spellbook.color ? spellbook.color : 'var(--white)'}">●</span>
 						{/if}
 						{spellbook.name}
 					</div>

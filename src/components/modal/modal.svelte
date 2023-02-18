@@ -38,6 +38,7 @@
 	import ConfirmEmailChange from './confirm-email-change.svelte';
 	import ConfirmPasswordReset from './confirm-password-reset.svelte';
 	import Spellbook from './spellbook.svelte';
+	import Share from './share.svelte';
 	export let modal;
 	let levelList = [];
 	const levels = [
@@ -105,7 +106,7 @@
 	<div
 		class="modal_wrapper"
 		bind:this={modal}
-		in:transition={{ fn: fly, duration: 100 }}
+		in:transition={{ fn: fly, duration: 250 }}
 		out:fade={{ duration: 100, delay: 0 }}
 		on:click|self={() => closeModal()}
 		role="button"
@@ -138,6 +139,10 @@
 			{:else if $modalCall.includes('lookup')}
 				<div class="modal_inner">
 					<Lookup />
+				</div>
+			{:else if $modalCall.includes('share')}
+				<div class="modal_inner">
+					<Share />
 				</div>
 			{:else if $modalCall.includes('confirm-email-change')}
 				<div class="modal_inner">
@@ -196,7 +201,7 @@
 		bottom: 0;
 		right: 0;
 		background-color: rgba(0, 0, 0, 0.4);
-		backdrop-filter: blur(3px);
+		backdrop-filter: blur(7px);
 		z-index: 998;
 		display: flex;
 		justify-content: center;
@@ -287,6 +292,10 @@
 						font-size: 2rem;
 					}
 				}
+			}
+			&.share {
+				max-width: 600px;
+				// padding-top: .4rem;
 			}
 		}
 		.card {
