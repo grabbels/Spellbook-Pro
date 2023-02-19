@@ -9,6 +9,7 @@
 	import Header from '../components/header.svelte';
 	import AddSpells from '../components/addspells.svelte';
 	import TopMenu from '../components/topmenu.svelte';
+	import Inky from '$lib/inky.png';
 	import {
 		sidemenuopen,
 		topmenuopen,
@@ -18,7 +19,9 @@
 		modalCall,
 		userNickname,
 		editingTitle,
-		loadingScreen
+		loadingScreen,
+		bookmarksOpen,
+		filtersOpen
 	} from '../components/stores/stores';
 	import {
 		retrieveSession,
@@ -31,11 +34,12 @@
 
 	import '@fontsource/kanit';
 	import Modal from '../components/modal/modal.svelte';
-	import Pdf from '../components/pdf.svelte';
+	import Pdf from '../components/functions/pdf.svelte';
 	import { pb } from '$lib/pocketbase';
 	import Section from '../components/section.svelte';
 	import Loadingscreen from '../components/loadingscreen.svelte';
 	import Footer from '../components/footer.svelte';
+	let tutorial;
 	// refreshSession()
 	if ($page.url.searchParams) {
 		let urlParams = $page.url.searchParams;
@@ -52,6 +56,9 @@
 			loadBook(bookId);
 		}
 	}
+
+	// $modalCall = 'tutorial'
+
 	const token = $page.url.searchParams.get('confirm-verification');
 	setUserData();
 	if (token) {
@@ -81,16 +88,20 @@
 
 	function showNotification() {
 		if ($notification) {
-			$notification.length > 120
+			$notification.includes('tutorial')
+				? (timeOut = 0)
+				: $notification.length > 120
 				? (timeOut = 8000)
 				: $notification.length > 80
 				? (timeOut = 6500)
 				: $notification.length > 60
 				? (timeOut = 5000)
 				: (timeOut = 4000);
-			const destroy = setTimeout(() => {
-				$notification = '';
-			}, timeOut);
+			if (timeOut > 0) {
+				setTimeout(() => {
+					$notification = '';
+				}, timeOut);
+			}
 		}
 	}
 	onMount(() => {
@@ -99,21 +110,6 @@
 
 	$: $pagetitle, ($topmenuopen = false);
 
-	async function checkIfLoggedIn() {
-		// if ($loggedIn === null) {
-		const {
-			data: { user }
-		} = await supabaseClient.auth.getUser();
-		if (user) {
-			$loggedIn = true;
-			$userNickname = user.user_metadata.nickname;
-		} else {
-			$userNickname = null;
-			$loggedIn = false;
-		}
-
-		// }
-	}
 	if (!$session) {
 		let promiseSession = retrieveSession();
 		promiseSession.then((value) => {
@@ -151,6 +147,40 @@
 			$notification = '';
 		}
 	}
+	let tutPage = 0;
+	// doTutorial();
+	function doTutorial() {
+		switch (tutPage) {
+			case 0:
+				tutorial = 'tut';
+				$notification =
+					'Welcome to Spellbook Pro! This tutorial will take you through the basics of the app.#tutorial';
+				break;
+			case 1:
+				tutorial = 'tut tut-spellsheet';
+				// window.scrollTo(0,400)
+				$notification =
+					'This is the spellsheet. It displays all the spells in your open spellbook.#tutorial';
+				break;
+			case 2:
+				tutorial = 'tut tut-spell';
+				$notification = 'This is a spell card. You can click it to learn more about it!#tutorial';
+				break;
+			case 3:
+				tutorial = 'tut tut-bookmarks';
+				$notification =
+					'These are bookmarks, use them to travel quickly between different levels of spells.#tutorial';
+				break;
+			case 4:
+				tutorial = 'tut tut-bookmarks';
+				$notification =
+					'These are bookmarks, use them to travel quickly between different levels of spells.#tutorial';
+				break;
+
+			default:
+				break;
+		}
+	}
 </script>
 
 <Body
@@ -161,7 +191,7 @@
 		? 'noscroll'
 		: $modalCall
 		? 'noscroll'
-		: ''} {$userPrefs.theme}"
+		: ''} {$userPrefs.theme} {tutorial ? tutorial : ''}"
 />
 
 <TopMenu />
@@ -178,15 +208,13 @@
 	<main>
 		{#key $pagetitle}
 			{#if $pagetitle != 'Login' && $pagetitle != 'Password reset'}
-				<div>
-					<!-- {#if $pagetitle == 'Home'}
+				<!-- {#if $pagetitle == 'Home'}
 					<Section>
 						<Tabs />
 					</Section>
 					{/if} -->
 
-					<Header />
-				</div>
+				<Header />
 			{/if}
 		{/key}
 		<!-- {#key $pagetitle} -->
@@ -215,7 +243,7 @@
 		<button
 			in:fly={{ y: 10, duration: 300, delay: 100 }}
 			out:fly={{ y: 10, duration: 200 }}
-			on:click={() => ($notification = '')}
+			on:click={() => ($notification.includes('tutorial') ? '' : ($notification = ''))}
 			class:show={$notification}
 			class="notification"
 		>
@@ -230,17 +258,29 @@
 					? 'positive'
 					: $notification.split('#')[1].includes('info')
 					? 'info'
+					: $notification.split('#')[1].includes('tutorial')
+					? 'tutorial'
 					: ''} notification_inner"
 			>
 				<div in:scale={{ duration: 200 }}>
 					<i class="ri-error-warning-fill" /><i class="ri-alert-fill" />
 					<i class="ri-checkbox-circle-line" /><i class="ri-information-line" />
+					<img src={Inky} alt="" />
 					<div class="loading"><i class="ri-loader-5-line" /></div>
 				</div>
 				<div>
 					<p>
 						{@html $notification.split('#')[0]}
 					</p>
+				</div>
+				<div class="button_container">
+					<button
+						on:click={() => {
+							tutPage++;
+							doTutorial();
+						}}
+						class="button outline accent">continue <i class="ri-arrow-right-s-line" /></button
+					>
 				</div>
 			</div>
 		</button>
@@ -391,6 +431,9 @@
 					}
 				}
 			}
+			.button_container {
+				display: none;
+			}
 			i {
 				display: none;
 				font-size: 1.5rem;
@@ -398,6 +441,33 @@
 				// margin-right: .5rem;
 				@media only screen and (max-width: 1023px) {
 					float: left;
+				}
+			}
+			&.tutorial {
+				padding-left: 1.5rem;
+				padding-right: 1.5rem;
+				grid-template-columns: calc(70px + 1rem) 1fr;
+				grid-template-rows: 1fr 51.2px;
+				// gap: 1rem;
+				border-radius: 12px;
+				img {
+					display: block;
+					width: 70px;
+					height: auto;
+				}
+				.button_container {
+					display: inline-block;
+					text-align: right;
+					margin-bottom: 0;
+					grid-column: span 2;
+					button {
+						display: inline-block;
+						padding-right: 0.3rem;
+						i {
+							display: inline;
+							vertical-align: -6.5px;
+						}
+					}
 				}
 			}
 			&.error {
