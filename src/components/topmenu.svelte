@@ -50,10 +50,10 @@
 		};
 	};
 </script>
-
+<!-- 
 {#if exportpdf}
 	<Pdf working={exportpdf} />
-{/if}
+{/if} -->
 <div class="topmenu" style="background-image: url('{bgalt}')" class:open={$topmenuopen}>
 	<div class="wrapper">
 		<div class="menu_left">
