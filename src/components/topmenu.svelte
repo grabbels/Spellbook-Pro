@@ -3,7 +3,7 @@
 	import Section from './section.svelte';
 	import { activeSpells } from './stores/stores-persist';
 	import { spellListEmpty, notification, modalCall, topmenuopen, pagetitle } from './stores/stores';
-	import { topMenuOpenClose, empty, newBook, shareBook } from './functions/globalfunctions.svelte';
+	import { topMenuOpenClose, empty, newBook, shareBook, handleSave, handleLoad } from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
 	import Pdf from './pdf.svelte';
 	import { currentUser } from '$lib/pocketbase';
@@ -75,35 +75,38 @@
 				text="Import"
 			/> -->
 			<Button
-				on:click={() => (($modalCall = 'options'), topMenuOpenClose())}
+				on:click={() => {$modalCall = 'options'; topMenuOpenClose()}}
 				type="fill"
 				icon="ri-settings-line"
 				text="Options"
 			/>
 			<Button
 				disabled={$spellListEmpty}
-				on:click={() => shareBook()}
+				on:click={() => {shareBook(); topMenuOpenClose()}}
 				type="fill mobile"
 				icon="ri-share-line"
 				text="Share"
 			/>
 			<Button
 				<Button
-				on:click={(() => newBook(), topMenuOpenClose())}
-				href=""
+				on:click={() => {newBook(); topMenuOpenClose()}}
 				type="fill mobile"
 				icon="ri-health-book-line"
 				text="New"
 			/>
 			<Button
 				disabled={$spellListEmpty}
-				on:click={(() => save(), topMenuOpenClose())}
-				href=""
+				on:click={() => {handleSave(); topMenuOpenClose()}}
 				type="fill mobile"
 				icon="ri-save-3-line"
 				text="Save"
 			/>
-			<Button on:click={load} href="" type="fill mobile" icon="ri-folder-open-line" text="Open" />
+			<Button
+				on:click={() => {handleLoad(); topMenuOpenClose()}}
+				type="fill mobile"
+				icon="ri-folder-open-line"
+				text="Open"
+			/>
 			<!-- <Button
 				on:click={() => {
 					fileinput.click();
@@ -131,14 +134,14 @@
 			/> -->
 			<Button
 				disabled={$spellListEmpty}
-				on:click={(() => empty(), topMenuOpenClose())}
+				on:click={() => {empty(); topMenuOpenClose()}}
 				href=""
 				type="outline alt"
 				icon="ri-delete-bin-line"
 				text="Clear spellbook"
 			/>
 			<Button
-				on:click={() => (($modalCall = 'submitspell'), topMenuOpenClose())}
+				on:click={() => {$modalCall = 'submitspell'; topMenuOpenClose()}}
 				href=""
 				type="fill blue"
 				icon="ri-file-search-line"
