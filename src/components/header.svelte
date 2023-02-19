@@ -55,7 +55,7 @@
 		}
 	}
 </script>
-
+<button on:click={()=>$modalCall = 'tutorial'}>Tutorial</button>
 <Section name="header">
 	<header>
 		{#key $activeTab.name}

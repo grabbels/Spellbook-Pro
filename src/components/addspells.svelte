@@ -166,7 +166,7 @@
 		z-index: 3;
 		height: -webkit-fill-available;
 		&.open {
-			transform: translateX(0%);
+			transform: translateX(-100%);
 		}
 		&:before {
 			position: absolute;

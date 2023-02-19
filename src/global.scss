@@ -53,6 +53,11 @@ body {
 
 	&.noscroll {
 		overflow: hidden;
+
+		.modal_wrapper {
+			// transform: translateX(-10px);
+			padding-right: var(--scrollbarwidth);
+		}
 	}
 }
 
@@ -243,19 +248,22 @@ label {
 }
 
 body.tut {
-	--inactive: brightness(0.3) contrast(0.95) blur(4px);
+	--inactive: brightness(0.75) contrast(0.95) blur(4px);
 
 	@keyframes attention {
 		0% {
-			border: 3px solid transparent;
+			outline: 3px solid transparent;
+			outline-offset: 4px;
 		}
 
 		50% {
-			border: 3px solid var(--accent);
+			outline: 3px solid var(--yellow);
+			outline-offset: 4px;
 		}
 
 		100% {
-			border: 3px solid transparent;
+			outline: 3px solid transparent;
+			outline-offset: 4px;
 		}
 	}
 
@@ -283,7 +291,7 @@ body.tut {
 			filter: none;
 
 			.grid_wrapper:not(#summary) {
-				animation: attention 1.5s infinite ease-in-out;
+				animation: attention 1s infinite ease-in-out;
 			}
 		}
 
@@ -316,7 +324,7 @@ body.tut {
 					pointer-events: auto !important;
 
 					.card_inner {
-						animation: attention 1.5s infinite ease-in-out;
+						animation: attention 1s infinite ease-in-out;
 					}
 				}
 			}
@@ -327,6 +335,72 @@ body.tut {
 				filter: none;
 			}
 		}
+	}
+
+	&.tut-spell_controls {
+		section.spellsheet {
+			filter: none;
+		}
+
+		.panel.bookmarks {
+			filter: var(--inactive);
+		}
+
+		.card.item {
+			filter: var(--inactive);
+		}
+
+		.grid_wrapper {
+			h2 {
+				filter: var(--inactive);
+			}
+
+			.grid:first-of-type {
+				.card.item:first-child {
+					filter: none;
+
+					.card_inner {
+						&:hover {
+							border-color: transparent !important;
+
+							.fold i {
+								color: var(--translucent) !important;
+							}
+						}
+					}
+
+					.controls {
+						button {
+							pointer-events: auto !important;
+						}
+
+						padding-left: 1rem;
+						padding-bottom: .3rem;
+						border-radius: 12px;
+						opacity: 1;
+						animation: attention 1s infinite ease-in-out;
+					}
+				}
+			}
+		}
+
+		.modal {
+			.card {
+				filter: none;
+
+			}
+		}
+	}
+
+	&.tut-filters {
+		section.filters {
+			filter: none;
+			.filters_wrapper {
+				animation: attention 1s infinite ease-in-out;
+			}
+
+		}
+
 	}
 
 	&.tut-bookmarks {
@@ -351,7 +425,112 @@ body.tut {
 
 			.bookmarks.panel {
 				filter: none;
-				animation: attention 1.5s infinite ease-in-out;
+				animation: attention 1s infinite ease-in-out;
+			}
+		}
+	}
+
+	&.tut-tabs {
+		section.tabs {
+			filter: none;
+
+			.tabs_wrapper {
+				animation: attention 1s infinite ease-in-out;
+			}
+
+		}
+
+	}
+
+	&.tut-toolbar {
+		section.header {
+			filter: none;
+
+			.title_wrapper {
+				filter: var(--inactive);
+			}
+
+			.header_left {
+				border-radius: 6px;
+
+				input,
+				button,
+				.button {
+					margin-bottom: 0;
+				}
+
+				animation: attention 1s infinite ease-in-out;
+			}
+
+			.header_right {
+				filter: var(--inactive);
+			}
+		}
+
+	}
+
+	&.tut-menu {
+		.topmenu {
+			animation: attention 1s infinite ease-in-out;
+			outline-offset: -10px !important;
+		}
+	}
+
+	&.tut-quicksearch,
+	&.tut-account,
+	&.tut-login,
+	&.tut-premade {
+		section.header {
+			filter: none;
+
+			.title_wrapper {
+				filter: var(--inactive);
+			}
+
+			.header_right {
+				border-radius: 12px;
+
+				input,
+				button,
+				.button {
+					margin-bottom: 0;
+				}
+			}
+
+			.header_left {
+				filter: var(--inactive);
+			}
+		}
+	}
+
+	&.tut-quicksearch {
+		section.header {
+			input {
+				pointer-events: auto !important;
+				animation: attention 1s infinite ease-in-out;
+			}
+		}
+	}
+
+	&.tut-account {
+		section.header {
+			.button[href="/account"] {
+				animation: attention 1s infinite ease-in-out;
+			}
+		}
+	}
+	&.tut-login {
+		section.header {
+			.button[href="/account/login"] {
+				animation: attention 1s infinite ease-in-out;
+			}
+		}
+	}
+
+	&.tut-premade {
+		section.header {
+			.button[href="/browse"] {
+				animation: attention 1s infinite ease-in-out;
 			}
 		}
 	}

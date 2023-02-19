@@ -142,8 +142,6 @@
 			orderSpells();
 		});
 	}
-
-	
 </script>
 
 <div
@@ -352,6 +350,13 @@
 									text="Open saved spellbook"
 									icon="ri-folder-open-line"
 								/>
+								<p>Need a refresher? Check out the tutorial!</p>
+								<Button
+									type="fill"
+									text="Tutorial"
+									icon="ri-question-line"
+									on:click={() => ($modalCall = 'tutorial')}
+								/>
 							{:else}
 								<p>Without an account you won't be able to save your spellbooks.</p>
 								<Button
@@ -373,6 +378,13 @@
 									type="fill"
 									text="Log in"
 									icon="ri-login-circle-line"
+								/>
+								<p>Not sure where to start? Check out the tutorial!</p>
+								<Button
+									type="fill"
+									text="Tutorial"
+									icon="ri-question-line"
+									on:click={() => ($modalCall = 'tutorial')}
 								/>
 							{/if}
 						</div>

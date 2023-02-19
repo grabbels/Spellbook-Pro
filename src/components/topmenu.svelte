@@ -3,53 +3,61 @@
 	import Section from './section.svelte';
 	import { activeSpells } from './stores/stores-persist';
 	import { spellListEmpty, notification, modalCall, topmenuopen, pagetitle } from './stores/stores';
-	import { topMenuOpenClose, empty, newBook, shareBook, handleSave, handleLoad } from './functions/globalfunctions.svelte';
+	import {
+		topMenuOpenClose,
+		empty,
+		newBook,
+		shareBook,
+		handleSave,
+		handleLoad
+	} from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
 	import Pdf from './functions/pdf.svelte';
 	import { currentUser } from '$lib/pocketbase';
 	let exportpdf = false;
 	let fileinput;
-	function download() {
-		var activeSpellsSave = JSON.stringify($activeSpells);
-		// var favoriteSpellsSave = localStorage.favoriteSpells.split(',');
-		// favoriteSpellsSave.splice(0, 0, 'favorites');
-		// var favoriteSpellsSave = favoriteSpellsSave.toString();
-		// var saveFileString = activeSpellsSave + ',' + favoriteSpellsSave;
-		var saveFileString = activeSpellsSave;
-		let a = document.createElement('a');
-		var name = prompt('Filename:');
-		if (name !== null) {
-			if (typeof a.download !== 'undefined') a.download = name + '.json';
-			a.href = URL.createObjectURL(
-				new Blob([saveFileString], {
-					type: 'application/octet-stream'
-				})
-			);
-			a.dispatchEvent(new MouseEvent('click'));
-		}
-	}
+	// function download() {
+	// 	var activeSpellsSave = JSON.stringify($activeSpells);
+	// 	// var favoriteSpellsSave = localStorage.favoriteSpells.split(',');
+	// 	// favoriteSpellsSave.splice(0, 0, 'favorites');
+	// 	// var favoriteSpellsSave = favoriteSpellsSave.toString();
+	// 	// var saveFileString = activeSpellsSave + ',' + favoriteSpellsSave;
+	// 	var saveFileString = activeSpellsSave;
+	// 	let a = document.createElement('a');
+	// 	var name = prompt('Filename:');
+	// 	if (name !== null) {
+	// 		if (typeof a.download !== 'undefined') a.download = name + '.json';
+	// 		a.href = URL.createObjectURL(
+	// 			new Blob([saveFileString], {
+	// 				type: 'application/octet-stream'
+	// 			})
+	// 		);
+	// 		a.dispatchEvent(new MouseEvent('click'));
+	// 	}
+	// }
 
-	function save() {
-		$modalCall = 'save';
-	}
-	function load() {
-		if ($currentUser) {
-			$modalCall = 'load';
-		} else {
-			$notification = 'You need to <a href="/account/login">log in</a> to load spellbooks#alert';
-		}
-	}
+	// function save() {
+	// 	$modalCall = 'save';
+	// }
+	// function load() {
+	// 	if ($currentUser) {
+	// 		$modalCall = 'load';
+	// 	} else {
+	// 		$notification = 'You need to <a href="/account/login">log in</a> to load spellbooks#alert';
+	// 	}
+	// }
 
-	const onFileSelected = (e) => {
-		let file = e.target.files[0];
-		let reader = new FileReader();
-		reader.readAsText(file);
-		reader.onload = (e) => {
-			$activeSpells = [];
-			$activeSpells = JSON.parse(e.target.result);
-		};
-	};
+	// const onFileSelected = (e) => {
+	// 	let file = e.target.files[0];
+	// 	let reader = new FileReader();
+	// 	reader.readAsText(file);
+	// 	reader.onload = (e) => {
+	// 		$activeSpells = [];
+	// 		$activeSpells = JSON.parse(e.target.result);
+	// 	};
+	// };
 </script>
+
 <!-- 
 {#if exportpdf}
 	<Pdf working={exportpdf} />
@@ -75,34 +83,49 @@
 				text="Import"
 			/> -->
 			<Button
-				on:click={() => {$modalCall = 'options'; topMenuOpenClose()}}
+				on:click={() => {
+					$modalCall = 'options';
+					topMenuOpenClose();
+				}}
 				type="fill"
 				icon="ri-settings-line"
 				text="Options"
 			/>
 			<Button
 				disabled={$spellListEmpty}
-				on:click={() => {shareBook(); topMenuOpenClose()}}
+				on:click={() => {
+					shareBook();
+					topMenuOpenClose();
+				}}
 				type="fill mobile"
 				icon="ri-share-line"
 				text="Share"
 			/>
 			<Button
 				<Button
-				on:click={() => {newBook(); topMenuOpenClose()}}
+				on:click={() => {
+					newBook();
+					topMenuOpenClose();
+				}}
 				type="fill mobile"
 				icon="ri-health-book-line"
 				text="New"
 			/>
 			<Button
 				disabled={$spellListEmpty}
-				on:click={() => {handleSave(); topMenuOpenClose()}}
+				on:click={() => {
+					handleSave();
+					topMenuOpenClose();
+				}}
 				type="fill mobile"
 				icon="ri-save-3-line"
 				text="Save"
 			/>
 			<Button
-				on:click={() => {handleLoad(); topMenuOpenClose()}}
+				on:click={() => {
+					handleLoad();
+					topMenuOpenClose();
+				}}
 				type="fill mobile"
 				icon="ri-folder-open-line"
 				text="Open"
@@ -134,14 +157,20 @@
 			/> -->
 			<Button
 				disabled={$spellListEmpty}
-				on:click={() => {empty(); topMenuOpenClose()}}
+				on:click={() => {
+					empty();
+					topMenuOpenClose();
+				}}
 				href=""
 				type="outline alt"
 				icon="ri-delete-bin-line"
 				text="Clear spellbook"
 			/>
 			<Button
-				on:click={() => {$modalCall = 'submitspell'; topMenuOpenClose()}}
+				on:click={() => {
+					$modalCall = 'submitspell';
+					topMenuOpenClose();
+				}}
 				href=""
 				type="fill blue"
 				icon="ri-file-search-line"
@@ -211,7 +240,6 @@
 <style lang="scss">
 	.topmenu {
 		background-color: var(--bg);
-		position: relative;
 		width: 100vw;
 		background-position: center center;
 		background-size: cover;
@@ -223,11 +251,14 @@
 		z-index: 3;
 		height: 115px;
 		@media only screen and (max-width: 1024px) {
-			height: auto;
+			height: max-content;
 			top: auto;
 			bottom: 0;
-			transform: translateY(100%);
 			transition: transform 0.3s;
+			transform: translateY(100%);
+			&.open {
+				transform: translateY(0%);
+			}
 		}
 		.wrapper {
 			padding: 2rem 2rem 1.3rem;
@@ -258,9 +289,6 @@
 			bottom: 0;
 			// z-index: -1;
 			background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-		}
-		&.open {
-			transform: translateY(0%);
 		}
 	}
 </style>

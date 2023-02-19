@@ -9,7 +9,7 @@
 	import Header from '../components/header.svelte';
 	import AddSpells from '../components/addspells.svelte';
 	import TopMenu from '../components/topmenu.svelte';
-	import Inky from '$lib/inky.png';
+	import Inky from '$lib/inky-small.png';
 	import {
 		sidemenuopen,
 		topmenuopen,
@@ -28,17 +28,26 @@
 		refreshSession,
 		setUserData,
 		reverseString,
-		loadBook
+		loadBook,
+		topMenuOpenClose,
+		closeTab
 	} from '../components/functions/globalfunctions.svelte';
-	import { loggedIn, firstVisitB, userPrefs, activeTab } from '../components/stores/stores-persist';
-
+	import {
+		loggedIn,
+		firstVisitB,
+		userPrefs,
+		activeTab,
+		openSpellbooks,
+		activeSpells
+	} from '../components/stores/stores-persist';
 	import '@fontsource/kanit';
 	import Modal from '../components/modal/modal.svelte';
 	import Pdf from '../components/functions/pdf.svelte';
-	import { pb } from '$lib/pocketbase';
+	import { currentUser, pb } from '$lib/pocketbase';
 	import Section from '../components/section.svelte';
 	import Loadingscreen from '../components/loadingscreen.svelte';
 	import Footer from '../components/footer.svelte';
+	import { dummyList } from '../components/data/spells';
 	let tutorial;
 	// refreshSession()
 	if ($page.url.searchParams) {
@@ -84,7 +93,10 @@
 		}
 	};
 
-	$: $notification, clearTimeout(), showNotification();
+	$: $notification,
+		clearTimeout(),
+		showNotification(),
+		$notification === '#tutorial' ? doTutorial() : '';
 
 	function showNotification() {
 		if ($notification) {
@@ -104,7 +116,19 @@
 			}
 		}
 	}
+
+	function getScrollBarWidth() {
+		let el = document.createElement('div');
+		el.style.cssText = 'overflow:scroll; visibility:hidden; position:absolute;';
+		document.body.appendChild(el);
+		let width = el.offsetWidth - el.clientWidth;
+		el.remove();
+		return width;
+	}
+
 	onMount(() => {
+		var r = document.querySelector(':root');
+		r.style.setProperty('--scrollbarwidth', getScrollBarWidth() + 'px');
 		refreshSession();
 	});
 
@@ -148,36 +172,135 @@
 		}
 	}
 	let tutPage = 0;
+	let previousSpellbooks = $openSpellbooks;
+	let previousActiveTab = $activeTab;
+	let previousActiveSpells = $activeSpells;
+	$: tutPage, ($modalCall = '');
 	// doTutorial();
+	console.log($activeTab);
+
 	function doTutorial() {
+		//implement set dummy spelllist
 		switch (tutPage) {
 			case 0:
 				tutorial = 'tut';
+
 				$notification =
 					'Welcome to Spellbook Pro! This tutorial will take you through the basics of the app.#tutorial';
 				break;
 			case 1:
+				if ($activeTab.id == 'tutorial') {
+					$activeTab = {};
+					$openSpellbooks = [];
+				}
+				previousSpellbooks = $openSpellbooks;
+				previousActiveTab = $activeTab;
+				previousActiveSpells = $activeSpells;
+				const d = new Date();
+				let time = d.getTime();
+				let dummyTab = {};
+				dummyTab.id = 'tutorial' + time;
+				dummyTab.list = dummyList;
+				dummyTab.name = 'Epic spellbook';
+				dummyTab.color = 'var(--lightblue)';
+				$activeTab = dummyTab;
+				$activeSpells = dummyList;
+				$openSpellbooks.push(dummyTab);
+				$openSpellbooks.push({ name: 'Untitled spellbook', unsaved: true });
+				$openSpellbooks = $openSpellbooks;
+				console.log($openSpellbooks);
+				console.log($activeTab);
 				tutorial = 'tut tut-spellsheet';
 				// window.scrollTo(0,400)
 				$notification =
-					'This is the spellsheet. It displays all the spells in your open spellbook.#tutorial';
+					'<span>Spellsheet</span><br>This is the spellsheet. It displays all the spells in your open spellbook 📖#tutorial';
 				break;
 			case 2:
 				tutorial = 'tut tut-spell';
-				$notification = 'This is a spell card. You can click it to learn more about it!#tutorial';
+				$notification =
+					'<span>Spells</span><br>This is a spell card. You can click it to learn more about it! 🔍#tutorial';
 				break;
 			case 3:
-				tutorial = 'tut tut-bookmarks';
+				tutorial = 'tut tut-spell_controls';
 				$notification =
-					'These are bookmarks, use them to travel quickly between different levels of spells.#tutorial';
+					'<span>Spells</span><br>Use the controls on spells to remove them or move them up and down. 🕹️#tutorial';
 				break;
 			case 4:
+				tutorial = 'tut tut-filters';
+				$notification =
+					'<span>Filters</span><br>This is the filters-bar. Here you can –wait for it– ...filter your spellbook! Quickly need a spell with a saving throw that BBEG is really bad at? We got you covered 😎#tutorial';
+				break;
+			case 5:
+				tutorial = 'tut tut-tabs';
+				$notification =
+					'<span>Open spellbooks</span><br>This is the tab-bar. Like the tabs of your webbrowser you can use them to quickly switch between open spellbooks, which means you can have multiple spellbooks open at a time! I see you, Dungeon Masters 👀#tutorial';
+				break;
+			case 6:
 				tutorial = 'tut tut-bookmarks';
 				$notification =
-					'These are bookmarks, use them to travel quickly between different levels of spells.#tutorial';
+					'<span>Bookmarks</span><br>These are bookmarks, use them to travel quickly between different levels of spells 🚂#tutorial';
 				break;
+			case 7:
+				tutorial = 'tut tut-toolbar';
+				$notification =
+					"<span>Toolbar</span><br>This is the toolbar, here you'll find buttons to add spells, save, load and share spellbooks or create new ones 🪄#tutorial";
+				//voor kleine schermen veranderen
+				break;
+			case 8:
+				$notification =
+					"<span>Menu</span><br>This is the menu where you'll find some more obscure buttons, but hey, the more you know! 🌈#tutorial";
+				setTimeout(() => {
+					tutorial = 'tut tut-menu';
+					topMenuOpenClose();
+				}, 200);
+				break;
+			case 9:
+				topMenuOpenClose();
+				setTimeout(() => {
+					tutorial = 'tut tut-quicksearch';
+					$notification =
+						"<span>Quick spell search</span><br>This is the quick spell lookup. You can either click it or just start typing whenever you're on this page to quickly find that one spell in the heat of battle, wether it is in your spellbook or not! 🔥#tutorial";
+				}, 300);
 
-			default:
+				break;
+			case 10:
+				if ($currentUser) {
+					tutorial = 'tut tut-account';
+					$notification =
+						'<span>Account</span><br>On your account-page you can manage your saved spellbooks or change account information like your nickname or password. ✍️#tutorial';
+					break;
+				} else {
+					tutorial = 'tut tut-login';
+					$notification =
+						'<span>Account</span><br>Login or register an account to save your spellbooks for later, access them from everywhere and share them with the world! 🌍#tutorial';
+					break;
+				}
+
+			case 11:
+				tutorial = 'tut tut-premade';
+				$notification =
+					'<span>Community spellbooks</span><br>On the Premade-page you can browse and open spellsbooks made by others in the community. You can publish your own spellbooks when saving or editing them. Sharing is caring! 💑#tutorial';
+				break;
+			case 12:
+				tutorial = 'tut';
+				$notification =
+					"<span>It's a wrap!</span><br>That about sums it up! You can always start this tutorial again by using the questionmark in the top-right corner. Have fun, and don't let the byte-bugs bite! 🐛#tutorial";
+				break;
+			case 13:
+				if ($activeTab.id == 'tutorial') {
+					$activeSpells = [];
+					$openSpellbooks = [];
+					$activeTab = {};
+				}
+				// for (let i = 0; i < $openSpellbooks.length; i++) {
+				// 	if ($openSpellbooks[i].id.includes('tutorial')) {
+				// 		closeTab($openSpellbooks[i].id);
+				// 	}
+				// }
+
+				tutorial = '';
+				$notification = '';
+				tutPage = 0;
 				break;
 		}
 	}
@@ -185,18 +308,10 @@
 
 <Body
 	bind:this={body}
-	class="{$topmenuopen
-		? 'noscroll'
-		: $sidemenuopen
-		? 'noscroll'
-		: $modalCall
-		? 'noscroll'
-		: ''} {$userPrefs.theme} {tutorial ? tutorial : ''}"
+	class="{$sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''} {$userPrefs.theme} {tutorial
+		? tutorial
+		: ''}"
 />
-
-<TopMenu />
-
-<AddSpells />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 
@@ -205,6 +320,9 @@
 	class:sidemenuopen={$sidemenuopen}
 	class:topmenuopen={$topmenuopen}
 >
+	<TopMenu />
+
+	<AddSpells />
 	<main>
 		{#key $pagetitle}
 			{#if $pagetitle != 'Login' && $pagetitle != 'Password reset'}
@@ -262,7 +380,7 @@
 					? 'tutorial'
 					: ''} notification_inner"
 			>
-				<div in:scale={{ duration: 200 }}>
+				<div class="icon_container" in:scale={{ duration: 200 }}>
 					<i class="ri-error-warning-fill" /><i class="ri-alert-fill" />
 					<i class="ri-checkbox-circle-line" /><i class="ri-information-line" />
 					<img src={Inky} alt="" />
@@ -386,7 +504,7 @@
 		&.topmenuopen {
 			transform: translateY(115px);
 			@media only screen and (max-width: 1024px) {
-				transform: translateY(0px);
+				transform: unset;
 			}
 			.closemenu {
 				display: block;
@@ -402,14 +520,16 @@
 		z-index: 999;
 		display: flex;
 		justify-content: center;
-		padding: 0;
+		padding: 0 var(--padding);
 		cursor: auto;
 		.notification_inner {
+			max-width: 900px;
 			padding: 0.8rem 3rem;
 			background-color: var(--white);
 			border-radius: 50vh;
 			display: grid;
 			grid-template-columns: 34px 1fr;
+			filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
 			div {
 				display: flex;
 				align-items: center;
@@ -418,11 +538,14 @@
 				padding: 0.4rem 1rem;
 				margin: 0 0.5rem;
 			}
-			filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
 			p {
 				text-align: left;
 				color: var(--black);
 				margin-bottom: 0;
+				:global(span) {
+					font-size: 1.6rem;
+					font-weight: 500;
+				}
 				:global(a) {
 					color: var(--bg);
 					transition: 0.1s;
@@ -443,29 +566,41 @@
 					float: left;
 				}
 			}
+			img {
+				display: none;
+			}
 			&.tutorial {
-				padding-left: 1.5rem;
+				padding-left: 1rem;
 				padding-right: 1.5rem;
-				grid-template-columns: calc(70px + 1rem) 1fr;
-				grid-template-rows: 1fr 51.2px;
-				// gap: 1rem;
-				border-radius: 12px;
+				grid-template-columns: max-content 1fr;
+				grid-template-rows: 1fr max-content;
+				gap: 0 1rem;
+				border-radius: 25px;
+				p {
+					padding-top: 0.3rem;
+					padding-bottom: 0.3rem;
+				}
+				.icon_container {
+					grid-row: span 2;
+				}
 				img {
 					display: block;
-					width: 70px;
+					width: 120px;
 					height: auto;
 				}
 				.button_container {
 					display: inline-block;
-					text-align: right;
+					text-align: left;
 					margin-bottom: 0;
-					grid-column: span 2;
+					grid-column-start: 2;
 					button {
 						display: inline-block;
 						padding-right: 0.3rem;
+						margin-bottom: 0;
+						margin-top: 0.5rem;
 						i {
 							display: inline;
-							vertical-align: -6.5px;
+							vertical-align: -7.5px;
 						}
 					}
 				}
