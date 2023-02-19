@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Section from '../../../components/section.svelte';
 	import Button from '../../../components/button.svelte';
+	import Icon from '$lib/favicon.png';
 	import {
 		pagetitle,
 		notification,
@@ -228,6 +229,7 @@
 		<div bind:this={loginPanel} id="login" class="login section {showLogin}">
 			<div class="panel_inner">
 				<Button text="back" href="/" type="outline" icon="ri-arrow-left-s-line" />
+				<img src={Icon} alt="" />
 				<div class="login_form">
 					<h2>Login</h2>
 					<form

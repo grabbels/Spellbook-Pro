@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Section from '../components/section.svelte';
 	import Button from '../components/button.svelte';
-	import Icon from '$lib/favicon.png';
+	import Icon from '$lib/icon-outline.svg';
 	import {
 		pagetitle,
 		session,
@@ -198,6 +198,7 @@
 				width: 35px;
 				float: left;
 				margin-right: 0.5rem;
+				opacity: .45;
 			}
 			h2 {
 				// margin-bottom: 1rem;
