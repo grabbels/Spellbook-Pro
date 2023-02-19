@@ -155,7 +155,7 @@
 	{#if $userPrefs.bookmarks != false}
 		<Bookmarks />
 	{/if}
-	<div>
+	<div class="spellsheet">
 		<div class="grid_wrapper panel summary" class:open={$summaryOpen} id="summary">
 			{#each $activeLevels as level}
 				<ul class="grid_wrapper panel">

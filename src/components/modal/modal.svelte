@@ -39,6 +39,7 @@
 	import ConfirmPasswordReset from './confirm-password-reset.svelte';
 	import Spellbook from './spellbook.svelte';
 	import Share from './share.svelte';
+	import Tutorial from './tutorial.svelte';
 	export let modal;
 	let levelList = [];
 	const levels = [
@@ -143,6 +144,10 @@
 			{:else if $modalCall.includes('share')}
 				<div class="modal_inner">
 					<Share />
+				</div>
+			{:else if $modalCall.includes('tutorial')}
+				<div class="modal_inner">
+					<Tutorial />
 				</div>
 			{:else if $modalCall.includes('confirm-email-change')}
 				<div class="modal_inner">

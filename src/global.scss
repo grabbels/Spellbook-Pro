@@ -44,7 +44,7 @@ html {
 }
 
 body {
-	font-family: 'Kanit';
+	font-family: "Kanit";
 	margin: 0;
 	width: 100vw;
 	overflow-x: hidden;
@@ -62,7 +62,7 @@ button.inline {
 	text-decoration: underline;
 }
 
-button[type='submit'] {
+button[type="submit"] {
 	div {
 		position: absolute;
 		display: none;
@@ -149,8 +149,8 @@ button[type='submit'] {
 				display: flex;
 				flex-wrap: wrap;
 				justify-content: flex-start;
-				gap: 0.4rem .3rem;
-				margin-bottom: .4rem;
+				gap: 0.4rem 0.3rem;
+				margin-bottom: 0.4rem;
 			}
 
 			&.description {
@@ -159,10 +159,7 @@ button[type='submit'] {
 				overflow-y: hidden;
 				flex-grow: 1;
 				opacity: 0.7;
-				mask-image: linear-gradient(180deg,
-						rgb(0, 0, 0) 0%,
-						rgb(0, 0, 0) 40%,
-						transparent 85%);
+				mask-image: linear-gradient(180deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 40%, transparent 85%);
 				// &:after {
 				// 	content: '';
 				// 	position: absolute;
@@ -202,7 +199,7 @@ button[type='submit'] {
 }
 
 h1 {
-	line-height: 1.15
+	line-height: 1.15;
 }
 
 h1,
@@ -237,7 +234,7 @@ li {
 	font-size: 1rem;
 	font-weight: 400;
 	line-height: 1.5;
-	margin-bottom: .5rem;
+	margin-bottom: 0.5rem;
 	color: var(--white);
 }
 
@@ -245,11 +242,126 @@ label {
 	color: var(--white);
 }
 
+body.tut {
+	--inactive: brightness(0.3) contrast(0.95) blur(4px);
+
+	@keyframes attention {
+		0% {
+			border: 3px solid transparent;
+		}
+
+		50% {
+			border: 3px solid var(--accent);
+		}
+
+		100% {
+			border: 3px solid transparent;
+		}
+	}
+
+	section,
+	.card,
+	.grid_wrapper,
+	.grid,
+	.panel {
+		transition: 0.2s;
+	}
+
+	.main_wrapper {
+		* {
+			pointer-events: none !important;
+		}
+	}
+
+	section,
+	.background {
+		filter: var(--inactive);
+	}
+
+	&.tut-spellsheet {
+		section.spellsheet {
+			filter: none;
+
+			.grid_wrapper:not(#summary) {
+				animation: attention 1.5s infinite ease-in-out;
+			}
+		}
+
+		.bookmarks.panel {
+			filter: var(--inactive);
+		}
+	}
+
+	&.tut-spell {
+		section.spellsheet {
+			filter: none;
+		}
+
+		.panel.bookmarks {
+			filter: var(--inactive);
+		}
+
+		.card.item {
+			filter: var(--inactive);
+		}
+
+		.grid_wrapper {
+			h2 {
+				filter: var(--inactive);
+			}
+
+			.grid:first-of-type {
+				.card.item:first-child {
+					filter: none;
+					pointer-events: auto !important;
+
+					.card_inner {
+						animation: attention 1.5s infinite ease-in-out;
+					}
+				}
+			}
+		}
+
+		.modal {
+			.card {
+				filter: none;
+			}
+		}
+	}
+
+	&.tut-bookmarks {
+		section.spellsheet {
+			filter: none;
+		}
+
+		.card.item {
+			filter: var(--inactive);
+		}
+
+		.spellsheet_wrapper {
+			filter: none;
+
+			.spellsheet {
+				filter: var(--inactive);
+			}
+
+			.card {
+				filter: none;
+			}
+
+			.bookmarks.panel {
+				filter: none;
+				animation: attention 1.5s infinite ease-in-out;
+			}
+		}
+	}
+}
+
 input,
 select,
 textarea {
 	width: 100%;
-	padding: 0.4rem 1rem .5rem;
+	padding: 0.4rem 1rem 0.5rem;
 	font-size: 1.1rem;
 	background-color: rgba(255, 255, 255, 0.3);
 	border: 0;
@@ -269,6 +381,7 @@ textarea {
 	border-radius: 12px;
 	background-color: var(--moretranslucent);
 	width: 100%;
+
 	&.dark {
 		background-color: var(--translucentdark);
 	}
@@ -299,7 +412,7 @@ textarea {
 	backdrop-filter: blur(10px);
 	width: 60px;
 	height: 60px;
-	transition: .15s;
+	transition: 0.15s;
 
 	* {
 		pointer-events: none;
@@ -310,7 +423,6 @@ textarea {
 	}
 
 	div {
-
 		i {
 			font-size: 1.8rem;
 			color: var(--white);

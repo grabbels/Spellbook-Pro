@@ -5,7 +5,7 @@
 	import { spellListEmpty, notification, modalCall, topmenuopen, pagetitle } from './stores/stores';
 	import { topMenuOpenClose, empty, newBook, shareBook, handleSave, handleLoad } from './functions/globalfunctions.svelte';
 	import bgalt from '../img/menu-bg-alt.png';
-	import Pdf from './pdf.svelte';
+	import Pdf from './functions/pdf.svelte';
 	import { currentUser } from '$lib/pocketbase';
 	let exportpdf = false;
 	let fileinput;

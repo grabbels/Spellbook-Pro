@@ -116,9 +116,6 @@
 				<li transition:fly={{ y: 10, duration: 200 }}>
 					<button style="pointer-events: none">
 						<div>
-							<!-- <SchoolIcon school={spell.school} /> -->
-						</div>
-						<div>
 							<!-- <h3>{spell.name}</h3> -->
 							<p>No results</p>
 							<!-- <i class="ri-add-line" /> -->

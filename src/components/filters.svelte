@@ -10,14 +10,14 @@
 		searchFilter,
 		saveFilter,
 		bookmarksOpen,
-		summaryOpen
+		summaryOpen,
+		filtersOpen
 	} from './stores/stores';
 	import { activeSpells } from './stores/stores-persist';
 	import { clickOutside } from './functions/clickOutside.js';
 	let actionFilterArray = [];
 	let rangeFilterArray = [];
 	let saveFilterArray = [];
-	let filtersOpen = false;
 	$: $activeSpells, collectFilters();
 	$: filterSpells($actionFilter, $rangeFilter, $searchFilter, $saveFilter);
 	function collectFilters() {
@@ -88,18 +88,18 @@
 
 <button
 	class="filters_handle handle"
-	class:open={$bookmarksOpen ? true : filtersOpen ? true : ''}
-	on:click={() => (filtersOpen = true)}><div><i class="ri-filter-2-fill" /></div></button
+	class:open={$bookmarksOpen ? true : $filtersOpen ? true : ''}
+	on:click={() => ($filtersOpen = true)}><div><i class="ri-filter-2-fill" /></div></button
 >
 
 <div
-	class:open={filtersOpen}
+	class:open={$filtersOpen}
 	class="filters_wrapper panel"
 	class:active={$filters}
 	use:clickOutside
-	on:outsideclick={() => (filtersOpen = false)}
+	on:outsideclick={() => ($filtersOpen = false)}
 >
-	<button on:click={() => (filtersOpen = false)} class="down"
+	<button on:click={() => ($filtersOpen = false)} class="down"
 		><i class="ri-arrow-down-s-line" /></button
 	>
 	<h3 class="button"><i class="ri-filter-2-line" /> Filters</h3>

@@ -12,6 +12,7 @@
 	>
 {/if}
 <div
+id="bookmarks"
 	class="bookmarks panel"
 	class:open={$bookmarksOpen}
 	use:clickOutside
