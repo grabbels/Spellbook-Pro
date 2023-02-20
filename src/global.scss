@@ -393,8 +393,16 @@ body.tut {
 	}
 
 	&.tut-filters {
+		@media only screen and (max-width: 1024px) {
+			.notification {
+				top: 1rem;
+				bottom: auto;
+			}
+		}
+
 		section.filters {
 			filter: none;
+
 			.filters_wrapper {
 				animation: attention 1s infinite ease-in-out;
 			}
@@ -470,6 +478,13 @@ body.tut {
 	}
 
 	&.tut-menu {
+		@media only screen and (max-width: 1024px) {
+			.notification {
+				top: 1rem;
+				bottom: auto;
+			}
+		}
+
 		.topmenu {
 			animation: attention 1s infinite ease-in-out;
 			outline-offset: -10px !important;
@@ -482,6 +497,26 @@ body.tut {
 	&.tut-premade {
 		section.header {
 			filter: none;
+
+			@media only screen and (min-width: 1025px) {
+				.title_wrapper {
+					filter: var(--inactive);
+				}
+
+				.header_right {
+					border-radius: 12px;
+
+					input,
+					button,
+					.button {
+						margin-bottom: 0;
+					}
+				}
+
+				.header_left {
+					filter: var(--inactive);
+				}
+			}
 
 			.title_wrapper {
 				filter: var(--inactive);
@@ -500,6 +535,21 @@ body.tut {
 			.header_left {
 				filter: var(--inactive);
 			}
+
+
+
+		}
+
+	}
+
+	&.tut-account,
+	&.tut-login,
+	&.tut-premade {
+		@media only screen and (max-width: 1024px) {
+			.notification {
+				top: 1rem;
+				bottom: auto;
+			}
 		}
 	}
 
@@ -513,23 +563,51 @@ body.tut {
 	}
 
 	&.tut-account {
-		section.header {
-			.button[href="/account"] {
-				animation: attention 1s infinite ease-in-out;
+
+		@media only screen and (min-width: 1025px) {
+			section.header {
+				.button[href="/account"] {
+					animation: attention 1s infinite ease-in-out;
+				}
 			}
 		}
-	}
-	&.tut-login {
-		section.header {
-			.button[href="/account/login"] {
+
+		@media only screen and (max-width: 1024px) {
+			.topmenu .button[href="/account"] {
 				animation: attention 1s infinite ease-in-out;
 			}
 		}
 	}
 
+	&.tut-login {
+		@media only screen and (min-width: 1025px) {
+			section.header {
+				.button[href="/account/login"] {
+					animation: attention 1s infinite ease-in-out;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 1024px) {
+			.topmenu .button[href="/account/login"] {
+				animation: attention 1s infinite ease-in-out;
+			}
+		}
+
+	}
+
 	&.tut-premade {
-		section.header {
-			.button[href="/browse"] {
+
+		@media only screen and (min-width: 1025px) {
+			section.header {
+				.button[href="/browse"] {
+					animation: attention 1s infinite ease-in-out;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 1024px) {
+			.topmenu .button[href="/browse"] {
 				animation: attention 1s infinite ease-in-out;
 			}
 		}

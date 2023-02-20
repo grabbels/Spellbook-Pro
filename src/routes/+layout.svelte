@@ -49,6 +49,7 @@
 	import Footer from '../components/footer.svelte';
 	import { dummyList } from '../components/data/spells';
 	let tutorial;
+	let innerWidth;
 	// refreshSession()
 	if ($page.url.searchParams) {
 		let urlParams = $page.url.searchParams;
@@ -161,6 +162,7 @@
 			!$topmenuopen &&
 			!$editingTitle &&
 			!$modalCall &&
+			!tutorial &&
 			document.activeElement.id != 'spellbooksearch'
 		) {
 			if ((e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 97 && e.keyCode <= 122)) {
@@ -169,6 +171,15 @@
 			}
 		} else if (e.key == 'Escape') {
 			$notification = '';
+		} else if (tutorial.includes('tut')) {
+			console.log(e.key);
+			if (e.key == 'ArrowLeft') {
+				tutPage--;
+				doTutorial();
+			} else if (e.key == 'ArrowRight') {
+				tutPage++;
+				doTutorial();
+			}
 		}
 	}
 	let tutPage = 0;
@@ -184,7 +195,9 @@
 		switch (tutPage) {
 			case 0:
 				tutorial = 'tut';
-
+				previousSpellbooks = $openSpellbooks;
+				previousActiveTab = $activeTab;
+				previousActiveSpells = $activeSpells;
 				$notification =
 					'Welcome to Spellbook Pro! This tutorial will take you through the basics of the app.#tutorial';
 				break;
@@ -193,9 +206,6 @@
 					$activeTab = {};
 					$openSpellbooks = [];
 				}
-				previousSpellbooks = $openSpellbooks;
-				previousActiveTab = $activeTab;
-				previousActiveSpells = $activeSpells;
 				const d = new Date();
 				let time = d.getTime();
 				let dummyTab = {};
@@ -222,25 +232,32 @@
 				break;
 			case 3:
 				tutorial = 'tut tut-spell_controls';
+				$filtersOpen = false;
 				$notification =
 					'<span>Spells</span><br>Use the controls on spells to remove them or move them up and down. 🕹️#tutorial';
 				break;
 			case 4:
 				tutorial = 'tut tut-filters';
+				$filtersOpen = true;
 				$notification =
 					'<span>Filters</span><br>This is the filters-bar. Here you can –wait for it– ...filter your spellbook! Quickly need a spell with a saving throw that BBEG is really bad at? We got you covered 😎#tutorial';
 				break;
 			case 5:
+				$filtersOpen = false;
+				$bookmarksOpen = false;
 				tutorial = 'tut tut-tabs';
 				$notification =
 					'<span>Open spellbooks</span><br>This is the tab-bar. Like the tabs of your webbrowser you can use them to quickly switch between open spellbooks, which means you can have multiple spellbooks open at a time! I see you, Dungeon Masters 👀#tutorial';
 				break;
 			case 6:
+				$bookmarksOpen = true;
 				tutorial = 'tut tut-bookmarks';
 				$notification =
 					'<span>Bookmarks</span><br>These are bookmarks, use them to travel quickly between different levels of spells 🚂#tutorial';
 				break;
 			case 7:
+				$bookmarksOpen = false;
+				$topmenuopen = false;
 				tutorial = 'tut tut-toolbar';
 				$notification =
 					"<span>Toolbar</span><br>This is the toolbar, here you'll find buttons to add spells, save, load and share spellbooks or create new ones 🪄#tutorial";
@@ -249,21 +266,24 @@
 			case 8:
 				$notification =
 					"<span>Menu</span><br>This is the menu where you'll find some more obscure buttons, but hey, the more you know! 🌈#tutorial";
-				setTimeout(() => {
-					tutorial = 'tut tut-menu';
-					topMenuOpenClose();
-				}, 200);
+
+				tutorial = 'tut tut-menu';
+				$topmenuopen = true;
+
 				break;
 			case 9:
-				topMenuOpenClose();
-				setTimeout(() => {
-					tutorial = 'tut tut-quicksearch';
-					$notification =
-						"<span>Quick spell search</span><br>This is the quick spell lookup. You can either click it or just start typing whenever you're on this page to quickly find that one spell in the heat of battle, wether it is in your spellbook or not! 🔥#tutorial";
-				}, 300);
+				$topmenuopen = false;
+
+				tutorial = 'tut tut-quicksearch';
+				$notification =
+					"<span>Quick spell search</span><br>This is the quick spell lookup. You can either click it or just start typing whenever you're on this page to quickly find that one spell in the heat of battle, wether it is in your spellbook or not! 🔥#tutorial";
 
 				break;
 			case 10:
+				if (innerWidth < 1025) {
+					$topmenuopen = true;
+				}
+
 				if ($currentUser) {
 					tutorial = 'tut tut-account';
 					$notification =
@@ -277,27 +297,32 @@
 				}
 
 			case 11:
+				if (innerWidth < 1025) {
+					$topmenuopen = true;
+				}
 				tutorial = 'tut tut-premade';
 				$notification =
 					'<span>Community spellbooks</span><br>On the Premade-page you can browse and open spellsbooks made by others in the community. You can publish your own spellbooks when saving or editing them. Sharing is caring! 💑#tutorial';
 				break;
 			case 12:
+				$topmenuopen = false;
 				tutorial = 'tut';
 				$notification =
 					"<span>It's a wrap!</span><br>That about sums it up! You can always start this tutorial again by using the questionmark in the top-right corner. Have fun, and don't let the byte-bugs bite! 🐛#tutorial";
 				break;
 			case 13:
-				if ($activeTab.id == 'tutorial') {
-					$activeSpells = [];
-					$openSpellbooks = [];
-					$activeTab = {};
-				}
-				// for (let i = 0; i < $openSpellbooks.length; i++) {
-				// 	if ($openSpellbooks[i].id.includes('tutorial')) {
-				// 		closeTab($openSpellbooks[i].id);
-				// 	}
+				// if ($activeTab.id == 'tutorial') {
+				// 	$activeSpells = [];
+				// 	$openSpellbooks = [];
+				// 	$activeTab = {};
 				// }
-
+				$openSpellbooks.splice(-2);
+				$openSpellbooks.at(-1).open_tab = true;
+				$activeTab = previousActiveTab;
+				$activeSpells = previousActiveSpells;
+				console.log($activeTab);
+				console.log($openSpellbooks);
+				console.log($activeSpells);
 				tutorial = '';
 				$notification = '';
 				tutPage = 0;
@@ -386,14 +411,14 @@
 					<img src={Inky} alt="" />
 					<div class="loading"><i class="ri-loader-5-line" /></div>
 				</div>
-				<div>
+				<div class="text_container">
 					<p>
 						{@html $notification.split('#')[0]}
 					</p>
 				</div>
 				<div class="button_container">
 					<button
-						on:click={() => {
+						on:click|stopPropagation={() => {
 							tutPage++;
 							doTutorial();
 						}}
@@ -412,7 +437,7 @@
 {#if $loadingScreen}
 	<Loadingscreen />
 {/if}
-<svelte:window on:keydown={(e) => handleKeyDown(e)} />
+<svelte:window bind:innerWidth on:keydown={(e) => handleKeyDown(e)} />
 
 <style lang="scss">
 	@import '../../node_modules/remixicon/fonts/remixicon.css';
@@ -566,7 +591,7 @@
 					float: left;
 				}
 			}
-			img {
+			.image_container {
 				display: none;
 			}
 			&.tutorial {
@@ -576,17 +601,37 @@
 				grid-template-rows: 1fr max-content;
 				gap: 0 1rem;
 				border-radius: 25px;
+				@media only screen and (max-width: 1024px) {
+					display: block;
+					padding-right: 1rem;
+				}
 				p {
 					padding-top: 0.3rem;
 					padding-bottom: 0.3rem;
 				}
+				.text_container {
+					@media only screen and (max-width: 1024px) {
+						display: inline;
+					}
+				}
 				.icon_container {
+					display: block;
 					grid-row: span 2;
+					@media only screen and (max-width: 1024px) {
+						float: left;
+						margin: 0.7rem 0.4rem 0.2rem 0;
+					}
 				}
 				img {
 					display: block;
 					width: 120px;
 					height: auto;
+					@media only screen and (max-width: 1024px) {
+						width: 60px;
+						// object-position: 0 1rem;
+						// object-fit: contain;
+						// float: left;
+					}
 				}
 				.button_container {
 					display: inline-block;

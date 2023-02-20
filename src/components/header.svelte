@@ -37,12 +37,11 @@
 					console.log(updateDone);
 				}
 			} else {
-				$activeTab.name = titleInput.value
+				$activeTab.name = titleInput.value;
 				for (let i = 0; i < $openSpellbooks.length; i++) {
 					if ($openSpellbooks[i].id == $activeTab.id) {
-						$openSpellbooks[i].name = titleInput.value
+						$openSpellbooks[i].name = titleInput.value;
 					}
-					
 				}
 			}
 		} else {
@@ -55,8 +54,11 @@
 		}
 	}
 </script>
-<button on:click={()=>$modalCall = 'tutorial'}>Tutorial</button>
+
 <Section name="header">
+	<button class="tutorial_button" on:click={() => ($modalCall = 'tutorial')} name="Tutorial"
+		><i class="ri-question-fill" /></button
+	>
 	<header>
 		{#key $activeTab.name}
 			{#key $pagetitle}
@@ -112,12 +114,7 @@
 					/>
 				{/if}
 				{#if $pagetitle === 'Home'}
-					<Button
-						on:click={newBook}
-						type="fill desktop"
-						icon="ri-health-book-line"
-						text="New"
-					/>
+					<Button on:click={newBook} type="fill desktop" icon="ri-health-book-line" text="New" />
 					<Button
 						on:click={handleLoad}
 						type="fill desktop"
@@ -184,12 +181,36 @@
 </Section>
 
 <style lang="scss">
+	button.tutorial_button {
+		position: absolute;
+		top: 1rem;
+		right: var(--padding);
+		padding: 0;
+		width: 30px;
+		height: 30px;
+		min-height: 0;
+		margin-bottom: 0;
+		z-index: 2;
+		i {
+			font-size: 1.7rem;
+			color: var(--translucent);
+			line-height: 1.13;
+			margin-left: 0.1rem;
+			transition: 0.1s;
+		}
+		&:hover {
+			i {
+				color: var(--lightblue);
+			}
+		}
+	}
 	header {
 		margin-top: 2rem;
 		width: 100%;
 		@media only screen and (max-width: 1024px) {
 			margin-top: 1rem;
 		}
+
 		.title_wrapper {
 			position: relative;
 			display: inline-block;
@@ -198,7 +219,7 @@
 				width: 35px;
 				float: left;
 				margin-right: 0.5rem;
-				opacity: .45;
+				opacity: 0.45;
 			}
 			h2 {
 				// margin-bottom: 1rem;

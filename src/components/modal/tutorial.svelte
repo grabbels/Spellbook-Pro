@@ -3,8 +3,8 @@
 	import Button from '../button.svelte';
 	import { modalCall, notification } from '../stores/stores';
 	function handleClick() {
-		$modalCall = ''
-		$notification = '#tutorial'
+		$modalCall = '';
+		$notification = '#tutorial';
 	}
 </script>
 
@@ -46,7 +46,19 @@
 		align-items: center;
 		gap: 2rem;
 	}
-	img {
-		float: left;
+	@media only screen and (max-width: 1023px) {
+		div.flex {
+			flex-wrap: wrap;
+			padding-bottom: 2rem;
+		}
+		img {
+			width: 100%;
+			max-height: 230px;
+			object-fit: contain;
+			object-position: center;
+		}
+		h2 {
+			text-align: center;
+		}
 	}
 </style>
