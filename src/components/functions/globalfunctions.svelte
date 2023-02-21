@@ -227,14 +227,16 @@
 					activeTab.set(allTabs[index - 1]);
 					activeSpells.set(allTabs[index - 1].list);
 				}
+				let openSpellbooksSplice = get(openSpellbooks);
+				openSpellbooksSplice.splice(index, 1);
+				openSpellbooks.set(openSpellbooksSplice);
+				if (openSpellbooksSplice.length < 1) {
+					activeSpells.set([]);
+				}
 			} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
 				console.log('that was the last one boss');
-				activeSpells.set([]);
-			}
-			let openSpellbooksSplice = get(openSpellbooks);
-			openSpellbooksSplice.splice(index, 1);
-			openSpellbooks.set(openSpellbooksSplice);
-			if (openSpellbooksSplice.length < 1) {
+				openSpellbooks.set([])
+				activeTab.set('');
 				activeSpells.set([]);
 			}
 		}
@@ -457,7 +459,6 @@
 	}
 
 	export async function shareBook() {
-		
 		if (get(activeTab).unsaved === true) {
 			loadingScreen.set(true);
 			console.log(

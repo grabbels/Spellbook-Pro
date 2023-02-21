@@ -48,7 +48,7 @@
 	import Loadingscreen from '../components/loadingscreen.svelte';
 	import Footer from '../components/footer.svelte';
 	import { dummyList } from '../components/data/spells';
-	let tutorial;
+	let tutorial = '';
 	let innerWidth;
 	// refreshSession()
 	if ($page.url.searchParams) {
@@ -182,22 +182,23 @@
 			}
 		}
 	}
+	// let previousSpellbooks;
+	// let previousActiveTab;
+	// let previousActiveSpells;
 	let tutPage = 0;
-	let previousSpellbooks = $openSpellbooks;
-	let previousActiveTab = $activeTab;
-	let previousActiveSpells = $activeSpells;
 	$: tutPage, ($modalCall = '');
 	// doTutorial();
 	console.log($activeTab);
-
 	function doTutorial() {
 		//implement set dummy spelllist
 		switch (tutPage) {
 			case 0:
 				tutorial = 'tut';
-				previousSpellbooks = $openSpellbooks;
-				previousActiveTab = $activeTab;
-				previousActiveSpells = $activeSpells;
+
+				// previousSpellbooks = $openSpellbooks;
+				// previousActiveTab = $activeTab;
+				// previousActiveSpells = $activeSpells;
+
 				$notification =
 					'Welcome to Spellbook Pro! This tutorial will take you through the basics of the app.#tutorial';
 				break;
@@ -317,12 +318,16 @@
 				// 	$activeTab = {};
 				// }
 				$openSpellbooks.splice(-2);
-				$openSpellbooks.at(-1).open_tab = true;
-				$activeTab = previousActiveTab;
-				$activeSpells = previousActiveSpells;
-				console.log($activeTab);
-				console.log($openSpellbooks);
-				console.log($activeSpells);
+				// $openSpellbooks.at(-1).open_tab = true;
+				// $openSpellbooks = previousSpellbooks;
+				// $activeTab = previousActiveTab;
+				// $activeSpells = previousActiveSpells;
+				// console.log($activeTab);
+				// console.log($openSpellbooks);
+				// console.log($activeSpells);
+				// previousSpellbooks = undefined;
+				// previousActiveTab = undefined;
+				// previousActiveSpells = undefined;
 				tutorial = '';
 				$notification = '';
 				tutPage = 0;
@@ -591,7 +596,7 @@
 					float: left;
 				}
 			}
-			.image_container {
+			img {
 				display: none;
 			}
 			&.tutorial {
