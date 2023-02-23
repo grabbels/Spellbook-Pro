@@ -21,7 +21,8 @@
 		editingTitle,
 		loadingScreen,
 		bookmarksOpen,
-		filtersOpen
+		filtersOpen,
+		tabsPanelOpen
 	} from '../components/stores/stores';
 	import {
 		retrieveSession,
@@ -48,6 +49,9 @@
 	import Loadingscreen from '../components/loadingscreen.svelte';
 	import Footer from '../components/footer.svelte';
 	import { dummyList } from '../components/data/spells';
+	import TabBar from '../components/mobile-tabbar.svelte';
+	import MobileHeader from '../components/mobile-header.svelte';
+	import MobileTabbar from '../components/mobile-tabbar.svelte';
 	let tutorial = '';
 	let innerWidth;
 	// refreshSession()
@@ -93,6 +97,8 @@
 			topmenuopen.set(false);
 		}
 	};
+
+	console.log($userNickname);
 
 	$: $notification,
 		clearTimeout(),
@@ -171,6 +177,11 @@
 			}
 		} else if (e.key == 'Escape') {
 			$notification = '';
+			if (tutorial.includes('tut') && tutPage > 0) {
+				closeTab($activeTab);
+				tutorial = '';
+				tutPage = 0;
+			}
 		} else if (tutorial.includes('tut')) {
 			console.log(e.key);
 			if (e.key == 'ArrowLeft') {
@@ -194,19 +205,10 @@
 		switch (tutPage) {
 			case 0:
 				tutorial = 'tut';
-
-				// previousSpellbooks = $openSpellbooks;
-				// previousActiveTab = $activeTab;
-				// previousActiveSpells = $activeSpells;
-
 				$notification =
 					'Welcome to Spellbook Pro! This tutorial will take you through the basics of the app.#tutorial';
 				break;
 			case 1:
-				if ($activeTab.id == 'tutorial') {
-					$activeTab = {};
-					$openSpellbooks = [];
-				}
 				const d = new Date();
 				let time = d.getTime();
 				let dummyTab = {};
@@ -215,12 +217,13 @@
 				dummyTab.name = 'Epic spellbook';
 				dummyTab.color = 'var(--lightblue)';
 				$activeTab = dummyTab;
-				$activeSpells = dummyList;
 				$openSpellbooks.push(dummyTab);
-				$openSpellbooks.push({ name: 'Untitled spellbook', unsaved: true });
-				$openSpellbooks = $openSpellbooks;
-				console.log($openSpellbooks);
-				console.log($activeTab);
+				if (!$activeTab || $activeTab == -1) {
+					$activeTab = 0;
+				} else {
+					$activeTab = $openSpellbooks.length - 1;
+				}
+				$activeSpells = dummyList;
 				tutorial = 'tut tut-spellsheet';
 				// window.scrollTo(0,400)
 				$notification =
@@ -312,22 +315,7 @@
 					"<span>It's a wrap!</span><br>That about sums it up! You can always start this tutorial again by using the questionmark in the top-right corner. Have fun, and don't let the byte-bugs bite! 🐛#tutorial";
 				break;
 			case 13:
-				// if ($activeTab.id == 'tutorial') {
-				// 	$activeSpells = [];
-				// 	$openSpellbooks = [];
-				// 	$activeTab = {};
-				// }
-				$openSpellbooks.splice(-2);
-				// $openSpellbooks.at(-1).open_tab = true;
-				// $openSpellbooks = previousSpellbooks;
-				// $activeTab = previousActiveTab;
-				// $activeSpells = previousActiveSpells;
-				// console.log($activeTab);
-				// console.log($openSpellbooks);
-				// console.log($activeSpells);
-				// previousSpellbooks = undefined;
-				// previousActiveTab = undefined;
-				// previousActiveSpells = undefined;
+				closeTab($activeTab);
 				tutorial = '';
 				$notification = '';
 				tutPage = 0;
@@ -338,9 +326,15 @@
 
 <Body
 	bind:this={body}
-	class="{$sidemenuopen ? 'noscroll' : $modalCall ? 'noscroll' : ''} {$userPrefs.theme} {tutorial
-		? tutorial
-		: ''}"
+	class="{$sidemenuopen
+		? 'noscroll'
+		: $modalCall
+		? 'noscroll'
+		: $tabsPanelOpen
+		? 'noscroll'
+		: $topmenuopen
+		? 'noscroll'
+		: ''} {$userPrefs.theme} {tutorial ? tutorial : ''}"
 />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -355,24 +349,21 @@
 	<AddSpells />
 	<main>
 		{#key $pagetitle}
-			{#if $pagetitle != 'Login' && $pagetitle != 'Password reset'}
-				<!-- {#if $pagetitle == 'Home'}
-					<Section>
-						<Tabs />
-					</Section>
-					{/if} -->
-
+			{#if $pagetitle != 'Login' && $pagetitle != 'Password reset' && innerWidth > 820}
 				<Header />
 			{/if}
 		{/key}
-		<!-- {#key $pagetitle} -->
-		<!-- <div in:fly={{ y: 10, duration: 300 }}> -->
-
+		{#if innerWidth <= 820}
+			<MobileHeader />
+		{/if}
 		<PageTransition pathname={data.pathname}><slot /></PageTransition>
-		<!-- {/key} -->
 	</main>
 
 	<div on:click={closeMenu} class="closemenu" />
+
+	{#if innerWidth <= 820 && $topmenuopen !== true}
+		<MobileTabbar />
+	{/if}
 
 	<div
 		class="background {$pagetitle.toLowerCase().includes('premade')
@@ -524,6 +515,9 @@
 			background-color: transparent;
 			display: none;
 			z-index: 10;
+			@media only screen and (max-width: 1024px) {
+				display: none !important;
+			}
 		}
 		&.sidemenuopen {
 			transform: translateX(400px);

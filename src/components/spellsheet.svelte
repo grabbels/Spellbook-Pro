@@ -19,7 +19,8 @@
 		modalCall,
 		lookupSpell,
 		bookmarksOpen,
-		summaryOpen
+		summaryOpen,
+		loadingBook
 	} from './stores/stores';
 	import Button from './button.svelte';
 	import PlaceholderCard from './placeholdercard.svelte';
@@ -27,6 +28,7 @@
 	import Grid from './grid.svelte';
 	import Schoolicon from './schoolicon.svelte';
 	import { currentUser, pb } from '$lib/pocketbase';
+	import Loading from './loading.svelte';
 	let spellsheet;
 	let spellsOrderedInDom;
 	let orderedSpellsNames = [];
@@ -55,7 +57,21 @@
 		'level 8',
 		'level 9'
 	];
-	$: $activeSpells, setActiveLevels(), ($activeTab.list = $activeSpells);
+
+	// $: $activeTab, ($openSpellbooks[$activeTab].list = $activeSpells)
+	$: $activeTab,
+		console.log($activeTab),
+		$openSpellbooks.length > 0 && $openSpellbooks[$activeTab] && $openSpellbooks[$activeTab].list
+			? ($activeSpells = $openSpellbooks[$activeTab].list)
+			: $activeTab == -1
+			? ($activeSpells = [])
+			: !$openSpellbooks[$activeTab]
+			? ($activeSpells = [])
+			: !$openSpellbooks[$activeTab].length
+			? ($activeSpells = [])
+			: '';
+	$: $activeSpells, setActiveLevels();
+
 	function setActiveLevels() {
 		if ($activeSpells.length) {
 			$activeLevels = [];
@@ -153,247 +169,253 @@
 	{#if $userPrefs.bookmarks != false}
 		<Bookmarks />
 	{/if}
-	<div class="spellsheet">
-		<div class="grid_wrapper panel summary" class:open={$summaryOpen} id="summary">
-			{#each $activeLevels as level}
-				<ul class="grid_wrapper panel">
-					<p><strong>{levels[level]}</strong></p>
-					{#each $activeSpells as spell}
-						{#if spell.level == level}
-							<li class="item" in:fade={{ duration: 200 }}>
-								<button
-									on:click={() => {
-										// openClickedSpell(spell);
-										$modalCall = 'spell';
-										$lookupSpell = spell;
-									}}
-								>
-									<p><SchoolIcon type="small" school={spell.school} />{spell.name}</p>
-								</button>
-							</li>
-						{/if}
+	{#if $loadingBook === true}
+		<Loading />
+	{:else}
+		{#key $activeTab}
+			<!-- <div in:fly={{delay: 150, duration:150, y:7}} out:fly={{duration:150, y:7}} class="spellsheet"> -->
+			<div class="spellsheet">
+				<div class="grid_wrapper panel summary" class:open={$summaryOpen} id="summary">
+					{#each $activeLevels as level}
+						<ul class="grid_wrapper panel">
+							<p><strong>{levels[level]}</strong></p>
+							{#each $activeSpells as spell}
+								{#if spell.level == level}
+									<li class="item" in:fade={{ duration: 200 }}>
+										<button
+											on:click={() => {
+												// openClickedSpell(spell);
+												$modalCall = 'spell';
+												$lookupSpell = spell;
+											}}
+										>
+											<p><SchoolIcon type="small" school={spell.school} />{spell.name}</p>
+										</button>
+									</li>
+								{/if}
+							{/each}
+						</ul>
 					{/each}
-				</ul>
-			{/each}
-			<button class="close" on:click={() => ($summaryOpen = false)}
-				><i class="ri-arrow-up-s-line" /></button
-			>
-		</div>
-		<!-- {#key $activeSpells} -->
-		{#each $activeLevels as level}
-			<div in:fade={{ duration: 200 }} class="grid_wrapper panel" id={level}>
-				<h2>{levels[level]}</h2>
-				<Grid collapse={$userPrefs.description === false ? true : false}>
-					{#each $activeSpells as spell}
-						{#if spell.display === true}
-							{@const spellDescription = spell.description.toLowerCase()}
-							{#if spell.level == level}
-								<!-- svelte-ignore a11y-click-events-have-key-events -->
-								<div
-									data-name={spell.name}
-									class="card item"
-									on:click={() => {
-										// openClickedSpell(spell);
-										$modalCall = 'spell';
-										$lookupSpell = spell;
-									}}
-									in:fade={{ duration: 200 }}
-									role="button"
-									data-castingtime={spell.casting_time}
-									data-range={spell.range}
-								>
-									<div class="card_inner">
-										{#if openSpell === spell}
-											<Close on:click={() => (openSpell = null)} />
-										{/if}
-										<div class="block">
-											<h3>
-												{#if $userPrefs.icon != false}
-													<SchoolIcon school={spell.school} />
-												{/if}
-												<span style="margin-left: .3rem">{spell.name}</span>
-											</h3>
-										</div>
-										<div class="block pills">
-											{#if $userPrefs.casting_time != false}
-												<Pill
-													label="Casting time"
-													text={spell.casting_time}
-													size="large"
-													icon="ri-flashlight-line"
-												/>
-											{/if}
-											{#if $userPrefs.range != false}
-												<Pill
-													label="Range or target"
-													text={spell.range}
-													size="large"
-													icon="ri-arrow-right-up-line"
-												/>
-											{/if}
-											{#if $userPrefs.duration != false}
-												<Pill
-													label="Duration"
-													text={spell.duration}
-													size="large"
-													icon="ri-time-line"
-												/>
-											{/if}
-										</div>
-										<div class="block pills" style="margin-top: .1rem">
-											{#if $userPrefs.school != false}
-												<Pill
-													label="School of magic"
-													text={spell.school}
-													size="small"
-													icon="ri-book-2-line"
-												/>
-											{/if}
-
-											{#if spellDescription.includes('make a ranged spell attack') && $userPrefs.attack != false}
-												<Pill
-													label="Spell attack"
-													text="Ranged spell attack"
-													size="small"
-													icon="ri-sword-line"
-												/>
-											{:else if spellDescription.includes('make a melee spell attack') && $userPrefs.attack != false}
-												<Pill
-													label="Spell attack"
-													text="Melee spell attack"
-													size="small"
-													icon="ri-sword-line"
-												/>
-											{:else if spellDescription.includes('make a spell attack') && $userPrefs.attack != false}
-												<Pill
-													label="Spell attack"
-													text="Spell attack"
-													size="small"
-													icon="ri-sword-line"
-												/>
-											{:else if spell.save && $userPrefs.save != false}
-												<Pill
-													label="Saving throw"
-													text={spell.save}
-													size="small"
-													icon="ri-lifebuoy-line"
-												/>
-											{/if}
-										</div>
-										{#if $userPrefs.description != false}
-											<div class="block description">
-												<p>{@html spell.description}</p>
-											</div>
-										{/if}
-										<button class="fold" on:click={() => (openSpell = null)}
-											><i class="ri-arrow-down-s-line fold" /></button
-										>
-									</div>
-									<div class="controls">
-										<button class="up" on:click|stopPropagation={() => moveUpSpell(spell)}
-											><i class="ri-arrow-up-s-line" />
-											<div class="label">Move up</div></button
-										>
-										<button class="down" on:click|stopPropagation={() => moveDownSpell(spell)}
-											><i class="ri-arrow-down-s-line" />
-											<div class="label">Move down</div></button
-										>
-										<button class="remove" on:click|stopPropagation={() => removeSpell(spell)}
-											><i class="ri-close-line" />
-											<div class="label">Remove</div></button
-										>
-									</div>
-									<div class="close_veil" on:click={() => (openSpell = null)} />
-								</div>
-							{/if}
-						{/if}
-					{/each}
-				</Grid>
-			</div>
-		{:else}
-			{#if $filters === true}
-				<div class="grid_wrapper panel">
-					<h2
-						style="opacity: 1; margin-top: 1rem; text-align: center; margin-left: 0; text-transform:none"
+					<button class="close" on:click={() => ($summaryOpen = false)}
+						><i class="ri-arrow-up-s-line" /></button
 					>
-						no results
-					</h2>
-					<div style="width: 100%; text-align: center">
-						<Button on:click={() => removeFilters()} text="Remove filters" type="outline alt" />
-					</div>
 				</div>
-			{:else if $openSpellbooks.length > 0}
-				<div class="grid_wrapper panel">
-					<h2>Add some spells!</h2>
-					<div in:fade={{ duration: 200 }} class="grid" on:dragover|preventDefault>
-						{#each placeholders as placeholder}
-							<PlaceholderCard />
-						{/each}
-					</div>
-				</div>
-			{:else if $openSpellbooks.length < 1}
-				<div class="grid_wrapper panel">
-					<div class="no_book">
-						<h3>The beginning of a new adventure!</h3>
+				<!-- {#key $activeSpells} -->
+				{#each $activeLevels as level}
+					<div class="grid_wrapper panel" id={level}>
+						<h2>{levels[level]}</h2>
+						<Grid collapse={$userPrefs.description === false ? true : false}>
+							{#each $activeSpells as spell}
+								{#if spell.display === true}
+									{@const spellDescription = spell.description.toLowerCase()}
+									{#if spell.level == level}
+										<!-- svelte-ignore a11y-click-events-have-key-events -->
+										<div
+											data-name={spell.name}
+											class="card item"
+											on:click={() => {
+												// openClickedSpell(spell);
+												$modalCall = 'spell';
+												$lookupSpell = spell;
+											}}
+											role="button"
+											data-castingtime={spell.casting_time}
+											data-range={spell.range}
+										>
+											<div class="card_inner">
+												{#if openSpell === spell}
+													<Close on:click={() => (openSpell = null)} />
+												{/if}
+												<div class="block">
+													<h3>
+														{#if $userPrefs.icon != false}
+															<SchoolIcon school={spell.school} />
+														{/if}
+														<span style="margin-left: .3rem">{spell.name}</span>
+													</h3>
+												</div>
+												<div class="block pills">
+													{#if $userPrefs.casting_time != false}
+														<Pill
+															label="Casting time"
+															text={spell.casting_time}
+															size="large"
+															icon="ri-flashlight-line"
+														/>
+													{/if}
+													{#if $userPrefs.range != false}
+														<Pill
+															label="Range or target"
+															text={spell.range}
+															size="large"
+															icon="ri-arrow-right-up-line"
+														/>
+													{/if}
+													{#if $userPrefs.duration != false}
+														<Pill
+															label="Duration"
+															text={spell.duration}
+															size="large"
+															icon="ri-time-line"
+														/>
+													{/if}
+												</div>
+												<div class="block pills" style="margin-top: .1rem">
+													{#if $userPrefs.school != false}
+														<Pill
+															label="School of magic"
+															text={spell.school}
+															size="small"
+															icon="ri-book-2-line"
+														/>
+													{/if}
 
-						<div class="panel">
-							{#if $currentUser}
-								<Button
-									on:click={newBook}
-									type="blue fill"
-									text="New spellbook"
-									icon="ri-health-book-line"
-								/>
-								<Button
-									on:click={() => ($modalCall = 'load')}
-									type="accent fill"
-									text="Open saved spellbook"
-									icon="ri-folder-open-line"
-								/>
-								<p>Need a refresher? Check out the tutorial!</p>
-								<Button
-									type="fill"
-									text="Tutorial"
-									icon="ri-question-line"
-									on:click={() => ($modalCall = 'tutorial')}
-								/>
-							{:else}
-								<p>Without an account you won't be able to save your spellbooks.</p>
-								<Button
-									on:click={newBook}
-									type="blue fill"
-									text="New spellbook"
-									icon="ri-health-book-line"
-								/>
-								<Button
-									href="/account/login?register=true"
-									type="accent fill"
-									text="Register"
-									icon="ri-user-add-line"
-								/>
-								<br />
-								<p>Already have an account?</p>
-								<Button
-									href="/account/login"
-									type="fill"
-									text="Log in"
-									icon="ri-login-circle-line"
-								/>
-								<p>Not sure where to start? Check out the tutorial!</p>
-								<Button
-									type="fill"
-									text="Tutorial"
-									icon="ri-question-line"
-									on:click={() => ($modalCall = 'tutorial')}
-								/>
-							{/if}
-						</div>
+													{#if spellDescription.includes('make a ranged spell attack') && $userPrefs.attack != false}
+														<Pill
+															label="Spell attack"
+															text="Ranged spell attack"
+															size="small"
+															icon="ri-sword-line"
+														/>
+													{:else if spellDescription.includes('make a melee spell attack') && $userPrefs.attack != false}
+														<Pill
+															label="Spell attack"
+															text="Melee spell attack"
+															size="small"
+															icon="ri-sword-line"
+														/>
+													{:else if spellDescription.includes('make a spell attack') && $userPrefs.attack != false}
+														<Pill
+															label="Spell attack"
+															text="Spell attack"
+															size="small"
+															icon="ri-sword-line"
+														/>
+													{:else if spell.save && $userPrefs.save != false}
+														<Pill
+															label="Saving throw"
+															text={spell.save}
+															size="small"
+															icon="ri-lifebuoy-line"
+														/>
+													{/if}
+												</div>
+												{#if $userPrefs.description != false}
+													<div class="block description">
+														<p>{@html spell.description}</p>
+													</div>
+												{/if}
+												<button class="fold" on:click={() => (openSpell = null)}
+													><i class="ri-arrow-down-s-line fold" /></button
+												>
+											</div>
+											<div class="controls">
+												<button class="up" on:click|stopPropagation={() => moveUpSpell(spell)}
+													><i class="ri-arrow-up-s-line" />
+													<div class="label">Move up</div></button
+												>
+												<button class="down" on:click|stopPropagation={() => moveDownSpell(spell)}
+													><i class="ri-arrow-down-s-line" />
+													<div class="label">Move down</div></button
+												>
+												<button class="remove" on:click|stopPropagation={() => removeSpell(spell)}
+													><i class="ri-close-line" />
+													<div class="label">Remove</div></button
+												>
+											</div>
+											<div class="close_veil" on:click={() => (openSpell = null)} />
+										</div>
+									{/if}
+								{/if}
+							{/each}
+						</Grid>
 					</div>
-				</div>
-			{/if}
-		{/each}
-		<!-- {/key} -->
-	</div>
+				{:else}
+					{#if $filters === true}
+						<div class="grid_wrapper panel">
+							<h2
+								style="opacity: 1; margin-top: 1rem; text-align: center; margin-left: 0; text-transform:none"
+							>
+								no results
+							</h2>
+							<div style="width: 100%; text-align: center">
+								<Button on:click={() => removeFilters()} text="Remove filters" type="outline alt" />
+							</div>
+						</div>
+					{:else if $openSpellbooks.length > 0}
+						<div class="grid_wrapper panel">
+							<h2>Add some spells!</h2>
+							<div in:fade={{ duration: 200 }} class="grid" on:dragover|preventDefault>
+								{#each placeholders as placeholder}
+									<PlaceholderCard />
+								{/each}
+							</div>
+						</div>
+					{:else if $openSpellbooks.length < 1}
+						<div class="grid_wrapper panel">
+							<div class="no_book">
+								<h3>The beginning of a new adventure!</h3>
+
+								<div class="panel">
+									{#if $currentUser}
+										<Button
+											on:click={newBook}
+											type="blue fill"
+											text="New spellbook"
+											icon="ri-health-book-line"
+										/>
+										<Button
+											on:click={() => ($modalCall = 'load')}
+											type="accent fill"
+											text="Open saved spellbook"
+											icon="ri-folder-open-line"
+										/>
+										<p>Need a refresher? Check out the tutorial!</p>
+										<Button
+											type="fill"
+											text="Tutorial"
+											icon="ri-question-line"
+											on:click={() => ($modalCall = 'tutorial')}
+										/>
+									{:else}
+										<p>Without an account you won't be able to save your spellbooks.</p>
+										<Button
+											on:click={newBook}
+											type="blue fill"
+											text="New spellbook"
+											icon="ri-health-book-line"
+										/>
+										<Button
+											href="/account/login?register=true"
+											type="accent fill"
+											text="Register"
+											icon="ri-user-add-line"
+										/>
+										<br />
+										<p>Already have an account?</p>
+										<Button
+											href="/account/login"
+											type="fill"
+											text="Log in"
+											icon="ri-login-circle-line"
+										/>
+										<p>Not sure where to start? Check out the tutorial!</p>
+										<Button
+											type="fill"
+											text="Tutorial"
+											icon="ri-question-line"
+											on:click={() => ($modalCall = 'tutorial')}
+										/>
+									{/if}
+								</div>
+							</div>
+						</div>
+					{/if}
+				{/each}
+				<!-- {/key} -->
+			</div>
+		{/key}
+	{/if}
 </div>
 
 <style lang="scss">
@@ -539,6 +561,9 @@
 					background-color: var(--moretranslucent);
 				}
 			}
+		}
+		@media screen and (max-width: 820px) {
+			padding: 1rem 0.5rem 2rem;
 		}
 	}
 	.card {

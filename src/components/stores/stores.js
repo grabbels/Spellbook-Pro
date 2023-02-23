@@ -30,3 +30,5 @@ export const editingTitle = writable(false);
 export const loadingScreen = writable(false);
 export const shareBookId = writable('');
 export const filtersOpen = writable(false);
+export const loadingBook = writable(false);
+export const tabsPanelOpen = writable('');

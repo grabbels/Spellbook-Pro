@@ -69,7 +69,9 @@
 				};
 				try {
 					const record = await pb.collection('users').update($userId, data);
-					setUserData();
+					if (record) {
+						setUserData();
+					}
 				} catch (err) {
 					loading = false;
 					console.log(err.data);

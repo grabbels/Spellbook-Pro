@@ -22,7 +22,8 @@
 		pagetitle,
 		lookupBook,
 		loadingScreen,
-		shareBookId
+		shareBookId,
+		loadingBook
 	} from '../stores/stores';
 	import { activeSpells, activeTab, loggedIn, openSpellbooks } from '../stores/stores-persist';
 	import { get } from 'svelte/store';
@@ -59,20 +60,19 @@
 			currentSpells.push(spell);
 			notification.set('Spell added.#info');
 			activeSpells.set(currentSpells);
-			let currentTab = get(activeTab);
+			let index = get(activeTab);
 			let openBooks = get(openSpellbooks);
-			for (let i = 0; i < openBooks.length; i++) {
-				if (currentTab.id == openBooks[i].id) {
-					console.log('test');
-					openBooks[i].unsaved = true;
-				}
-			}
-			currentTab.list = currentSpells;
-			currentTab.unsaved = true;
-			activeTab.set(currentTab);
-			console.log(get(openSpellbooks));
-			console.log(get(activeTab));
+			openBooks[index].list = currentSpells;
+			openSpellbooks.set(openBooks);
+			setUnsaved();
+			// activeTab.set(currentTab);
+			// console.log(get(openSpellbooks));
+			// console.log(get(activeTab));
 		}
+	}
+
+	export function scrollToTop() {
+		document.body.scrollIntoView()
 	}
 
 	export const moveItem = (array, to, from) => {
@@ -183,63 +183,90 @@
 	}
 
 	export function setUnsaved() {
-		console.log('test');
-		let currentTab = get(activeTab);
-		currentTab.unsaved = true;
-		activeTab.set(currentTab);
+		let index = get(activeTab);
 		let openBooks = get(openSpellbooks);
-		for (let i = 0; i < openBooks.length; i++) {
-			if (currentTab.id == openBooks[i].id) {
-				openBooks[i].unsaved = true;
-				openSpellbooks.set(openBooks);
-			}
-		}
+		openBooks[index].unsaved = true;
+		openSpellbooks.set(openBooks);
 	}
 
-	export function closeTab(index) {
-		console.log(index);
-		console.log(get(openSpellbooks));
-		let allTabs = get(openSpellbooks);
-		let currentTab = get(activeTab);
-		if (
-			allTabs[index] &&
-			allTabs[index].unsaved === true &&
-			allTabs[index].list &&
-			allTabs[index].list.length > 0
-		) {
-			if (
-				confirm('This spellbook has unsaved changes. Are you sure you want to close this book?') ==
-				true
-			) {
-				close();
-			}
+	export function closeTab(closingTabIndex) {
+		let openBooks = get(openSpellbooks);
+		let openTabIndex = get(activeTab);
+		if (!openBooks[openTabIndex + 1] && openBooks[openTabIndex - 1]) {
+			openTabIndex--;
+			close();
+		} else if (openBooks.length == 1) {
+			openTabIndex = -1;
+			close();
 		} else {
 			close();
 		}
 		function close() {
-			if (currentTab.id == allTabs[index].id) {
-				if (allTabs[index + 1]) {
-					console.log('Selecting one tab up boss');
-					activeTab.set(allTabs[index + 1]);
-					activeSpells.set(allTabs[index + 1].list);
-				} else if (allTabs[index - 1]) {
-					console.log('Selecting one tab down boss');
-					activeTab.set(allTabs[index - 1]);
-					activeSpells.set(allTabs[index - 1].list);
+			if (
+				openBooks[closingTabIndex].unsaved == true &&
+				openBooks[closingTabIndex].list &&
+				openBooks[closingTabIndex].list.length > 0
+			) {
+				if (
+					confirm(
+						'This spellbook has unsaved changes. Are you sure you want to close this book?'
+					) == true
+				) {
+					openBooks.splice(closingTabIndex, 1);
+					activeTab.set(openTabIndex);
+					openSpellbooks.set(openBooks);
+				} else {
+					return;
 				}
-				let openSpellbooksSplice = get(openSpellbooks);
-				openSpellbooksSplice.splice(index, 1);
-				openSpellbooks.set(openSpellbooksSplice);
-				if (openSpellbooksSplice.length < 1) {
-					activeSpells.set([]);
-				}
-			} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
-				console.log('that was the last one boss');
-				openSpellbooks.set([])
-				activeTab.set('');
-				activeSpells.set([]);
+			} else {
+				openBooks.splice(closingTabIndex, 1);
+				activeTab.set(openTabIndex);
+				openSpellbooks.set(openBooks);
 			}
 		}
+		// console.log(index);
+		// console.log(get(openSpellbooks));
+		// let allTabs = get(openSpellbooks);
+		// let currentTab = get(activeTab);
+		// if (
+		// 	allTabs[index] &&
+		// 	allTabs[index].unsaved === true &&
+		// 	allTabs[index].list &&
+		// 	allTabs[index].list.length > 0
+		// ) {
+		// 	if (
+		// 		confirm('This spellbook has unsaved changes. Are you sure you want to close this book?') ==
+		// 		true
+		// 	) {
+		// 		close();
+		// 	}
+		// } else {
+		// 	close();
+		// }
+		// function close() {
+		// 	if (currentTab.id == allTabs[index].id) {
+		// 		if (allTabs[index + 1]) {
+		// 			console.log('Selecting one tab up boss');
+		// 			activeTab.set(allTabs[index + 1]);
+		// 			activeSpells.set(allTabs[index + 1].list);
+		// 		} else if (allTabs[index - 1]) {
+		// 			console.log('Selecting one tab down boss');
+		// 			activeTab.set(allTabs[index - 1]);
+		// 			activeSpells.set(allTabs[index - 1].list);
+		// 		}
+		// 		let openSpellbooksSplice = get(openSpellbooks);
+		// 		openSpellbooksSplice.splice(index, 1);
+		// 		openSpellbooks.set(openSpellbooksSplice);
+		// 		if (openSpellbooksSplice.length < 1) {
+		// 			activeSpells.set([]);
+		// 		}
+		// 	} else if (!allTabs[index - 1] && !allTabs[index - 1]) {
+		// 		console.log('that was the last one boss');
+		// 		openSpellbooks.set([])
+		// 		activeTab.set('');
+		// 		activeSpells.set([]);
+		// 	}
+		// }
 	}
 
 	export async function removeBook(id) {
@@ -276,34 +303,37 @@
 	}
 
 	export async function loadBook(id) {
+		loadingBook.set(true);
+		modalCall.set('');
+		topmenuopen.set(false);
 		try {
 			const record = await pb.collection('spellbooks').getOne(id);
 			if (record) {
-				let newArray = get(openSpellbooks);
+				let openSpellbooksMutate = get(openSpellbooks);
 				let openedBook = record;
-				if (!get(openSpellbooks).filter((e) => e.id == record.id).length > 0) {
-					if (!openedBook.share === true) {
+				if (!openSpellbooksMutate.filter((e) => e.id == record.id).length > 0) {
+					if (openedBook.share !== true) {
+						openedBook.unsaved = false;
 						openedBook.from_load = true;
 					} else {
 						openedBook.unsaved = true;
 						openedBook.share = false;
 					}
-					console.log(openedBook);
-					newArray.push(openedBook);
-					openSpellbooks.set(newArray);
-					activeSpells.set(openedBook.list);
-					activeTab.set(openedBook);
+					// console.log(openedBook);
+					openSpellbooksMutate.push(openedBook);
+					openSpellbooks.set(openSpellbooksMutate);
+					activeTab.set(openSpellbooksMutate.length - 1);			
 				} else {
 					console.log('already open!');
-					activeTab.set(record);
-					activeSpells.set(record.list);
-					console.log(get(activeTab));
+					let index = openSpellbooksMutate.findIndex((item) => item.id === record.id);
+					activeTab.set(index);
+					loadingBook.set(false);
 				}
 				// console.log(get(openSpellbooks));
 				refreshList();
-				modalCall.set('');
+
 				// $modalCall = $modalCall;
-				topmenuopen.set(false);
+
 				goto('/');
 			}
 		} catch (err) {
@@ -311,6 +341,42 @@
 			// notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
+	// export async function loadBook(id) {
+	// 	try {
+	// 		const record = await pb.collection('spellbooks').getOne(id);
+	// 		if (record) {
+	// 			let newArray = get(openSpellbooks);
+	// 			let openedBook = record;
+	// 			if (!get(openSpellbooks).filter((e) => e.id == record.id).length > 0) {
+	// 				if (!openedBook.share === true) {
+	// 					openedBook.from_load = true;
+	// 				} else {
+	// 					openedBook.unsaved = true;
+	// 					openedBook.share = false;
+	// 				}
+	// 				console.log(openedBook);
+	// 				newArray.push(openedBook);
+	// 				openSpellbooks.set(newArray);
+	// 				activeSpells.set(openedBook.list);
+	// 				activeTab.set(openedBook);
+	// 			} else {
+	// 				console.log('already open!');
+	// 				activeTab.set(record);
+	// 				activeSpells.set(record.list);
+	// 				console.log(get(activeTab));
+	// 			}
+	// 			// console.log(get(openSpellbooks));
+	// 			refreshList();
+	// 			modalCall.set('');
+	// 			// $modalCall = $modalCall;
+	// 			topmenuopen.set(false);
+	// 			goto('/');
+	// 		}
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 		// notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
+	// 	}
+	// }
 
 	export async function importBook(book) {
 		modalCall.set('save');
@@ -383,66 +449,65 @@
 	}
 
 	export function newBook() {
-		let tabsArray = get(openSpellbooks);
+		let booksArray = get(openSpellbooks);
 		const d = new Date();
 		let time = d.getTime();
 		let emptyBook = {
 			id: 'temp' + time,
 			name: 'Untitled spellbook',
 			open_tab: true,
-			unsaved: true,
+			unsaved: false,
 			color: 'var(--white)'
 		};
-		tabsArray.push(emptyBook);
-		openSpellbooks.set(tabsArray);
-		activeTab.set(emptyBook);
+		booksArray.push(emptyBook);
+		openSpellbooks.set(booksArray);
+		activeTab.set(booksArray.length - 1);
 		activeSpells.set([]);
 	}
 
 	export async function updateBook(id, type, newname) {
+		let openBooks = get(openSpellbooks);
+		let index = get(activeTab);
 		const data = {};
 		if (type == 'list') {
-			let newList = get(activeTab).list;
+			let newList = openBooks[index].list;
 			notification.set('Saving spellsheet...#loading');
 			data.list = newList;
+			update();
 		} else if (type == 'name') {
-			if (get(activeTab).unsaved === false) {
+			if (openBooks[index].unsaved === false) {
 				notification.set('Saving spellsheet...#loading');
 			}
 			data.name = newname;
-			let currentOpenTabs = get(openSpellbooks);
-			let toEditActiveTab = get(activeTab);
-			toEditActiveTab.name = newname;
-			activeTab.set(toEditActiveTab);
-			for (let i = 0; i < currentOpenTabs.length; i++) {
-				if (currentOpenTabs[i].id == id) {
-					currentOpenTabs[i].name = newname;
-					openSpellbooks.set(currentOpenTabs);
-				}
-			}
+			openBooks[index].name = newname;
+			openSpellbooks.set(openBooks);
+			update();
 		}
-
-		try {
-			const record = await pb.collection('spellbooks').update(id, data);
-			if (record) {
-				console.log(record);
-				loadSpellsheetsByUserId(get(userId));
-				setTimeout(() => {
-					notification.set('Spellbook saved!#positive');
-					return 'done';
-				}, 500);
+		async function update() {
+			try {
+				const record = await pb.collection('spellbooks').update(id, data);
+				if (record) {
+					console.log(record);
+					loadSpellsheetsByUserId(get(userId));
+					setTimeout(() => {
+						notification.set('Spellbook saved!#positive');
+						return 'done';
+					}, 500);
+				}
+			} catch (err) {
+				console.log(err.data);
+				notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 			}
-		} catch (err) {
-			console.log(err.data);
-			notification.set(err.data.message + ' Error code: ' + err.data.code + '#error');
 		}
 	}
 
 	export function handleSave(id) {
+		let index = get(activeTab);
+		let openBooks = get(openSpellbooks);
 		if (!get(currentUser)) {
 			notification.set('You need to <a href="/account/login">log in</a> to save spellbooks#alert');
 		} else {
-			if (get(activeTab).from_load === true) {
+			if (openBooks[index].from_load === true) {
 				updateBook(id, 'list');
 			} else {
 				modalCall.set('save');
@@ -459,13 +524,15 @@
 	}
 
 	export async function shareBook() {
-		if (get(activeTab).unsaved === true) {
+		let index = get(activeTab);
+		let openBooks = get(openSpellbooks);
+		if (openBooks[index].unsaved === true) {
 			loadingScreen.set(true);
 			console.log(
 				"We're going to save this spellbook as a shareable book with minimal info which does not appear in the user's profile like a regular saved spellbook"
 			);
 			const data = {
-				name: get(activeTab).name,
+				name: openBooks[index].name,
 				list: get(activeSpells),
 				user_id: 'share',
 				share: true
@@ -486,7 +553,7 @@
 			console.log(
 				"We can simply share the saved spellbook's ID because it is already in the system"
 			);
-			shareBookId.set(get(activeTab).id);
+			shareBookId.set(openBooks[index].id);
 			modalCall.set('share');
 		}
 	}

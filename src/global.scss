@@ -13,6 +13,8 @@
 	--lesstranslucent: rgba(255, 255, 255, 0.6);
 	--translucentdark: rgba(0, 0, 0, 0.2);
 	--translucentdarker: rgba(0, 0, 0, 0.6);
+	--panelbg: rgba(22, 9, 57, .8);
+	--panelbgrgb: 22, 9, 57;
 	--red: #fe5a51;
 	--purple: #834eb9;
 	--lightgreen: #00cc9d;
@@ -23,7 +25,7 @@
 	--pink: #ca3cc7;
 	--spellbg: rgb(22, 9, 57);
 	--padding: 2rem;
-
+	--bottombarheight: 65px;
 	--pagebg: linear-gradient(238deg, rgba(101, 40, 143, 1) 0%, rgba(46, 35, 112, 1) 100%);
 
 	@media only screen and (max-width: 1024px) {
@@ -658,39 +660,3 @@ textarea {
 	}
 }
 
-.handle {
-	display: none;
-	position: fixed;
-	border-radius: 0 6px 6px 0;
-	left: 0;
-	bottom: 2rem;
-	z-index: 10;
-	background-color: var(--translucent);
-	backdrop-filter: blur(10px);
-	width: 60px;
-	height: 60px;
-	transition: 0.15s;
-
-	* {
-		pointer-events: none;
-	}
-
-	&.filters_handle {
-		bottom: 6.5rem;
-	}
-
-	div {
-		i {
-			font-size: 1.8rem;
-			color: var(--white);
-		}
-	}
-
-	@media only screen and (max-width: 1024px) {
-		display: block;
-
-		&.open {
-			left: -60px;
-		}
-	}
-}

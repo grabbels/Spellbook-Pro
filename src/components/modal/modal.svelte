@@ -220,6 +220,9 @@
 			background-color: var(--spellbg);
 			border-radius: 6px;
 			position: relative;
+			@media only screen and (max-width: 1023px) {
+				margin: .3rem;
+			}
 			&.load {
 				.slot:not(.taken) {
 					display: none;

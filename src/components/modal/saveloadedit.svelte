@@ -70,6 +70,7 @@
 	}
 
 	async function handleSave() {
+		console.log($userNickname)
 		if ($bookToEdit) {
 			overwriteId = $bookToEdit.id;
 		}
@@ -81,6 +82,7 @@
 				!filter.clean(saveDescription.value).includes('*'))
 		) {
 			loadingSave = 'loading';
+			$userNickname = $currentUser.username
 			const data = {
 				name: saveName.value,
 				class: saveClass.value,
@@ -101,6 +103,8 @@
 						$modalCall = '';
 						$savePrompt = false;
 						loadingSave = '';
+						$openSpellbooks[$activeTab].unsaved = false;
+						$openSpellbooks[$activeTab].from_load = true;
 					}
 				} catch (err) {
 					console.log(err.data);
@@ -110,19 +114,18 @@
 				try {
 					const record = await pb.collection('spellbooks').create(data);
 					if (record) {
-						for (let i = 0; i < $openSpellbooks.length; i++) {
-							if ($openSpellbooks[i].open_tab === true) {
-								$openSpellbooks.splice(i, 1);
-							}
-						}
+						// for (let i = 0; i < $openSpellbooks.length; i++) {
+						// 	if ($openSpellbooks[i].open_tab === true) {
+						// 		$openSpellbooks.splice(i, 1);
+						// 	}
+						// }
 						let createdBook = record;
 						createdBook.from_load = true;
+						createdBook.unsaved = false;
 						overwriteId = '';
 						$savePrompt = false;
 						$topmenuopen = false;
-						$openSpellbooks.push(createdBook);
-						$activeTab = createdBook;
-						$openSpellbooks = $openSpellbooks;
+						$openSpellbooks[$activeTab] = createdBook;
 						if ($bookToEdit) {
 							$lookupBook = createdBook;
 							$bookToEdit = '';
@@ -131,7 +134,6 @@
 						} else {
 							$modalCall = '';
 						}
-						$activeTab.unsaved = false;
 						$notification = 'Spellbook saved!#positive';
 						loadSpellsheetsByUserId();
 					}
@@ -201,7 +203,7 @@
 					<label for="name">Spellbook name</label>
 					<input
 						bind:this={saveName}
-						value={$bookToEdit.name ? $bookToEdit.name : $activeTab.name && $activeTab.name != 'Untitled spellbook' ? $activeTab.name : ''}
+						value={$bookToEdit.name ? $bookToEdit.name : $openSpellbooks[$activeTab].name && $openSpellbooks[$activeTab].name != 'Untitled spellbook' ? $openSpellbooks[$activeTab].name : ''}
 						name="name"
 						type="text"
 						maxlength="40"

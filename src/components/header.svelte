@@ -10,7 +10,8 @@
 		quickQuery,
 		spellListEmpty,
 		notification,
-		editingTitle
+		editingTitle,
+		loadingBook
 	} from './stores/stores';
 	import { activeTab, loggedIn, userNickname, openSpellbooks } from './stores/stores-persist';
 	import {
@@ -24,26 +25,14 @@
 		shareBook
 	} from './functions/globalfunctions.svelte';
 	import { currentUser } from '$lib/pocketbase';
-	import { is_function } from 'svelte/internal';
 	let bookTitle, titleInput;
 	function handleNew() {}
 	async function editName() {
 		if ($editingTitle === true) {
 			bookTitle.text = titleInput.value;
+			$openSpellbooks[$activeTab].name = titleInput.value;
+			$openSpellbooks[$activeTab].unsaved = true;
 			$editingTitle = false;
-			if (!$activeTab.unsaved === true) {
-				let updateDone = await updateBook($activeTab.id, 'name', titleInput.value);
-				if (updateDone) {
-					console.log(updateDone);
-				}
-			} else {
-				$activeTab.name = titleInput.value;
-				for (let i = 0; i < $openSpellbooks.length; i++) {
-					if ($openSpellbooks[i].id == $activeTab.id) {
-						$openSpellbooks[i].name = titleInput.value;
-					}
-				}
-			}
 		} else {
 			$editingTitle = true;
 			setTimeout(() => {
@@ -60,34 +49,36 @@
 		><i class="ri-question-fill" /></button
 	>
 	<header>
-		{#key $activeTab.name}
-			{#key $pagetitle}
-				<div class="title_wrapper" class:editing={$editingTitle}>
-					<img src={Icon} alt="" />
-					<h2><span>Spellbook Pro</span> – D&D 5E</h2>
-					<h1 bind:this={bookTitle} class:editing={$editingTitle} in:fade={{ duration: 200 }}>
-						{#if $pagetitle !== 'Home'}
-							{$pagetitle}
-						{:else if $openSpellbooks.length < 1}
-							Spellbook Pro
-						{:else}
-							{$activeTab.name ? $activeTab.name : 'Untitled spellbook'}
-						{/if}
-					</h1>
-					<input
-						bind:this={titleInput}
-						class:editing={$editingTitle}
-						on:keydown={(e) => (e.key == 'Enter' ? editName() : '')}
-						type="text"
-						value={$activeTab.name}
-					/>
-					{#if $pagetitle == 'Home' && $openSpellbooks.length > 0}
-						<button class:editing={$editingTitle} on:click={editName}
-							><i class="ri-edit-line" /><i class="ri-save-3-line" />
-						</button>
+		{#key $pagetitle}
+			<div class="title_wrapper" class:editing={$editingTitle}>
+				<img src={Icon} alt="" />
+				<h2><span>Spellbook Pro</span> – D&D 5E</h2>
+				<h1 bind:this={bookTitle} class:editing={$editingTitle} in:fade={{ duration: 200 }}>
+					{#if $pagetitle !== 'Home'}
+						{$pagetitle}
+					{:else if $openSpellbooks.length < 1}
+						Spellbook Pro
+					{:else if $openSpellbooks[$activeTab] && $openSpellbooks[$activeTab].name}
+						{$openSpellbooks[$activeTab].name
+							? $openSpellbooks[$activeTab].name
+							: 'Untitled spellbook'}
+					{:else}
+						Spellbook Pro
 					{/if}
-				</div>
-			{/key}
+				</h1>
+				<input
+					bind:this={titleInput}
+					class:editing={$editingTitle}
+					on:keydown={(e) => (e.key == 'Enter' ? editName() : '')}
+					type="text"
+					value={$openSpellbooks[$activeTab] ? $openSpellbooks[$activeTab].name : ''}
+				/>
+				{#if $pagetitle == 'Home' && $openSpellbooks.length > 0}
+					<button class:editing={$editingTitle} on:click={editName}
+						><i class="ri-edit-line" /><i class="ri-save-3-line" />
+					</button>
+				{/if}
+			</div>
 		{/key}
 
 		<div class="header_inner">
@@ -114,15 +105,16 @@
 					/>
 				{/if}
 				{#if $pagetitle === 'Home'}
-					<Button on:click={newBook} type="fill desktop" icon="ri-health-book-line" text="New" />
+					<Button disabled={$loadingBook} on:click={newBook} type="fill desktop" icon="ri-health-book-line" text="New" />
 					<Button
+					disabled={$loadingBook}
 						on:click={handleLoad}
 						type="fill desktop"
 						icon="ri-folder-open-line"
 						text="Open"
 					/><Button
 						disabled={$spellListEmpty}
-						on:click={() => handleSave($activeTab.id)}
+						on:click={() => handleSave($openSpellbooks[$activeTab].id)}
 						type="fill desktop"
 						icon="ri-save-3-line"
 						text="Save"
@@ -203,13 +195,18 @@
 				color: var(--lightblue);
 			}
 		}
+		@media only screen and (max-width: 1024px) {
+			display: none;
+		}
 	}
 	header {
+		// padding-top: env(safe-area-inset-top);
 		margin-top: 2rem;
 		width: 100%;
-		@media only screen and (max-width: 1024px) {
-			margin-top: 1rem;
-		}
+		// @media only screen and (max-width: 1024px) {
+		// 	margin-top: 1rem;
+		// 	display: none;
+		// }
 
 		.title_wrapper {
 			position: relative;

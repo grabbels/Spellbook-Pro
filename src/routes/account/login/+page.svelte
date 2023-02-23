@@ -152,9 +152,12 @@
 		loadingLogin = true;
 		try {
 			const user = await pb.collection('users').authWithPassword(loginEmail, loginPassword);
-			loadingLogin = false;
-			setUserData();
-			goto('/account');
+			
+			if (user) {
+				loadingLogin = false;
+				setUserData();
+				goto('/account');
+			}
 		} catch (err) {
 			$notification = 'Unknown email/password combination.#error';
 			console.log(err.data);

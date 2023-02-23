@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-static';
 import sveltePreprocess from 'svelte-preprocess';
 import autoprefixer from 'autoprefixer';
 
@@ -11,7 +11,6 @@ const config = {
 	}),
 	kit: {
 		adapter: adapter({ out: 'build' })
-
 		// vite: {
 		// 	define: {
 		// 		'process.env': process.env

@@ -4,13 +4,6 @@
 	import { removeFilters } from './functions/globalfunctions.svelte';
 </script>
 
-{#if $activeLevels.length > 0}
-	<button
-		class="bookmarks_handle handle"
-		class:open={$bookmarksOpen}
-		on:click={() => ($bookmarksOpen = true)}><div><i class="ri-bookmark-fill" /></div></button
-	>
-{/if}
 <div
 id="bookmarks"
 	class="bookmarks panel"

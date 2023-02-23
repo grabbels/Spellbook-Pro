@@ -7,7 +7,7 @@ export const firstVisitB = writable('firstVisitB', true);
 export const openTabs = writable('openTabs', []);
 export const openSpellbooks = writable('openSpellbooks', []);
 export const tabs = writable('tabs', []);
-export const activeTab = writable('activeTab', []);
+export const activeTab = writable('activeTab', '');
 export const userPrefs = writable('userPrefs', {
 	filters: true,
 	bookmarks: true,

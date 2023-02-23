@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.inkysspellbook.app',
-  appName: 'spellbook-svelte',
+  appId: 'pro.spellbook.app',
+  appName: 'Spellbook Pro',
   webDir: 'build',
   bundledWebRuntime: false
 };

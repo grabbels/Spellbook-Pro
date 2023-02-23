@@ -8,6 +8,7 @@
 	import bg from '../img/menu-bg.png';
 	import Button from './button.svelte';
 	import { addSpell } from './functions/globalfunctions.svelte';
+	import Loading from './loading.svelte';
 	// console.log(spells)
 	let results = [];
 	let result = [];
@@ -18,7 +19,14 @@
 		searchField.focus();
 	}
 	$: if (query.length > 0) {
-		results = spells.filter((data) => data?.name.toLowerCase()?.includes(query.toLowerCase()));
+		setTimeout(() => {
+			results = spells.filter((data) => data?.name.toLowerCase()?.includes(query.toLowerCase()));
+			if (results.length < 1) {
+				let spell = {};
+				spell.name = 'no results';
+				results.push(spell);
+			}
+		}, 1000);
 	} else {
 		results = [];
 	}
@@ -85,43 +93,41 @@
 			><i class="ri-close-circle-fill" /></button
 		>
 		<ul bind:this={resultsList} tabindex="-1">
-			{#if results.length > 0}
+			{#if query.length > 0 && results.length < 1}
+				<Loading />
+			{:else if results.length > 0}
 				{#each results as spell, i}
-					<li
-						class={$activeSpells.includes(spell[i]) ? 'disabled' : ''}
-						transition:fly={{ y: 10, duration: 200 }}
-					>
-						<button
-							bind:this={result[i]}
-							on:click={(e) => {
-								addSpell(spell);
-								touchFeedback(e);
-								resultNumber - 1;
-								searchField.select();
-							}}
-							tabindex="0"
-						>
-							<div>
-								<SchoolIcon school={spell.school} />
-							</div>
-							<div>
-								<h3>{spell.name}</h3>
-								<p>{spell.type}</p>
-								<i class="ri-add-line" />
-							</div>
-						</button>
-					</li>
-				{/each}
-			{:else if query.length > 0}
-				<li transition:fly={{ y: 10, duration: 200 }}>
-					<button style="pointer-events: none">
-						<div>
-							<!-- <h3>{spell.name}</h3> -->
+					{#if spell.name == 'no results'}
+						<li transition:fly={{ y: 10, duration: 200 }}>
 							<p>No results</p>
-							<!-- <i class="ri-add-line" /> -->
-						</div>
-					</button>
-				</li>
+						</li>
+					{:else}
+						<li
+							class={$activeSpells.includes(spell[i]) ? 'disabled' : ''}
+							transition:fly={{ y: 10, duration: 200 }}
+						>
+							<button
+								bind:this={result[i]}
+								on:click={(e) => {
+									addSpell(spell);
+									touchFeedback(e);
+									resultNumber - 1;
+									searchField.select();
+								}}
+								tabindex="0"
+							>
+								<div>
+									<SchoolIcon school={spell.school} />
+								</div>
+								<div>
+									<h3>{spell.name}</h3>
+									<p>{spell.type}</p>
+									<i class="ri-add-line" />
+								</div>
+							</button>
+						</li>
+					{/if}
+				{/each}
 			{/if}
 		</ul>
 		<div class="close_button">

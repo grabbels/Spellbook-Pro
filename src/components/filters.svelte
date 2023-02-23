@@ -86,12 +86,6 @@
 	}
 </script>
 
-<button
-	class="filters_handle handle"
-	class:open={$bookmarksOpen ? true : $filtersOpen ? true : ''}
-	on:click={() => ($filtersOpen = true)}><div><i class="ri-filter-2-fill" /></div></button
->
-
 <div
 	class:open={$filtersOpen}
 	class="filters_wrapper panel"
@@ -196,8 +190,11 @@
 		{#if $filters}
 			<button
 				transition:fade={{ duration: 100 }}
-				on:click={() => removeFilters()}
-				class="outline alt"><i class="ri-close-line" /></button
+				on:click={() => {
+					removeFilters();
+					$filtersOpen = false;
+				}}
+				class="outline alt"><i class="ri-close-line" /> <span>Remove filters</span></button
 			>{/if}
 	</div>
 </div>
@@ -215,21 +212,22 @@
 		gap: 1rem;
 		border: 2px solid transparent;
 		background-color: var(--translucentdark);
-		&.active {
-			border-color: var(--lightblue);
-		}
 		@media only screen and (max-width: 1024px) {
 			position: fixed;
-
+			padding: 1rem;
 			left: 0;
 			right: 0;
-			bottom: 0;
+			bottom: calc(env(safe-area-inset-bottom) + var(--bottombarheight));
 			z-index: 20;
 			flex-wrap: wrap;
 			backdrop-filter: blur(20px);
 			border-radius: 12px 12px 0 0;
-			transform: translateY(100%);
+			transform: translateY(calc(100% + env(safe-area-inset-bottom) + var(--bottombarheight)));
+			background-color: var(--panelbg);
 			transition: 0.3s;
+			input {
+				max-width: 300px;
+			}
 			&.open {
 				transform: translateY(0);
 			}
@@ -309,6 +307,12 @@
 					padding: 0.35rem 0.8rem;
 					i {
 						margin: 0;
+					}
+					span {
+						display: none;
+						@media only screen and (max-width: 1024px) {
+							display: inline;
+						}
 					}
 				}
 			}

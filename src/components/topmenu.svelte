@@ -260,6 +260,20 @@
 				transform: translateY(0%);
 			}
 		}
+		@media only screen and (max-width: 820px) {
+			box-shadow: 0 0px 14px rgba(10, 10, 10, .6);
+			position: fixed;
+			bottom: env(safe-area-inset-bottom);
+			left: 0;
+			right: 0;
+			max-height: 93vh;
+			border-radius: 12px 12px 0 0;
+			z-index: 15;
+			background-color: var(--spellbg);
+			transition: 0.4s;
+			transform: translateY(100%);
+			overflow: hidden;
+		}
 		.wrapper {
 			padding: 2rem 2rem 1.3rem;
 			width: 100%;
